@@ -11,11 +11,158 @@ datasource db {
 }
 
 model User {
-  id    Int     @default(autoincrement()) @id
-  email String  @unique
-  name  String
+  id            Int      @id @default(autoincrement())
+  email         String   @unique
+  name          String
   password      String
   refresh_token String?
   created_at    DateTime @default(now())
   updated_at    DateTime @updatedAt
+
+  user_licenses UserLicense[]
+  player_logs   PlayerLog[]
+  user_tables   UserTable[]
+}
+
+model License {
+  id              Int      @id @default(autoincrement())
+  generated_code  String   @unique
+  expiration_date DateTime
+
+  m_group_id Int
+  MGroup     MGroup @relation(fields: [m_group_id], references: [id])
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  user_licenses UserLicense[]
+}
+
+model UserLicense {
+  id Int @id @default(autoincrement())
+
+  user_id Int
+  user    User? @relation(fields: [user_id], references: [id])
+
+  license_id Int
+  license    License? @relation(fields: [license_id], references: [id])
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@unique([user_id, license_id])
+}
+
+model PlayerLog {
+  id Int @id @default(autoincrement())
+
+  user_id Int
+  user    User? @relation(fields: [user_id], references: [id])
+
+  play_count Int
+  play_time  Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  game_logs GameLog[]
+
+  @@unique([user_id])
+}
+
+model GameLog {
+  id        Int    @id @default(autoincrement())
+  rtp_value Float
+  balance   Float
+  money     Float?
+
+  player_log_id Int
+  player_log    PlayerLog @relation(fields: [player_log_id], references: [id])
+
+  table_id Int
+  table    Table @relation(fields: [table_id], references: [id])
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Table {
+  id            Int     @id @default(autoincrement())
+  name          String?
+  true_count    Float
+  running_count Float
+
+  evolution_table_id String?
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  game_logs GameLog[]
+  UserTable UserTable[]
+
+  @@unique([name])
+}
+
+model UserTable {
+  id Int @id @default(autoincrement())
+
+  user_id Int
+  user    User? @relation(fields: [user_id], references: [id])
+
+  table_id Int
+  table    Table? @relation(fields: [table_id], references: [id])
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@unique([user_id, table_id])
+}
+
+model TrueCountSetting {
+  id         Int      @id @default(autoincrement())
+  true_count Float
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model MGroup {
+  id         Int       @id @default(autoincrement())
+  name       GroupName
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+
+  licenses License[]
+
+  @@unique([name])
+}
+
+model MWebsite {
+  id         Int      @id @default(autoincrement())
+  name       Website
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+
+  @@unique([name])
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum GroupName {
+  A
+  B
+  C
+  D
+}
+
+enum Website {
+  steak
+  ELDOAH
+  Fortune
+  BC_game
+  Bit_Casino
+  Bonds_Casino
+  TED_BET
 }
