@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { Request } from 'express';
 import { AuthService } from './auth.service';
-import { LoginDto } from './dto/auth.dto';
+import { LoginDto } from './dtos/auth.dto';
 import { JwtAuthGuard } from './guards/auth.guard';
 import { JwtAuthRefreshGuard } from './guards/refreshToken.guard';
 import { IRefreshJWT, IUserJWT } from './interfaces/auth-payload.interface';
