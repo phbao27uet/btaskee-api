@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { SALT_ROUNDS } from 'src/utils/constants';
+import { ROOM_IDS } from 'src/utils/roomIds';
 
 const prisma = new PrismaClient();
 
@@ -20,11 +21,29 @@ const generateUsers = async () => {
   ];
 };
 
+const generateTables = () => {
+  const rooms = [...ROOM_IDS];
+
+  return rooms.map((roomId) => ({
+    name: roomId,
+    true_count: 0,
+    running_count: 0,
+    evolution_table_id: roomId,
+    created_at: new Date(),
+    updated_at: new Date(),
+  }));
+};
+
 async function main() {
   const users = await generateUsers();
 
   await prisma.user.createMany({
     data: users,
+    skipDuplicates: true,
+  });
+
+  await prisma.table.createMany({
+    data: generateTables(),
     skipDuplicates: true,
   });
 
