@@ -7,6 +7,8 @@ export const JWT_CONSTANTS = {
   REFRESH_TOKEN_EXPIRES_IN: process.env.REFRESH_TOKEN_EXPIRES_IN,
 };
 
+export const API_URL = process.env.API_URL;
+
 export const RUNNING_COUNT = {
   2: 1,
   3: 1,
