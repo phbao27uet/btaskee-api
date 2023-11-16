@@ -21,6 +21,22 @@ const generateUsers = async () => {
   ];
 };
 
+const generateAdmins = async () => {
+  const password = await bcrypt.hash('123123a', SALT_ROUNDS);
+
+  return [
+    {
+      id: 1,
+      name: 'Zen Admin',
+      email: 'zen_admin@gmail.com',
+      password: password,
+      refresh_token: null,
+      created_at: new Date(),
+      updated_at: new Date(),
+    },
+  ];
+};
+
 const generateTables = () => {
   const rooms = [...ROOM_IDS];
 
@@ -36,9 +52,15 @@ const generateTables = () => {
 
 async function main() {
   const users = await generateUsers();
+  const admins = await generateAdmins();
 
   await prisma.user.createMany({
     data: users,
+    skipDuplicates: true,
+  });
+
+  await prisma.admin.createMany({
+    data: admins,
     skipDuplicates: true,
   });
 
