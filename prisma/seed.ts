@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { SALT_ROUNDS } from 'src/utils/constants';
-import { ROOM_IDS } from 'src/utils/roomIds';
+import { ROOM_HAS_NAME, ROOM_IDS } from 'src/utils/roomIds';
 
 const prisma = new PrismaClient();
 
@@ -38,13 +38,15 @@ const generateAdmins = async () => {
 };
 
 const generateTables = () => {
-  const rooms = [...ROOM_IDS];
+  const roomFilter = ROOM_HAS_NAME.filter((room) => ROOM_IDS.includes(room.id));
 
-  return rooms.map((roomId) => ({
-    name: roomId,
+  const rooms = [...roomFilter];
+
+  return rooms.map((room) => ({
+    name: room.name,
     true_count: 0,
     running_count: 0,
-    evolution_table_id: roomId,
+    evolution_table_id: room.id,
     created_at: new Date(),
     updated_at: new Date(),
   }));
