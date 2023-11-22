@@ -102,6 +102,10 @@ model Table {
 
   evolution_table_id String?
 
+  game_id       String?
+  last_cards    String?
+  counted_cards Int? 
+
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 

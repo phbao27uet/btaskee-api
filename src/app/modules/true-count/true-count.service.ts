@@ -10,11 +10,7 @@ export class TrueCountService {
     private discordService: DiscordService,
   ) {}
 
-  async calcTrueCount(table_id: string, cards: string[], countedCards: number) {
-    if (countedCards > 250) {
-      throw new NotFoundException('Counted cards cannot be greater than 250');
-    }
-
+  async calcTrueCount(table_id: string, cards: string[], game_id: string) {
     const table = await this.prisma.table.findFirst({
       where: {
         evolution_table_id: table_id,
@@ -25,7 +21,24 @@ export class TrueCountService {
       throw new NotFoundException('Table not found');
     }
 
-    const runningCount = cards.reduce(
+    const gameId = table?.game_id;
+
+    // TODO: If new game id is different from the previous one, reset the last cards
+    const lastCards: string[] =
+      gameId === game_id && table?.last_cards
+        ? JSON.parse(table?.last_cards)
+        : [];
+
+    const difference = this.findArrayDifference(lastCards, cards);
+
+    const countedCards =
+      Number(table?.counted_cards) + (difference?.length || 0);
+
+    if (countedCards > 250) {
+      this.discordService.sendMessage(`Counted > 250: ${table_id}}`);
+    }
+
+    const runningCount = difference.reduce(
       (acc, card) => {
         return acc + RUNNING_COUNT[card as keyof typeof RUNNING_COUNT];
       },
@@ -39,7 +52,10 @@ export class TrueCountService {
 
     console.log('True Count table: ', table_id, {
       tableName: table.name,
+      game_id_db: gameId,
+      game_id,
       cards,
+      difference,
       countedCards,
       runningCount,
       trueCount,
@@ -63,8 +79,11 @@ export class TrueCountService {
         id: table.id,
       },
       data: {
+        game_id: game_id,
         running_count: runningCount,
         true_count: trueCount,
+        counted_cards: countedCards,
+        last_cards: JSON.stringify(cards),
       },
     });
   }
@@ -94,7 +113,32 @@ export class TrueCountService {
       data: {
         running_count: 0,
         true_count: 0,
+        counted_cards: 0,
       },
     });
+  }
+
+  findArrayDifference(arr1: string[], arr2: string[]) {
+    const count1: { [key: string]: number } = {};
+    const count2: { [key: string]: number } = {};
+    const difference = [];
+
+    for (const item of arr1) {
+      count1[item] = (count1[item] || 0) + 1;
+    }
+
+    for (const item of arr2) {
+      count2[item] = (count2[item] || 0) + 1;
+    }
+
+    for (const item in count2) {
+      if (count2[item] > (count1[item] || 0)) {
+        for (let i = 0; i < count2[item] - (count1[item] || 0); i++) {
+          difference.push(item);
+        }
+      }
+    }
+
+    return difference;
   }
 }
