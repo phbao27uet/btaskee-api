@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Put } from '@nestjs/common';
+import { Body, Controller, Param, Post, Put } from '@nestjs/common';
 import { CalcTrueCountDto } from './dtos/calc-true-count.dto';
 import { TrueCountService } from './true-count.service';
 
@@ -21,5 +21,10 @@ export class TrueCountController {
       calcTrueCountDto.cards,
       calcTrueCountDto.gameId,
     );
+  }
+
+  @Post('reset-all')
+  async resetAllTrueCount() {
+    return this.trueCountService.resetAllTrueCount();
   }
 }
