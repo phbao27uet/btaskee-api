@@ -19,7 +19,7 @@ export class TrueCountController {
     return this.trueCountService.calcTrueCount(
       params?.table_id,
       calcTrueCountDto.cards,
-      calcTrueCountDto.countedCards,
+      calcTrueCountDto.gameId,
     );
   }
 }
