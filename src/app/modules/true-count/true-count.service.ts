@@ -118,6 +118,32 @@ export class TrueCountService {
     });
   }
 
+  async resetAllTrueCount() {
+    const tables = await this.prisma.table.findMany({});
+
+    for (const table of tables) {
+      await this.prisma.table.update({
+        where: {
+          id: table.id,
+        },
+        data: {
+          running_count: 0,
+          true_count: 0,
+          counted_cards: 0,
+          game_id: null,
+          last_cards: null,
+        },
+      });
+    }
+
+    console.log('Reset All True Count');
+    console.log('\n');
+
+    this.discordService.sendMessage(`Reset All True Count`);
+
+    return true;
+  }
+
   findArrayDifference(arr1: string[], arr2: string[]) {
     const count1: { [key: string]: number } = {};
     const count2: { [key: string]: number } = {};
