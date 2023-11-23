@@ -62,15 +62,18 @@ export class TrueCountService {
     });
     console.log('\n');
 
-    if (table_id === 'ps3t7j4ykfe2fhdw') {
+    if (table_id === 'o735cjzyaeasv4o6') {
       this.discordService.sendMessage(
         `True Count table: ${table_id}, ${JSON.stringify({
           tableName: table.name,
+          game_id_db: gameId,
+          game_id,
           cards,
+          difference,
           countedCards,
           runningCount,
           trueCount,
-        })}`,
+        })}\n`,
       );
     }
 
@@ -102,9 +105,7 @@ export class TrueCountService {
     console.log('Reset True Count table: ', table_id);
     console.log('\n');
 
-    if (table_id === 'ps3t7j4ykfe2fhdw') {
-      this.discordService.sendMessage(`Reset True Count table: ${table_id}`);
-    }
+    this.discordService.sendMessage(`Reset True Count table: ${table_id}`);
 
     return await this.prisma.table.update({
       where: {
