@@ -82,8 +82,9 @@ model GameLog {
   id        Int    @id @default(autoincrement())
   rtp_value Float
   balance   Float
-  money     Float?
-
+  money_bet     Float?
+  money_returned Float?
+  
   player_log_id Int
   player_log    PlayerLog @relation(fields: [player_log_id], references: [id])
 

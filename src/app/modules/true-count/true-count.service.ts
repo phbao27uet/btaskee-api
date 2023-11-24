@@ -10,6 +10,29 @@ export class TrueCountService {
     private discordService: DiscordService,
   ) {}
 
+  async getRooms() {
+    const trueCountSetting = await this.prisma.trueCountSetting.findFirst({});
+
+    if (!trueCountSetting) {
+      throw new NotFoundException('True Count Setting not found');
+    }
+
+    const tables = await this.prisma.table.findMany({
+      where: {
+        true_count: {
+          gte: trueCountSetting?.true_count,
+        },
+      },
+      select: {
+        id: true,
+        true_count: true,
+        evolution_table_id: true,
+      },
+    });
+
+    return tables;
+  }
+
   async calcTrueCount(table_id: string, cards: string[], game_id: string) {
     const table = await this.prisma.table.findFirst({
       where: {
@@ -50,19 +73,19 @@ export class TrueCountService {
 
     const trueCount = runningCount / (8 - (8 / 416) * countedCards);
 
-    console.log('True Count table: ', table_id, {
-      tableName: table.name,
-      game_id_db: gameId,
-      game_id,
-      cards,
-      difference,
-      countedCards,
-      runningCount,
-      trueCount,
-    });
-    console.log('\n');
+    // console.log('True Count table: ', table_id, {
+    //   tableName: table.name,
+    //   game_id_db: gameId,
+    //   game_id,
+    //   cards,
+    //   difference,
+    //   countedCards,
+    //   runningCount,
+    //   trueCount,
+    // });
+    // console.log('\n');
 
-    if (table_id === 'o735cjzyaeasv4o6') {
+    if (table_id === 'pdk5zo7cey6upxlm') {
       this.discordService.sendMessage(
         `True Count table: ${table_id}, ${JSON.stringify({
           tableName: table.name,
