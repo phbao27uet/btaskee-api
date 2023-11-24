@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { PlayerLogsService } from '../player-logs/player-logs.service';
 import { CreateGameLogDto } from './dto/create-game-log.dto';
@@ -19,6 +19,10 @@ export class GameLogsService {
     const table = await this.prismaService.table.findFirst({
       where: { evolution_table_id: createGameLogDto.table_id },
     });
+
+    if (!table) {
+      throw new NotFoundException('Table not found');
+    }
 
     await this.playerLogsService.updatePlayerLog(userId, 0, 1);
 

@@ -24,9 +24,11 @@ export class TrueCountService {
         },
       },
       select: {
-        id: true,
         true_count: true,
         evolution_table_id: true,
+      },
+      orderBy: {
+        true_count: 'desc',
       },
     });
 

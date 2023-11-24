@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
 import {
   IRefreshJWT,
@@ -10,6 +11,7 @@ import { JwtAdminAuthGuard } from './guards/admin-auth.guard';
 import { AdminJwtRefreshStrategy } from './strategies/admin-refresh-token.strategy';
 
 @Controller('admin/auth')
+@ApiTags('admin auth')
 export class AdminAuthController {
   constructor(private adminAuthService: AdminAuthService) {}
 
@@ -19,6 +21,7 @@ export class AdminAuthController {
   }
 
   @UseGuards(JwtAdminAuthGuard)
+  @ApiBearerAuth('admin-access-token')
   @Post('logout')
   async logout(@Req() req: Request) {
     const user = req.user as IUserJWT;
@@ -28,6 +31,7 @@ export class AdminAuthController {
   }
 
   @UseGuards(JwtAdminAuthGuard)
+  @ApiBearerAuth('admin-access-token')
   @Get('me')
   async me(@Req() req: Request) {
     const user = req.user as IUserJWT;
