@@ -75,19 +75,19 @@ export class TrueCountService {
 
     const trueCount = runningCount / (8 - (8 / 416) * countedCards);
 
-    // console.log('True Count table: ', table_id, {
-    //   tableName: table.name,
-    //   game_id_db: gameId,
-    //   game_id,
-    //   cards,
-    //   difference,
-    //   countedCards,
-    //   runningCount,
-    //   trueCount,
-    // });
-    // console.log('\n');
+    console.log('True Count table: ', table_id, {
+      tableName: table.name,
+      game_id_db: gameId,
+      game_id,
+      cards,
+      difference,
+      countedCards,
+      runningCount,
+      trueCount,
+    });
+    console.log('\n');
 
-    if (table_id === 'pdk5zo7cey6upxlm') {
+    if (table_id === 'pdk5yzyfjkgepoml') {
       this.discordService.sendMessage(
         `True Count table: ${table_id}, ${JSON.stringify({
           tableName: table.name,

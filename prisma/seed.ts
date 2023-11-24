@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
-import { SALT_ROUNDS } from 'src/utils/constants';
+import { SALT_ROUNDS, USER_STATUS } from 'src/utils/constants';
 import { ROOM_HAS_NAME, ROOM_IDS } from 'src/utils/roomIds';
 
 const prisma = new PrismaClient();
@@ -30,6 +30,7 @@ const generateAdmins = async () => {
       name: 'Zen Admin',
       email: 'zen_admin@gmail.com',
       password: password,
+      status: USER_STATUS['PENDING'],
       refresh_token: null,
       created_at: new Date(),
       updated_at: new Date(),

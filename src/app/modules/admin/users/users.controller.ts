@@ -1,13 +1,17 @@
 import {
+  Body,
   Controller,
   Delete,
   Get,
   Param,
+  Patch,
   Query,
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
+import { USER_STATUS } from 'src/utils/constants';
 import { JwtAdminAuthGuard } from '../auth/guards/admin-auth.guard';
+import { UpdateUserDto } from './dtos/update-user.dto';
 import { UsersService } from './users.service';
 
 @Controller('admin/users')
@@ -28,10 +32,20 @@ export class UsersController {
     required: false,
     description: 'perPage',
   })
-  findAll(@Query('page') page = 1, @Query('perPage') perPage = 20) {
+  @ApiParam({
+    name: 'status',
+    required: true,
+    description: 'status',
+  })
+  findAll(
+    @Query('page') page = 1,
+    @Query('perPage') perPage = 20,
+    @Query('status') status = USER_STATUS['PENDING'],
+  ) {
     return this.usersService.findAll({
       page: +page,
       perPage: +perPage,
+      status: status as keyof typeof USER_STATUS,
     });
   }
 
@@ -40,6 +54,13 @@ export class UsersController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(+id);
+  }
+
+  @UseGuards(JwtAdminAuthGuard)
+  @ApiBearerAuth('admin-access-token')
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    return this.usersService.update(+id, updateUserDto);
   }
 
   @UseGuards(JwtAdminAuthGuard)
