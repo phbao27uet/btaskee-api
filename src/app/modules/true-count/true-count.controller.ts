@@ -1,10 +1,15 @@
-import { Body, Controller, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { CalcTrueCountDto } from './dtos/calc-true-count.dto';
 import { TrueCountService } from './true-count.service';
 
 @Controller('true-count')
 export class TrueCountController {
   constructor(private trueCountService: TrueCountService) {}
+
+  @Get('rooms')
+  async getRooms() {
+    return this.trueCountService.getRooms();
+  }
 
   @Put('/reset/:table_id')
   async resetTrueCount(@Param() params: any) {

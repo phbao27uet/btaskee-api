@@ -71,6 +71,15 @@ async function main() {
     skipDuplicates: true,
   });
 
+  await prisma.trueCountSetting.create({
+    data: {
+      id: 1,
+      true_count: 3,
+      created_at: new Date(),
+      updated_at: new Date(),
+    },
+  });
+
   console.log('seed success');
 }
 
