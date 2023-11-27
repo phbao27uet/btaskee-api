@@ -1,14 +1,5 @@
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Post,
-  Put,
-  UseGuards,
-} from '@nestjs/common';
-import {
-  ApiBearerAuth,
   ApiBody,
   ApiOperation,
   ApiParam,
@@ -16,7 +7,6 @@ import {
   ApiTags,
   getSchemaPath,
 } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../auth/guards/auth.guard';
 import { CalcTrueCountDto } from './dtos/calc-true-count.dto';
 import { TrueCountService } from './true-count.service';
 
@@ -25,9 +15,9 @@ import { TrueCountService } from './true-count.service';
 export class TrueCountController {
   constructor(private trueCountService: TrueCountService) {}
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Get('rooms')
-  @ApiBearerAuth('JWT-auth')
+  // @ApiBearerAuth('JWT-auth')
   @ApiOperation({
     summary: 'APP',
     description: 'Get the list of rooms that satisfy the true count condition',

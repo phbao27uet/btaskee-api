@@ -4,7 +4,7 @@ import {
   Delete,
   Get,
   Param,
-  Patch,
+  Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
@@ -12,6 +12,7 @@ import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
 import { USER_STATUS } from 'src/utils/constants';
 import { JwtAdminAuthGuard } from '../auth/guards/admin-auth.guard';
 import { UpdateUserDto } from './dtos/update-user.dto';
+import { UserReportDto } from './dtos/user-report.dto';
 import { UsersService } from './users.service';
 
 @Controller('admin/users')
@@ -51,6 +52,16 @@ export class UsersController {
 
   @UseGuards(JwtAdminAuthGuard)
   @ApiBearerAuth('admin-access-token')
+  @Get('/report/:id')
+  getUserReport(
+    @Param('id') id: string,
+    @Query() userReportDto: UserReportDto,
+  ) {
+    return this.usersService.getUserReport(+id, userReportDto);
+  }
+
+  @UseGuards(JwtAdminAuthGuard)
+  @ApiBearerAuth('admin-access-token')
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(+id);
@@ -58,7 +69,7 @@ export class UsersController {
 
   @UseGuards(JwtAdminAuthGuard)
   @ApiBearerAuth('admin-access-token')
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(+id, updateUserDto);
   }

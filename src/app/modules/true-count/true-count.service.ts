@@ -26,6 +26,7 @@ export class TrueCountService {
       select: {
         true_count: true,
         evolution_table_id: true,
+        name: true,
       },
       orderBy: {
         true_count: 'desc',
@@ -87,7 +88,7 @@ export class TrueCountService {
     });
     console.log('\n');
 
-    if (table_id === 'pdk5yzyfjkgepoml') {
+    if (table_id === 'l5aug44hhzr3qvxs') {
       this.discordService.sendMessage(
         `True Count table: ${table_id}, ${JSON.stringify({
           tableName: table.name,
