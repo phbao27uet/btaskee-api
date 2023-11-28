@@ -81,7 +81,7 @@ export class UsersService {
         AVG(gl.rtp_value) as rpt_value FROM User u 
       LEFT JOIN PlayerLog pl ON u.id = pl.user_id
       LEFT JOIN GameLog gl ON pl.id = gl.player_log_id
-      WHERE u.id = ${id} AND u.status = ${USER_STATUS['APPROVED']} AND gl.created_at BETWEEN ${userReportDto.start_date} AND ${userReportDto.end_date}
+      WHERE u.id = ${id} AND u.status = ${USER_STATUS['APPROVED']} AND Date(gl.created_at) >= ${userReportDto.start_date} AND Date(gl.created_at) <= ${userReportDto.end_date}
       GROUP BY Date(gl.created_at)
       ORDER BY Date(gl.created_at);
     `;
