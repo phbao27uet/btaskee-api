@@ -8,6 +8,7 @@ import * as bcrypt from 'bcrypt';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { SALT_ROUNDS } from 'src/utils/constants';
 import { LoginDto } from './dtos/auth.dto';
+import { RegisterDto } from './dtos/register.dto';
 
 @Injectable()
 export class AuthService {
@@ -19,7 +20,12 @@ export class AuthService {
   async signIn(loginDto: LoginDto) {
     const { email, password } = loginDto;
     const user = await this.prisma.user.findUnique({
-      where: { email },
+      where: {
+        email,
+        status: {
+          equals: 'APPROVED',
+        },
+      },
       select: {
         id: true,
         name: true,
@@ -60,6 +66,37 @@ export class AuthService {
       },
       ...token,
     };
+  }
+
+  async signUp(registerDto: RegisterDto) {
+    const user = await this.prisma.user.findUnique({
+      where: { email: registerDto.email },
+    });
+
+    const admin = await this.prisma.admin.findUnique({
+      where: { email: registerDto.email },
+    });
+
+    if (user || admin) {
+      throw new BadRequestException('Email already exists');
+    }
+
+    const passwordHashed = await bcrypt.hash(registerDto.password, SALT_ROUNDS);
+
+    const newUser = await this.prisma.user.create({
+      data: {
+        name: registerDto.name,
+        furigana: registerDto.furigana,
+        email: registerDto.email,
+        password: passwordHashed,
+      },
+    });
+
+    if (!newUser) {
+      throw new BadRequestException('Register failed');
+    }
+
+    return true;
   }
 
   async logout(userId: number) {

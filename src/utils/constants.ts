@@ -156,3 +156,10 @@ export const LIST_FORTUNE = [
   'olbinkuoylzayeoj',
   'SalPrivBJ0000006',
 ];
+
+export const USER_STATUS = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  DELETED: 'DELETED',
+};

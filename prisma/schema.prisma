@@ -23,8 +23,10 @@ model User {
   id            Int      @id @default(autoincrement())
   email         String   @unique
   name          String
+  furigana      String?
   password      String
   refresh_token String?
+  status        StatusUser @default(PENDING)
   created_at    DateTime @default(now())
   updated_at    DateTime @updatedAt
 
@@ -162,6 +164,13 @@ model MWebsite {
 enum Role {
   USER
   ADMIN
+}
+
+enum StatusUser {
+  PENDING
+  APPROVED
+  REJECTED
+  DELETED
 }
 
 enum GroupName {

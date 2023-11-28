@@ -9,6 +9,7 @@ import {
 import { Request } from 'express';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dtos/auth.dto';
+import { RegisterDto } from './dtos/register.dto';
 import { JwtAuthGuard } from './guards/auth.guard';
 import { JwtAuthRefreshGuard } from './guards/refreshToken.guard';
 import { IRefreshJWT, IUserJWT } from './interfaces/auth-payload.interface';
@@ -30,6 +31,20 @@ export class AuthController {
   })
   async signIn(@Body() loginDto: LoginDto) {
     return this.authService.signIn(loginDto);
+  }
+
+  @Post('register')
+  @ApiOperation({
+    summary: 'ADMIN',
+  })
+  @ApiBody({
+    type: RegisterDto,
+    schema: {
+      $ref: getSchemaPath(RegisterDto),
+    },
+  })
+  async signUp(@Body() registerDto: RegisterDto) {
+    return this.authService.signUp(registerDto);
   }
 
   @UseGuards(JwtAuthGuard)

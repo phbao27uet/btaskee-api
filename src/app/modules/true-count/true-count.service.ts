@@ -26,6 +26,7 @@ export class TrueCountService {
       select: {
         true_count: true,
         evolution_table_id: true,
+        name: true,
       },
       orderBy: {
         true_count: 'desc',
@@ -75,19 +76,19 @@ export class TrueCountService {
 
     const trueCount = runningCount / (8 - (8 / 416) * countedCards);
 
-    // console.log('True Count table: ', table_id, {
-    //   tableName: table.name,
-    //   game_id_db: gameId,
-    //   game_id,
-    //   cards,
-    //   difference,
-    //   countedCards,
-    //   runningCount,
-    //   trueCount,
-    // });
-    // console.log('\n');
+    console.log('True Count table: ', table_id, {
+      tableName: table.name,
+      game_id_db: gameId,
+      game_id,
+      cards,
+      difference,
+      countedCards,
+      runningCount,
+      trueCount,
+    });
+    console.log('\n');
 
-    if (table_id === 'pdk5zo7cey6upxlm') {
+    if (table_id === 'l5aug44hhzr3qvxs') {
       this.discordService.sendMessage(
         `True Count table: ${table_id}, ${JSON.stringify({
           tableName: table.name,
