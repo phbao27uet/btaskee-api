@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { MailModule } from 'src/shared/mail/mail.module';
 import { PrismaModule } from 'src/shared/prisma/prisma.module';
 import { JWT_CONSTANTS } from 'src/utils/constants';
 import { AuthController } from './auth.controller';
@@ -18,6 +19,7 @@ import { JwtRefreshStrategy } from './strategies/refreshToken.strategy';
     }),
     PassportModule,
     PrismaModule,
+    MailModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy, JwtRefreshStrategy],
