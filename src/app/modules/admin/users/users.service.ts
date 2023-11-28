@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
+import { MailService } from 'src/shared/mail/mail.service';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { USER_STATUS } from 'src/utils/constants';
 import { UpdateUserDto } from './dtos/update-user.dto';
@@ -7,7 +8,10 @@ import { UserReportDto } from './dtos/user-report.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private mailService: MailService,
+  ) {}
 
   async findAll({
     page,
@@ -89,13 +93,19 @@ export class UsersService {
     return users;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return this.prismaService.user.update({
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    const user = await this.prismaService.user.update({
       where: {
         id,
       },
       data: updateUserDto,
     });
+
+    if (user.status === USER_STATUS['APPROVED']) {
+      await this.mailService.sendMailApproved(user.email, user.name);
+    }
+
+    return true;
   }
 
   remove(id: number) {
