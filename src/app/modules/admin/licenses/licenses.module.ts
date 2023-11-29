@@ -1,0 +1,11 @@
+import { Module } from '@nestjs/common';
+import { PrismaModule } from 'src/shared/prisma/prisma.module';
+import { LicensesController } from './licenses.controller';
+import { LicensesService } from './licenses.service';
+
+@Module({
+  imports: [PrismaModule],
+  controllers: [LicensesController],
+  providers: [LicensesService],
+})
+export class LicensesModule {}

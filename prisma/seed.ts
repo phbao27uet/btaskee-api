@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { PrismaClient } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
-import { SALT_ROUNDS, USER_STATUS } from 'src/utils/constants';
+import { SALT_ROUNDS } from 'src/utils/constants';
 import { ROOM_HAS_NAME, ROOM_IDS } from 'src/utils/roomIds';
 
 const prisma = new PrismaClient();
@@ -13,6 +14,7 @@ const generateUsers = async () => {
       id: 1,
       name: 'Zen 1',
       email: 'zen_1@gmail.com',
+      status: 'PENDING',
       password: password,
       refresh_token: null,
       created_at: new Date(),
@@ -30,7 +32,6 @@ const generateAdmins = async () => {
       name: 'Zen Admin',
       email: 'zen_admin@gmail.com',
       password: password,
-      status: USER_STATUS['PENDING'],
       refresh_token: null,
       created_at: new Date(),
       updated_at: new Date(),
@@ -58,6 +59,7 @@ async function main() {
   const admins = await generateAdmins();
 
   await prisma.user.createMany({
+    // @ts-ignore
     data: users,
     skipDuplicates: true,
   });
@@ -79,6 +81,36 @@ async function main() {
       created_at: new Date(),
       updated_at: new Date(),
     },
+  });
+
+  await prisma.mGroup.createMany({
+    data: [
+      {
+        id: 1,
+        name: 'A', // Development team
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        id: 2,
+        name: 'B', // Expensive tools team
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        id: 3,
+        name: 'C', // Low cost tools team
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        id: 4,
+        name: 'D', // 1 day free trial team
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+    ],
+    skipDuplicates: true,
   });
 
   console.log('seed success');

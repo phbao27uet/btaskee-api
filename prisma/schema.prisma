@@ -39,7 +39,7 @@ model License {
   id              Int      @id @default(autoincrement())
   generated_code  String   @unique
   expiration_date DateTime
-
+  status          StatusLicense @default(ACTIVE)
   m_group_id Int
   MGroup     MGroup @relation(fields: [m_group_id], references: [id])
 
@@ -171,6 +171,11 @@ enum StatusUser {
   APPROVED
   REJECTED
   DELETED
+}
+
+enum StatusLicense {
+  ACTIVE
+  INACTIVE
 }
 
 enum GroupName {
