@@ -8,7 +8,7 @@ export class MailService {
   async sendMailApproved(email: string, username: string) {
     await this.mailerService.sendMail({
       to: email,
-      subject: 'Registration Approved',
+      subject: '【Zenシステム】会員登録が完了いたしました。',
       template: './welcome',
       context: {
         name: username,

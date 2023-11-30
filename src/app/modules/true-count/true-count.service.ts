@@ -88,7 +88,7 @@ export class TrueCountService {
     });
     console.log('\n');
 
-    if (table_id === 'l5aug44hhzr3qvxs') {
+    if (table_id === 'SpeedBlackjack14') {
       this.discordService.sendMessage(
         `True Count table: ${table_id}, ${JSON.stringify({
           tableName: table.name,
