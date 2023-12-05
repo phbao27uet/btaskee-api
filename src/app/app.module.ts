@@ -8,6 +8,7 @@ import { AdminModule } from './modules/admin/admin.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { FilesModule } from './modules/files/files.module';
 import { GameLogsModule } from './modules/game-logs/game-logs.module';
+import { LicensesModule } from './modules/licenses/licenses.module';
 import { PlayerLogsModule } from './modules/player-logs/player-logs.module';
 import { TrueCountModule } from './modules/true-count/true-count.module';
 
@@ -19,6 +20,7 @@ import { TrueCountModule } from './modules/true-count/true-count.module';
     FilesModule,
     GameLogsModule,
     PlayerLogsModule,
+    LicensesModule,
 
     MailerModule.forRootAsync({
       imports: [ConfigModule],

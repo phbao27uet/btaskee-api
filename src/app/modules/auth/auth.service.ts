@@ -7,6 +7,7 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { SALT_ROUNDS } from 'src/utils/constants';
+import { LicensesService } from '../licenses/licenses.service';
 import { LoginDto } from './dtos/auth.dto';
 import { RegisterDto } from './dtos/register.dto';
 
@@ -15,6 +16,7 @@ export class AuthService {
   constructor(
     private prisma: PrismaService,
     private jwtService: JwtService,
+    private licensesService: LicensesService,
   ) {}
 
   async signIn(loginDto: LoginDto) {
@@ -58,12 +60,15 @@ export class AuthService {
       },
     });
 
+    const license = await this.licensesService.getCurrentLicense(user.id);
+
     return {
       user: {
         id: user.id,
         name: user.name,
         email: user.email,
       },
+      license: license,
       ...token,
     };
   }
@@ -123,7 +128,9 @@ export class AuthService {
         },
       });
 
-      return user;
+      const license = await this.licensesService.getCurrentLicense(userId);
+
+      return { ...user, license: license };
     } catch (error) {
       throw new BadRequestException(error);
     }
