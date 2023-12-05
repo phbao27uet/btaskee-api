@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '@prisma/client';
+import { License, User } from '@prisma/client';
 import { MailService } from 'src/shared/mail/mail.service';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { USER_STATUS } from 'src/utils/constants';
@@ -59,19 +59,31 @@ export class UsersService {
   }
 
   async findOne(id: number) {
-    const users = (await this.prismaService.$queryRaw`
-    SELECT u.id, u.name, u.email, u.furigana, u.created_at,
-      pl.play_count, pl.play_time,
-      SUM(gl.money_bet) as expenses, 
-      SUM(gl.money_returned) as total_money_returned, 
-      AVG(gl.rtp_value) as rpt_value FROM User u 
-    LEFT JOIN PlayerLog pl ON u.id = pl.user_id
-    LEFT JOIN GameLog gl ON pl.id = gl.player_log_id
-    WHERE u.id = ${id} AND u.status = ${USER_STATUS['APPROVED']}
-    GROUP BY u.id
-  `) as User[];
+    const users = await this.prismaService.$queryRaw<User[]>`
+        SELECT u.id, u.name, u.email, u.furigana, u.created_at,
+          pl.play_count, pl.play_time,
+          SUM(gl.money_bet) as expenses, 
+          SUM(gl.money_returned) as total_money_returned, 
+          AVG(gl.rtp_value) as rpt_value FROM User u 
+        LEFT JOIN PlayerLog pl ON u.id = pl.user_id
+        LEFT JOIN GameLog gl ON pl.id = gl.player_log_id
+        WHERE u.id = ${id} AND u.status = ${USER_STATUS['APPROVED']}
+        GROUP BY u.id
+      `;
 
-    return users?.length ? users?.[0] : null;
+    const user = users?.length ? users?.[0] : null;
+
+    const licenses = await this.prismaService.$queryRaw<License[]>`
+      SELECT l.generated_code, l.expiration_date, g.name AS group_name
+      FROM License l
+      LEFT JOIN UserLicense ul ON l.id = ul.license_id
+      LEFT JOIN MGroup g ON g.id = l.m_group_id
+      WHERE l.status = 'ACTIVE' AND ul.user_id = ${id}
+    `;
+
+    const license = licenses?.[0] || null;
+
+    return { ...user, ...license };
   }
 
   async getUserReport(id: number, userReportDto: UserReportDto) {

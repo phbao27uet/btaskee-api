@@ -65,15 +65,18 @@ export class LicensesController {
 
   @UseGuards(JwtAdminAuthGuard)
   @ApiBearerAuth('admin-access-token')
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.licensesService.findOne(+id);
+  @Get(':code')
+  findOne(@Param('code') code: string) {
+    return this.licensesService.findOne(code);
   }
 
   @UseGuards(JwtAdminAuthGuard)
   @ApiBearerAuth('admin-access-token')
-  @Put(':id')
-  update(@Param('id') id: string, @Body() updateLicenseDto: UpdateLicenseDto) {
-    return this.licensesService.update(+id, updateLicenseDto);
+  @Put(':code')
+  update(
+    @Param('code') code: string,
+    @Body() updateLicenseDto: UpdateLicenseDto,
+  ) {
+    return this.licensesService.update(code, updateLicenseDto);
   }
 }

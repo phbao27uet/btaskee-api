@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { License } from '@prisma/client';
 import { randomUUID } from 'crypto';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { CreateLicenseQuantityDto } from './dto/create-license-quantity.dto';
@@ -10,8 +11,6 @@ export class LicensesService {
   constructor(private prismaService: PrismaService) {}
 
   async create(createLicenseDto: CreateLicenseDto) {
-    console.log('createLicenseDto', createLicenseDto);
-
     const user = await this.prismaService.user.findUnique({
       where: { id: createLicenseDto.user_id },
     });
@@ -28,8 +27,6 @@ export class LicensesService {
       },
     });
 
-    console.log(license);
-
     const userLicense = await this.prismaService.userLicense.create({
       data: {
         user_id: user.id,
@@ -44,7 +41,7 @@ export class LicensesService {
     let codes: string[] = [];
 
     while (codes.length < createLicenseQuantityDto.quantity) {
-      codes.push(this.generateLicense());
+      codes.push(this.generateLicense(createLicenseQuantityDto.group_id));
 
       codes = [...new Set(codes)];
     }
@@ -71,7 +68,7 @@ export class LicensesService {
         codes = diff;
 
         while (codes.length < codeExists.length) {
-          codes.push(this.generateLicense());
+          codes.push(this.generateLicense(createLicenseQuantityDto.group_id));
 
           codes = [...new Set(codes)];
         }
@@ -82,7 +79,8 @@ export class LicensesService {
       data: codes.map((code) => ({
         generated_code: code,
         m_group_id: createLicenseQuantityDto.group_id,
-        expiration_date: new Date(+new Date() + 86400000), // 1 day
+        number_of_days: createLicenseQuantityDto.number_of_days,
+        // expiration_date: new Date(+new Date() + 86400000), // 1 day
       })),
     });
 
@@ -90,22 +88,21 @@ export class LicensesService {
   }
 
   async findAll({ page, perPage }: { page: number; perPage: number }) {
-    console.log({ page, perPage });
-
     const [total, licenses] = await Promise.all([
       this.prismaService.license.count({
         where: {
-          status: 'ACTIVE',
+          // status: 'ACTIVE',
         },
       }),
       await this.prismaService.license.findMany({
         where: {
-          status: 'ACTIVE',
+          // status: 'ACTIVE',
         },
         select: {
           id: true,
           generated_code: true,
           expiration_date: true,
+          status: true,
           MGroup: {
             select: {
               name: true,
@@ -138,18 +135,40 @@ export class LicensesService {
     };
   }
 
-  findOne(id: number) {
-    return id;
+  async findOne(code: string) {
+    const license = await this.prismaService.$queryRaw<License[]>`
+      SELECT l.generated_code, l.expiration_date, g.id AS group_id
+      FROM License l
+      LEFT JOIN MGroup g ON g.id = l.m_group_id 
+      WHERE l.generated_code = ${code}
+    `;
+
+    return license?.[0] || null;
   }
 
-  update(id: number, updateLicenseDto: UpdateLicenseDto) {
-    console.log('updateLicenseDto', updateLicenseDto);
+  async update(code: string, updateLicenseDto: UpdateLicenseDto) {
+    const license = await this.prismaService.license.findUnique({
+      where: { generated_code: code },
+    });
 
-    return `This action updates a #${id} license`;
-  }
+    if (!license) {
+      throw new NotFoundException('License not found');
+    }
 
-  remove(id: number) {
-    return `This action removes a #${id} license`;
+    const updatedLicense = await this.prismaService.license.update({
+      where: { generated_code: code },
+      data: {
+        expiration_date: license.expiration_date
+          ? new Date(
+              +license.expiration_date + updateLicenseDto.add_days * 86400000,
+            )
+          : null,
+
+        number_of_days: license.number_of_days + updateLicenseDto.add_days,
+      },
+    });
+
+    return updatedLicense;
   }
 
   async checkLicense(generated_code: string) {
@@ -163,9 +182,21 @@ export class LicensesService {
     return !!license;
   }
 
-  generateLicense() {
-    const licenseKey = randomUUID();
+  generateLicense(groupId = 0) {
+    const licenseKey = groupId ? randomUUID() + `-${groupId}` : randomUUID();
 
     return licenseKey;
+  }
+
+  async getCurrentLicense(userId: number) {
+    const license = await this.prismaService.$queryRaw<License[]>`
+      SELECT l.generated_code, l.expiration_date, g.name AS group_name
+      FROM License l
+      LEFT JOIN UserLicense ul ON l.id = ul.license_id
+      LEFT JOIN MGroup g ON g.id = l.m_group_id 
+      WHERE l.status = 'ACTIVE' AND ul.user_id = ${userId}
+    `;
+
+    return license?.[0] || null;
   }
 }

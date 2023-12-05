@@ -9,4 +9,8 @@ export class CreateLicenseQuantityDto {
   @ApiProperty()
   @IsNumber()
   group_id: number;
+
+  @ApiProperty()
+  @IsNumber()
+  number_of_days: number;
 }

@@ -38,8 +38,9 @@ model User {
 model License {
   id              Int      @id @default(autoincrement())
   generated_code  String   @unique
-  expiration_date DateTime
-  status          StatusLicense @default(ACTIVE)
+  expiration_date DateTime?
+  number_of_days  Int     @default(1)
+  status          StatusLicense @default(INACTIVE)
   m_group_id Int
   MGroup     MGroup @relation(fields: [m_group_id], references: [id])
 
