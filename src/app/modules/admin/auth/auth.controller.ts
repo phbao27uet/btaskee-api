@@ -8,7 +8,7 @@ import {
 import { AdminAuthService } from './auth.service';
 import { LoginDto } from './dtos/auth.dto';
 import { JwtAdminAuthGuard } from './guards/admin-auth.guard';
-import { AdminJwtRefreshStrategy } from './strategies/admin-refresh-token.strategy';
+import { JwtAdminAuthRefreshGuard } from './guards/admin-refresh-token.guard';
 
 @Controller('admin/auth')
 @ApiTags('admin auth')
@@ -40,7 +40,7 @@ export class AdminAuthController {
     return this.adminAuthService.me(userId);
   }
 
-  @UseGuards(AdminJwtRefreshStrategy)
+  @UseGuards(JwtAdminAuthRefreshGuard)
   @Get('refresh')
   async refreshToken(@Req() req: Request) {
     const user = req.user as IRefreshJWT;
