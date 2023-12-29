@@ -36,6 +36,26 @@ export class TrueCountService {
     return tables;
   }
 
+  async getTCTableByName(table_name: string) {
+    const tcTable = await this.prisma.table.findFirst({
+      where: {
+        name: table_name,
+      },
+      select: {
+        id: true,
+        name: true,
+        evolution_table_id: true,
+        true_count: true,
+      },
+    });
+
+    if (!tcTable) {
+      throw new NotFoundException('True Count not found');
+    }
+
+    return tcTable;
+  }
+
   async calcTrueCount(table_id: string, cards: string[], game_id: string) {
     const table = await this.prisma.table.findFirst({
       where: {

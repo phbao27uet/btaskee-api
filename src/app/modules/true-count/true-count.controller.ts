@@ -69,6 +69,19 @@ export class TrueCountController {
     );
   }
 
+  @Get('by-name/:table_name')
+  @ApiOperation({
+    summary: 'EXTENSION',
+  })
+  @ApiParam({
+    name: 'table_name',
+    type: 'string',
+    required: true,
+  })
+  async getTCTableByName(@Param() params: any) {
+    return this.trueCountService.getTCTableByName(params?.table_name);
+  }
+
   @Post('reset-all')
   async resetAllTrueCount() {
     return this.trueCountService.resetAllTrueCount();
