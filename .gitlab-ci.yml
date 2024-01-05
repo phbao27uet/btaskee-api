@@ -75,8 +75,8 @@ deploy-stg:
   tags:
     - shell
   script:
-    - scp docker-compose.dev.yml $USERNAME@$HOST:~/vaix-server/docker-compose.dev.yml
-    - scp .env $USERNAME@$HOST:~/vaix-server/.env
+    - scp docker-compose.dev.yml $USERNAME@$HOST:~/zen-system-api/docker-compose.dev.yml
+    - scp .env $USERNAME@$HOST:~/zen-system-api/.env
     - ssh $USERNAME@$HOST
       "export CI_JOB_TOKEN=$CI_JOB_TOKEN;
       export CI_REGISTRY=$CI_REGISTRY;
