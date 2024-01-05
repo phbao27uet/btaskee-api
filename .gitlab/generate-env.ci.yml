@@ -1,0 +1,3 @@
+.generate-env:
+  - chmod +x .gitlab/generate-env.sh
+  - .gitlab/generate-env.sh

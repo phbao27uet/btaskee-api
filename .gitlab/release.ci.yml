@@ -1,0 +1,2 @@
+.release:
+  - docker push $DOCKER_IMAGE:latest

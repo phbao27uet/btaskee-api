@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  server:
+    image: '${DOCKER_IMAGE}:latest'
+    container_name: ${APP_NAME}
+    restart: always
+    ports:
+      - '${ZEN_PORT}:${ZEN_PORT}'
