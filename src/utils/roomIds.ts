@@ -1,7 +1,7 @@
 export const ROOM_IDS = [
   // 'Craps00000000001',
   // 'PowerInfiniteBJ1',
-  'mrfykemt5slanyi5',
+  // 'mrfykemt5slanyi5', // Infinite Blackjack
   'SpeedBlackjack03',
   'ps3ufteekfe2fu24',
   'ps3uijuskfe2f3cj',
@@ -103,16 +103,17 @@ export const ROOM_IDS = [
   // 'mdkqdxtkdctrhnsx', // Salon Private
   // 'olbinkuoylzayeoj', // Salon Private
   // 'SalPrivBJ0000006', // Salon Private
-  // 'uwd2bl2khwcikjlz',
-  // 'k4r2ejwx4eqqb6tv',
-  // 'xphpcthv8e6ivc16',
-  // 'k4r2hyhw4eqqb6us',
-  'jhs44mm0v3fi3aux',
-  // 'xqyb2u7fqkexxpa0', // Error
-  // 'ylq4gmw8yl22u5dj', // Error
-  // '1xwfnktjybsolkn6', // Error
-  // 'xstnlyzrm345ev95', // Error
-  // 'i5j1cyqhrypkih23', // Error
+  'uwd2bl2khwcikjlz', // Error
+  'k4r2ejwx4eqqb6tv', // Error
+  'xphpcthv8e6ivc16', // Error
+  'k4r2hyhw4eqqb6us', // Error
+  'jhs44mm0v3fi3aux', // Error
+  'xqyb2u7fqkexxpa0', // 2000
+  'ylq4gmw8yl22u5dj', // Error
+  '1xwfnktjybsolkn6', // Error
+  'xstnlyzrm345ev95', // Error
+  'i5j1cyqhrypkih23', // Error
+
   // 'CFreeBetBjVIP001', // Free bet
   // 'CFreeBetBjVIP003', // Free bet
   // 'CFreeBetBjVIP004', // Free bet
@@ -131,18 +132,29 @@ export const ROOM_IDS = [
   // 'p5s3fhwum7weobwu', // Error
 ];
 
+// 99 rooms
+//
 export const ROOM_HAS_NAME = [
-  { id: 'Craps00000000001', name: 'クラップス' },
-  { id: 'PowerInfiniteBJ1', name: 'パワーブラックジャック' },
-  { id: 'mrfykemt5slanyi5', name: 'インフィニット ブラックジャック' },
+  // { id: 'Craps00000000001', name: 'クラップス' },
+  // { id: 'PowerInfiniteBJ1', name: 'パワーブラックジャック' },
+  // { id: 'mrfykemt5slanyi5', name: 'インフィニット ブラックジャック' },
+  // { id: 'jhs44mm0v3fi3aux', name: 'ブラックジャック C' },
+
+  // 1000 <= x < 5000
   { id: 'k4r2hyhw4eqqb6us', name: 'スピードブラックジャック L' },
   { id: 'ESpeedBJ00000002', name: 'Evo スピードブラックジャック 2' },
-  { id: 'jhs44mm0v3fi3aux', name: 'ブラックジャック C' },
-  { id: 'k4r2kvd34eqqb6vh', name: 'スピード ブラックジャック M' },
+  { id: 'k4r2kvd34eqqb6vh', name: 'スピードブラックジャック M' },
   { id: 'ylq4gmw8yl22u5dj', name: 'スピードブラックジャック E' },
   { id: 'nc3u2l6y0khszjv7', name: 'スピードブラックジャック H' },
   { id: 'xstnlyzrm345ev95', name: 'スピードブラックジャック I' },
   { id: 'i5j1cyqhrypkih23', name: 'スピードブラックジャック J' },
+  { id: 'k4r2ejwx4eqqb6tv', name: 'スピードブラックジャック K' },
+  { id: 'ESpeedBJ00000001', name: 'Evo スピードブラックジャック 1' },
+  { id: 'ESpeedBJ00000003', name: 'Evo スピードブラックジャック 3' },
+  { id: 'xqyb2u7fqkexxpa0', name: 'スピードブラックジャック D' },
+  { id: '1xwfnktjybsolkn6', name: 'スピードブラックジャック G' },
+
+  // 5000: 58 rooms
   { id: 'SpeedBlackjack04', name: 'スピード VIP ブラックジャック D' },
   { id: 'ps3uhj7gteskex37', name: 'スピード VIP ブラックジャック F' },
   { id: 'ps3uijuskfe2f3cj', name: 'スピード VIP ブラックジャック G' },
@@ -156,8 +168,7 @@ export const ROOM_HAS_NAME = [
   { id: 'SpeedBlackjack16', name: 'スピード VIP ブラックジャック P' },
   { id: 'SpeedBlackjack17', name: 'スピード VIP ブラックジャック Q' },
   { id: 'SpeedBlackjack18', name: 'スピード VIP ブラックジャック R' },
-  { id: 'CFreeBetBjVIP002', name: 'フリーベットの VIP ブラックジャック B' },
-  { id: 'CFreeBetBjVIP003', name: 'フリーベットの VIP ブラックジャック A' },
+
   { id: '9f4xhuhdd005xlbl', name: 'ブラックジャック銀 B' },
   { id: 'ehw2fvl831m5n2km', name: 'ブラックジャック VIP F' },
   { id: 'nkyiswhd2jpbw4i4', name: 'ブラックジャック VIP N' },
@@ -192,6 +203,21 @@ export const ROOM_HAS_NAME = [
   { id: 'oqicznoauwbl46am', name: 'ブラックジャック VIP アルファ' },
   { id: 'oqic5sqbt25322zm', name: 'ブラックジャック VIP ベータ' },
   { id: 'oqidcfpsuwbl5cqd', name: 'ブラックジャック VIP ガンマ' },
+
+  { id: 'SpeedBlackjack01', name: 'スピード VIP ブラックジャック A' },
+  { id: 'SpeedBlackjack02', name: 'スピード VIP ブラックジャック B' },
+  { id: 'SpeedBlackjack03', name: 'スピード VIP ブラックジャック C' },
+  { id: 'ps3ufteekfe2fu24', name: 'スピード VIP ブラックジャック E' },
+  { id: 'qfyzapjqrixfb3bx', name: 'スピード VIP ブラックジャック M' },
+
+  { id: 'gkmq0o2hryjyqu30', name: 'ブラックジャック銀 A' },
+  { id: 'nveq65dtmn6n4mnd', name: 'ブラックジャック VIP S' },
+  { id: 'oa7fpshyqfueqxuj', name: 'ブラックジャック VIP Z' },
+  { id: 'o7347okwaeasvy2y', name: 'ブラックジャック VIP 1' },
+  { id: 'o735azzsaeasv2pr', name: 'ブラックジャック VIP 2' },
+  { id: 'o735cjzyaeasv4o6', name: 'ブラックジャック VIP 3' },
+
+  // 10000: 16 rooms
   { id: 'qlrc3fq3v7p6awm4', name: 'ブラックジャック銀 C' },
   { id: 'qckwjf2o52r9ikeb', name: 'ブラックジャック銀 D' },
   { id: 'gazgtkid9h1b0dn9', name: 'ブラックジャック銀 E' },
@@ -206,6 +232,10 @@ export const ROOM_HAS_NAME = [
   { id: 'o735hfcqauecwjxp', name: 'ブラックジャック VIP 8' },
   { id: 'pdk53n4bjkgepr5u', name: 'ブラックジャック VIP 15' },
   { id: 'pdk54i3vey6up3dg', name: 'ブラックジャック VIP 16' },
+  { id: '0mvn914lkmo9vaq8', name: 'ブラックジャック VIP A' },
+  { id: 'o3d9tx3u8kd0yawc', name: 'ブラックジャック VIP D' },
+
+  // 25000: 8 rooms
   { id: 'lnofoyxv756qaezy', name: 'ブラックジャック銀 F' },
   { id: 'lnofpmm3756qae2c', name: 'ブラックジャック銀 G' },
   { id: 'l5aug44hhzr3qvxs', name: 'ブラックジャック VIP C' },
@@ -214,39 +244,30 @@ export const ROOM_HAS_NAME = [
   { id: 'lnofn2yl756qaezm', name: 'ブラックジャック VIP I' },
   { id: 'h463tlq1rhl1lfr2', name: 'ブラックジャック プラチナ VIP' },
   { id: 'ejx1a04w4ben0mou', name: 'ブラックジャック フォーチュン VIP' },
+
+  // 50000: 4 rooms
   { id: 'nbjetztthawanhey', name: 'ブラックジャック VIP M' },
   { id: 'nsxqpyiol2nzcz6t', name: 'ブラックジャック VIP R' },
   { id: 'rdefcn4sffgo39l7', name: 'ブラックジャック ダイヤモンド VIP' },
-  { id: 'olbibp3fylzaxvhb', name: 'サロンプリヴェ ブラックジャック B' },
-  { id: 'mdkqfe74dctrhntj', name: 'サロンプリヴェ ブラックジャック C' },
-  { id: 'SalPrivBJ0000005', name: 'サロンプリヴェ ブラックジャック E' },
-  { id: 'p36n5jvdx7bugh2g', name: 'サロンプリヴェ ブラックジャック G' },
-  { id: 'SalPrivBJ0000009', name: 'サロンプリヴェ ブラックジャック I' },
-  { id: 'olbinkuoylzayeoj', name: 'サロンプリヴェ ブラックジャック D' },
-  { id: 'SalPrivBJ0000006', name: 'サロンプリヴェ ブラックジャック F' },
-  { id: 'sni5cza6d1vvl50i', name: 'ブラックジャック パーティ' },
-  { id: 'uwd2bl2khwcikjlz', name: 'ブラックジャック A' },
-  { id: 'k4r2ejwx4eqqb6tv', name: 'スピードブラックジャック K' },
-  { id: 'xphpcthv8e6ivc16', name: 'ブラックジャック B' },
-  { id: 'ESpeedBJ00000001', name: 'Evo スピードブラックジャック 1' },
-  { id: 'ESpeedBJ00000003', name: 'Evo スピードブラックジャック 3' },
-  { id: 'xqyb2u7fqkexxpa0', name: 'スピードブラックジャック D' },
-  { id: '1xwfnktjybsolkn6', name: 'スピードブラックジャック G' },
-  { id: 'SpeedBlackjack01', name: 'スピード VIP ブラックジャック A' },
-  { id: 'SpeedBlackjack02', name: 'スピード VIP ブラックジャック B' },
-  { id: 'SpeedBlackjack03', name: 'スピード VIP ブラックジャック C' },
-  { id: 'ps3ufteekfe2fu24', name: 'スピード VIP ブラックジャック E' },
-  { id: 'qfyzapjqrixfb3bx', name: 'スピード VIP ブラックジャック M' },
-  { id: 'gkmq0o2hryjyqu30', name: 'ブラックジャック銀 A' },
-  { id: 'nveq65dtmn6n4mnd', name: 'ブラックジャック VIP S' },
-  { id: 'oa7fpshyqfueqxuj', name: 'ブラックジャック VIP Z' },
-  { id: 'o7347okwaeasvy2y', name: 'ブラックジャック VIP 1' },
-  { id: 'o735azzsaeasv2pr', name: 'ブラックジャック VIP 2' },
-  { id: 'o735cjzyaeasv4o6', name: 'ブラックジャック VIP 3' },
-  { id: '0mvn914lkmo9vaq8', name: 'ブラックジャック VIP A' },
-  { id: 'o3d9tx3u8kd0yawc', name: 'ブラックジャック VIP D' },
   { id: 'gfzrqe4hqv24kukc', name: 'ブラックジャック グランド VIP' },
-  { id: 'mdkqdxtkdctrhnsx', name: 'サロンプリヴェ ブラックジャック A' },
-  { id: 'SalPrivBJ0000008', name: 'サロンプリヴェ ブラックジャック H' },
-  { id: 'SalPrivBJ0000010', name: 'サロンプリヴェ ブラックジャック J' },
+
+  // 100000: 1 rooms
+  { id: 'sni5cza6d1vvl50i', name: 'ブラックジャック パーティ' },
+  // { id: 'uwd2bl2khwcikjlz', name: 'ブラックジャック A' },
+  // { id: 'xphpcthv8e6ivc16', name: 'ブラックジャック B' },
+
+  // Salon private
+  // { id: 'mdkqdxtkdctrhnsx', name: 'サロンプリヴェ ブラックジャック A' },
+  // { id: 'SalPrivBJ0000008', name: 'サロンプリヴェ ブラックジャック H' },
+  // { id: 'SalPrivBJ0000010', name: 'サロンプリヴェ ブラックジャック J' },
+  // { id: 'olbibp3fylzaxvhb', name: 'サロンプリヴェ ブラックジャック B' },
+  // { id: 'mdkqfe74dctrhntj', name: 'サロンプリヴェ ブラックジャック C' },
+  // { id: 'SalPrivBJ0000005', name: 'サロンプリヴェ ブラックジャック E' },
+  // { id: 'p36n5jvdx7bugh2g', name: 'サロンプリヴェ ブラックジャック G' },
+  // { id: 'SalPrivBJ0000009', name: 'サロンプリヴェ ブラックジャック I' },
+  // { id: 'olbinkuoylzayeoj', name: 'サロンプリヴェ ブラックジャック D' },
+  // { id: 'SalPrivBJ0000006', name: 'サロンプリヴェ ブラックジャック F' },
+
+  // { id: 'CFreeBetBjVIP002', name: 'フリーベットの VIP ブラックジャック B' },
+  // { id: 'CFreeBetBjVIP003', name: 'フリーベットの VIP ブラックジャック A' },
 ];
