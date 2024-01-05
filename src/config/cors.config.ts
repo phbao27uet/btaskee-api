@@ -1,6 +1,6 @@
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 
-// const WHITELIST = process.env.WHITELISTED_DOMAINS?.split(',');
+// const WHITELIST = process.env.ZEN_WHITELISTED_DOMAINS?.split(',');
 
 export const corsOptions: CorsOptions = {
   origin: (origin, callback) => {

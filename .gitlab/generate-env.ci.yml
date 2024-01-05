@@ -1,3 +1,4 @@
 .generate-env:
-  - chmod +x .gitlab/generate-env.sh
-  - .gitlab/generate-env.sh
+  - echo "Generate .env"
+  - cat "$ENV_STG" > .env
+  - cat .env

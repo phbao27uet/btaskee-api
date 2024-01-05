@@ -144,8 +144,8 @@ export class AuthService {
           username,
         },
         {
-          secret: process.env.ACCESS_TOKEN_SECRET,
-          expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN,
+          secret: process.env.ZEN_ACCESS_TOKEN_SECRET,
+          expiresIn: process.env.ZEN_ACCESS_TOKEN_EXPIRES_IN,
         },
       ),
       this.jwtService.signAsync(
@@ -154,8 +154,8 @@ export class AuthService {
           username,
         },
         {
-          secret: process.env.REFRESH_TOKEN_SECRET,
-          expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN,
+          secret: process.env.ZEN_REFRESH_TOKEN_SECRET,
+          expiresIn: process.env.ZEN_REFRESH_TOKEN_EXPIRES_IN,
         },
       ),
     ]);
@@ -191,8 +191,8 @@ export class AuthService {
         username: user.name,
       },
       {
-        secret: process.env.ACCESS_TOKEN_SECRET,
-        expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN,
+        secret: process.env.ZEN_ACCESS_TOKEN_SECRET,
+        expiresIn: process.env.ZEN_ACCESS_TOKEN_EXPIRES_IN,
       },
     );
 

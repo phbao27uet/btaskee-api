@@ -6,7 +6,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { join } from 'path';
 import { AdminModule } from './modules/admin/admin.module';
 import { AuthModule } from './modules/auth/auth.module';
-import { FilesModule } from './modules/files/files.module';
 import { GameLogsModule } from './modules/game-logs/game-logs.module';
 import { LicensesModule } from './modules/licenses/licenses.module';
 import { PlayerLogsModule } from './modules/player-logs/player-logs.module';
@@ -17,7 +16,6 @@ import { TrueCountModule } from './modules/true-count/true-count.module';
     AdminModule,
     AuthModule,
     TrueCountModule,
-    FilesModule,
     GameLogsModule,
     PlayerLogsModule,
     LicensesModule,
