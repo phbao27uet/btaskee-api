@@ -4,9 +4,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcrypt';
+import * as argon2 from 'argon2';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
-import { SALT_ROUNDS } from 'src/utils/constants';
 import { LicensesService } from '../licenses/licenses.service';
 import { LoginDto } from './dtos/auth.dto';
 import { RegisterDto } from './dtos/register.dto';
@@ -40,7 +39,7 @@ export class AuthService {
       throw new NotFoundException('User not found');
     }
 
-    const isMatch = bcrypt.compareSync(password, user?.password);
+    const isMatch = argon2.verify(user?.password, password);
 
     if (!isMatch) {
       throw new BadRequestException('Password is incorrect.');
@@ -48,10 +47,7 @@ export class AuthService {
 
     const token = await this.generateToken(user.id, user.name);
 
-    const refreshTokenHashed = await bcrypt.hash(
-      token.refreshToken,
-      SALT_ROUNDS,
-    );
+    const refreshTokenHashed = await argon2.hash(token.refreshToken);
 
     await this.prisma.user.update({
       where: { email },
@@ -86,7 +82,7 @@ export class AuthService {
       throw new BadRequestException('Email already exists');
     }
 
-    const passwordHashed = await bcrypt.hash(registerDto.password, SALT_ROUNDS);
+    const passwordHashed = await argon2.hash(registerDto.password);
 
     const newUser = await this.prisma.user.create({
       data: {
@@ -179,7 +175,7 @@ export class AuthService {
       throw new BadRequestException('Refresh token is incorrect.');
     }
 
-    const isMatch = bcrypt.compareSync(refreshToken, user?.refresh_token);
+    const isMatch = argon2.verify(user?.refresh_token, refreshToken);
 
     if (!isMatch) {
       throw new BadRequestException('Refresh token is incorrect.');

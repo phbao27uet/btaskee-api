@@ -19,7 +19,6 @@ import { TrueCountModule } from './modules/true-count/true-count.module';
     GameLogsModule,
     PlayerLogsModule,
     LicensesModule,
-
     MailerModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (config: ConfigService) => ({

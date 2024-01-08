@@ -13,7 +13,6 @@ variables:
 .build_template:
   stage: build
   interruptible: true
-  image: docker:23.0.5
   # services:
   #   - docker:23.0.5-dind
   tags:
@@ -79,6 +78,7 @@ deploy-stg:
     - scp .env $USERNAME@$HOST:~/zen-system-api/.env
     - ssh $USERNAME@$HOST
       "export CI_JOB_TOKEN=$CI_JOB_TOKEN;
+      export DOCKER_IMAGE=$DOCKER_IMAGE_STG;
       export CI_REGISTRY=$CI_REGISTRY;
       export CI_REGISTRY_IMAGE=$DOCKER_IMAGE_STG;
       export APP_NAME=$APP_NAME;

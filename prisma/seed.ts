@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { PrismaClient } from '@prisma/client';
-import * as bcrypt from 'bcrypt';
-import { SALT_ROUNDS } from 'src/utils/constants';
+import * as argon2 from 'argon2';
 import { ROOM_HAS_NAME, ROOM_IDS } from 'src/utils/roomIds';
 
 const prisma = new PrismaClient();
 
 const generateUsers = async () => {
-  const password = await bcrypt.hash('123123a', SALT_ROUNDS);
+  const password = await argon2.hash('123123a');
 
   return [
     {
@@ -24,7 +23,7 @@ const generateUsers = async () => {
 };
 
 const generateAdmins = async () => {
-  const password = await bcrypt.hash('123123a', SALT_ROUNDS);
+  const password = await argon2.hash('123123a');
 
   return [
     {

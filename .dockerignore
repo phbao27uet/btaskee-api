@@ -3,6 +3,5 @@ node_modules
 docker*
 Dockerfile
 README.md
-yarn*
 .dockerignore
 .git

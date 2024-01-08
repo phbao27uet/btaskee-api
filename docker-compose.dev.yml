@@ -1,21 +1,6 @@
 version: '3.8'
 
 services:
-  # db:
-  #   container_name: zen-system-db
-  #   image: mysql:8.0
-  #   restart: always
-  #   volumes:
-  #     - zen-system-db:/var/lib/mysql
-  #     - ./src/config/my.cnf:/etc/mysql/conf.d/my.cnf
-  #     - ./logs:/var/log/mysql
-  #   environment:
-  #     MYSQL_DATABASE: ${ZEN_MYSQL_NAME}
-  #     MYSQL_USER: ${ZEN_MYSQL_USER}
-  #     MYSQL_PASSWORD: ${ZEN_MYSQL_PASSWORD}
-  #   ports:
-  #     - '3306:3306'
-
   server:
     # depends_on:
     #   - db
@@ -24,6 +9,8 @@ services:
     restart: always
     ports:
       - '${ZEN_PORT}:${ZEN_PORT}'
+    env_file:
+      - .env
     extra_hosts:
       - 'host.docker.internal:host-gateway'
 

@@ -1,16 +1,14 @@
 # BASE DEPENDENCIES STAGE
-FROM node:18  as base_dependencies
+FROM node:20-alpine3.16  as base_dependencies
 WORKDIR /app
 
-COPY package.json yarn.lock* ./
-COPY ./prisma ./prisma
-RUN yarn install
-
-
+COPY prisma ./
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
 
 
 # BUILD STAGE
-FROM node:18  as builder
+FROM node:20-alpine3.16  as builder
 WORKDIR /app
 
 COPY --from=base_dependencies /app/node_modules ./node_modules
@@ -20,19 +18,16 @@ RUN yarn build
 
 
 # PRODUCT DEPENDENCIES STAGE
-FROM node:18  as prod_dependencies
+FROM node:20-alpine3.16  as prod_dependencies
 WORKDIR /app
 
-COPY --from=base_dependencies /app/yarn.lock* ./
-COPY --from=base_dependencies /app/node_modules ./node_modules
-COPY --from=base_dependencies /app/package.json ./package.json
-
-# RUN yarn remove @nestjs/cli @types/node
-RUN yarn install --frozen-lockfile
+COPY prisma ./
+COPY package.json yarn.lock ./
+RUN yarn install --prod --frozen-lockfile
 
 
 # PRODUCTION STAGE
-FROM node:18
+FROM node:20-alpine3.16 as prod
 
 WORKDIR /app
 

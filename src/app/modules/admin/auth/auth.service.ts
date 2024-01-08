@@ -4,9 +4,9 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcrypt';
+import * as argon2 from 'argon2';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
-import { JWT_CONSTANTS, SALT_ROUNDS } from 'src/utils/constants';
+import { JWT_CONSTANTS } from 'src/utils/constants';
 import { LoginDto } from './dtos/auth.dto';
 
 @Injectable()
@@ -32,7 +32,7 @@ export class AdminAuthService {
       throw new NotFoundException('admin not found');
     }
 
-    const isMatch = bcrypt.compareSync(password, admin?.password);
+    const isMatch = argon2.verify(admin?.password, password);
 
     if (!isMatch) {
       throw new BadRequestException('Password is incorrect.');
@@ -40,10 +40,7 @@ export class AdminAuthService {
 
     const token = await this.generateToken(admin.id, admin.name);
 
-    const refreshTokenHashed = await bcrypt.hash(
-      token.refreshToken,
-      SALT_ROUNDS,
-    );
+    const refreshTokenHashed = await argon2.hash(token.refreshToken);
 
     await this.prisma.admin.update({
       where: { email },
@@ -135,7 +132,7 @@ export class AdminAuthService {
       throw new BadRequestException('Refresh token is incorrect.');
     }
 
-    const isMatch = bcrypt.compareSync(refreshToken, admin?.refresh_token);
+    const isMatch = argon2.verify(admin?.refresh_token, refreshToken);
 
     if (!isMatch) {
       throw new BadRequestException('Refresh token is incorrect.');
