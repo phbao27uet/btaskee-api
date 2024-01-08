@@ -11,8 +11,6 @@ services:
       - '${ZEN_PORT}:${ZEN_PORT}'
     env_file:
       - .env
-    extra_hosts:
-      - 'host.docker.internal:host-gateway'
 
   # volumes:
   #   zen-system-db:
