@@ -11,4 +11,11 @@ export class DiscordService {
       content: message,
     });
   }
+
+  async sendMessageTest(message: string) {
+    const url = `https://discord.com/api/webhooks/1193869092269072406/sYrMu9icY4I-tnI1sWOPWBn41Lzu5iZmPrKQ5rw0DK7Lhw3D75zWC0_qBBJfFZbJ5yc-`;
+    await this.httpService.axiosRef.post(url, {
+      content: message,
+    });
+  }
 }

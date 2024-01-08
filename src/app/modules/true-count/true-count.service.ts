@@ -81,7 +81,7 @@ export class TrueCountService {
       Number(table?.counted_cards) + (difference?.length || 0);
 
     if (countedCards > 250) {
-      this.discordService.sendMessage(`Counted > 250: ${table_id}}`);
+      this.discordService.sendMessage(`Counted > 250: ${table.name}}`);
     }
 
     const runningCount = difference.reduce(
@@ -108,20 +108,18 @@ export class TrueCountService {
     });
     console.log('\n');
 
-    if (table_id === 'SpeedBlackjack14') {
-      this.discordService.sendMessage(
-        `True Count table: ${table_id}, ${JSON.stringify({
-          tableName: table.name,
-          game_id_db: gameId,
-          game_id,
-          cards,
-          difference,
-          countedCards,
-          runningCount,
-          trueCount,
-        })}\n`,
+    if (table_id === 'pdk5yzyfjkgepoml') {
+      // ブラックジャック VIP 11
+      this.discordService.sendMessageTest(
+        `True Count table: ${table_id}\ntableName: ${table.name}\ngame_id_db: ${gameId}\ngame_id: ${game_id}\ncards: ${cards}\ndifference: ${difference}\ncountedCards: ${countedCards}\nrunningCount: ${runningCount}\ntrueCount: ${trueCount}\n`,
       );
     }
+
+    this.discordService.sendMessage(
+      `【お知らせ】\n【${table.name}】\n【TC ${trueCount.toFixed(
+        2,
+      )}】\n【出したカード数 ${countedCards}】\n`,
+    );
 
     return await this.prisma.table.update({
       where: {
@@ -151,7 +149,7 @@ export class TrueCountService {
     console.log('Reset True Count table: ', table_id);
     console.log('\n');
 
-    this.discordService.sendMessage(`Reset True Count table: ${table_id}`);
+    this.discordService.sendMessage(`Reset True Count ${table.name}`);
 
     return await this.prisma.table.update({
       where: {
