@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { PrismaClient } from '@prisma/client';
+import { ROOM_HAS_NAME, ROOM_IDS } from '@utils/roomIds';
 import * as argon2 from 'argon2';
-import { ROOM_HAS_NAME, ROOM_IDS } from '../src/utils/roomIds';
 
 const prisma = new PrismaClient();
 
