@@ -115,11 +115,13 @@ export class TrueCountService {
       );
     }
 
-    this.discordService.sendMessage(
-      `【お知らせ】\n【${table.name}】\n【TC ${trueCount.toFixed(
-        2,
-      )}】\n【出したカード数 ${countedCards}】\n`,
-    );
+    if (table.game_id !== gameId) {
+      this.discordService.sendMessage(
+        `【お知らせ】\n【${table.name}】\n【TC ${trueCount.toFixed(
+          2,
+        )}】\n【出したカード数 ${countedCards}】\n`,
+      );
+    }
 
     return await this.prisma.table.update({
       where: {
