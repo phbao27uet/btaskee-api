@@ -62,7 +62,7 @@ export class TrueCountController {
     @Param() params: any,
     @Body() calcTrueCountDto: CalcTrueCountDto,
   ) {
-    return this.trueCountService.calcTrueCount(
+    return await this.trueCountService.calcTrueCount(
       params?.table_id,
       calcTrueCountDto.cards,
       calcTrueCountDto.gameId,
