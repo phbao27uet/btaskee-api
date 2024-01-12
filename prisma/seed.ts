@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { PrismaClient } from '@prisma/client';
-import { ROOM_HAS_NAME, ROOM_IDS } from '@utils/roomIds';
+import { ROOM_HAS_NAME } from '@utils/roomIds';
 import * as argon2 from 'argon2';
 
 const prisma = new PrismaClient();
@@ -39,7 +39,8 @@ const generateAdmins = async () => {
 };
 
 const generateTables = () => {
-  const roomFilter = ROOM_HAS_NAME.filter((room) => ROOM_IDS.includes(room.id));
+  // const roomFilter = ROOM_HAS_NAME.filter((room) => ROOM_IDS.includes(room.id));
+  const roomFilter = ROOM_HAS_NAME;
 
   const rooms = [...roomFilter];
 
