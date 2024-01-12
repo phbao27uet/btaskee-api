@@ -1,158 +1,22 @@
-export const ROOM_IDS = [
-  // 'Craps00000000001',
-  // 'PowerInfiniteBJ1',
-  // 'mrfykemt5slanyi5', // Infinite Blackjack
-  'SpeedBlackjack03',
-  'ps3ufteekfe2fu24',
-  'ps3uijuskfe2f3cj',
-  'p2f2zs26tc2mu7r5',
-  'SpeedBlackjack14',
-  'SpeedBlackjack15',
-  'SpeedBlackjack16',
-  'SpeedBlackjack17',
-  'SpeedBlackjack18',
-  // 'CFreeBetBjVIP002', // Free bet
-  'nveq65dtmn6n4mnd',
-  'nveq66tfmn6n4moi',
-  'bciewncrf5ijneys',
-  '2uxabtm1rwaxcmdm',
-  'o735cjzyaeasv4o6',
-  'o735di2eiwssv7eu',
-  'o735efxfaeasv666',
-  'o735fhvsaeaswamh',
-  'pdk5xfrkjkgepmlq',
-  'pdk5yexcz4iepelq',
-  'pdk5yzyfjkgepoml',
-  'pdk52e3rey6upyie',
-  'pdk523jney6upzft',
-  'ps3t7nhskfe2fhkj',
-  'p2fzwauitc2msrik',
-  'p2f2lphftc2muaql',
-  // 'p5s3chh6m7wenyxl',
-  'qfyw6u63rixe3foz',
-  'qfyxgwwsrcfe5lq3',
-  'q6wo6fjprnlhuf36',
-  'q6wo7mqrrnlhuj6b',
-  'rctfyut2btsmfyyt',
-  'rctf4gu6btsmghbt',
-  'oqicznoauwbl46am',
-  'oqic5sqbt25322zm',
-  'oqidcfpsuwbl5cqd',
-  'qlrc3fq3v7p6awm4',
-  'qckwjf2o52r9ikeb',
-  'gazgtkid9h1b0dn9',
-  '0mvn914lkmo9vaq8',
-  'cpxl81x0rgi34cmo',
-  'o3d9tx3u8kd0yawc',
-  'psm2um7k4da8zwc2',
-  'm6mfo66sb7eafnzz',
-  'm6mfsirtb7eafn5c',
-  'nbjettfehawanhes',
-  'oa7fvyaiqfueq5ob',
-  'bghflgi59db7d7r2',
-  'o735ggd5iwsswcz7',
-  'o735hfcqauecwjxp',
-  'pdk53n4bjkgepr5u',
-  'lnofoyxv756qaezy',
-  'lnofpmm3756qae2c',
-  'l5aug44hhzr3qvxs',
-  'z5pf5pichcsw3d2o',
-  's63nx2mpdomgjagb',
-  'lnofn2yl756qaezm',
-  'h463tlq1rhl1lfr2',
-  'ejx1a04w4ben0mou',
-  'nbjetztthawanhey',
-  'nsxqpyiol2nzcz6t',
-  'gfzrqe4hqv24kukc',
-  'rdefcn4sffgo39l7',
-  // 'olbibp3fylzaxvhb', // Salon Private
-  // 'mdkqfe74dctrhntj', // Salon Private
-  // 'SalPrivBJ0000005', // Salon Private
-  // 'p36n5jvdx7bugh2g', // Salon Private
-  // 'SalPrivBJ0000008', // Salon Private
-  // 'SalPrivBJ0000009', // Salon Private
-  // 'SalPrivBJ0000010', // Salon Private
-  'sni5cza6d1vvl50i',
-  // 'k4r2kvd34eqqb6vh',
-  // 'nc3u2l6y0khszjv7',
-  'SpeedBlackjack01',
-  'SpeedBlackjack02',
-  'SpeedBlackjack04',
-  'ps3uhj7gteskex37',
-  'p2f2uxiym2tmvzgq',
-  'p2f25gsom2tmwmpn',
-  'qfyyxolocjhfau7y',
-  'qfyy4jm6rixfbllh',
-  'qfyzapjqrixfb3bx',
-  'gkmq0o2hryjyqu30',
-  '9f4xhuhdd005xlbl',
-  'ehw2fvl831m5n2km',
-  'nkyiswhd2jpbw4i4',
-  'nkyivihc2jpbw4uy',
-  'nsxqkywul2nzcwwh',
-  'oa7fpshyqfueqxuj',
-  'o7347okwaeasvy2y',
-  'o735azzsaeasv2pr',
-  'pdk5zo7cey6upxlm',
-  'ps3t7j4ykfe2fhdw',
-  'ps3t7qv2teskeg4w',
-  'p2f2ootrm2tmvk6h',
-  'qfyxcoqlrcfe44nj',
-  'rctf2h7wbtsmf7rs',
-  'pdk54i3vey6up3dg',
-  // 'mdkqdxtkdctrhnsx', // Salon Private
-  // 'olbinkuoylzayeoj', // Salon Private
-  // 'SalPrivBJ0000006', // Salon Private
-  'uwd2bl2khwcikjlz', // Error
-  'k4r2ejwx4eqqb6tv', // Error
-  'xphpcthv8e6ivc16', // Error
-  'k4r2hyhw4eqqb6us', // Error
-  'jhs44mm0v3fi3aux', // Error
-  'xqyb2u7fqkexxpa0', // 2000
-  'ylq4gmw8yl22u5dj', // Error
-  '1xwfnktjybsolkn6', // Error
-  'xstnlyzrm345ev95', // Error
-  'i5j1cyqhrypkih23', // Error
-
-  // 'CFreeBetBjVIP001', // Free bet
-  // 'CFreeBetBjVIP003', // Free bet
-  // 'CFreeBetBjVIP004', // Free bet
-  // 'CFreeBetBjVIP005', // Free bet
-  // 'CFreeBetBjVIP006', // Free bet
-  // 'CFreeBetBjVIP007', // Free bet
-  // 'CFreeBetBjVIP008', // Free bet
-  // 'CFreeBetBjVIP009', // Free bet
-  // 'CFreeBetBjVIP010', // Free bet
-  // 'CFreeBetBjVIP011', // Free bet
-  // 'CFreeBetBjVIP012', // Free bet
-  // 'CFreeBetBjVIP013', // Free bet
-  // 'CFreeBetBjVIP014', // Free bet
-  // 'CFreeBetBjVIP015', // Free bet
-  // 'CFreeBetBjVIP016', // Free bet
-  // 'p5s3fhwum7weobwu', // Error
-];
-
 // 99 rooms
-//
 export const ROOM_HAS_NAME = [
-  // { id: 'Craps00000000001', name: 'クラップス' },
-  // { id: 'PowerInfiniteBJ1', name: 'パワーブラックジャック' },
-  // { id: 'mrfykemt5slanyi5', name: 'インフィニット ブラックジャック' },
-  // { id: 'jhs44mm0v3fi3aux', name: 'ブラックジャック C' },
-
   // 1000 <= x < 5000
+  { id: 'nc3u2l6y0khszjv7', name: 'スピードブラックジャック H' }, // 2500
+  { id: 'k4r2kvd34eqqb6vh', name: 'スピードブラックジャック M' }, // 2000
+  { id: 'xqyb2u7fqkexxpa0', name: 'スピードブラックジャック D' }, // 2000
+  { id: '1xwfnktjybsolkn6', name: 'スピードブラックジャック G' }, // 2500
+  { id: 'jhs44mm0v3fi3aux', name: 'ブラックジャック C' }, // 1500
+
+  { id: 'ESpeedBJ00000001', name: 'Evo スピードブラックジャック 1' },
+  { id: 'ESpeedBJ00000002', name: 'Evo スピードブラックジャック 2' }, // 1500
+  { id: 'ESpeedBJ00000003', name: 'Evo スピードブラックジャック 3' },
+  { id: 'ESpeedBJ00000008', name: 'Evo スピードブラックジャック 8' }, // 2000
+
   { id: 'k4r2hyhw4eqqb6us', name: 'スピードブラックジャック L' },
-  { id: 'ESpeedBJ00000002', name: 'Evo スピードブラックジャック 2' },
-  { id: 'k4r2kvd34eqqb6vh', name: 'スピードブラックジャック M' },
   { id: 'ylq4gmw8yl22u5dj', name: 'スピードブラックジャック E' },
-  { id: 'nc3u2l6y0khszjv7', name: 'スピードブラックジャック H' },
   { id: 'xstnlyzrm345ev95', name: 'スピードブラックジャック I' },
   { id: 'i5j1cyqhrypkih23', name: 'スピードブラックジャック J' },
   { id: 'k4r2ejwx4eqqb6tv', name: 'スピードブラックジャック K' },
-  { id: 'ESpeedBJ00000001', name: 'Evo スピードブラックジャック 1' },
-  { id: 'ESpeedBJ00000003', name: 'Evo スピードブラックジャック 3' },
-  { id: 'xqyb2u7fqkexxpa0', name: 'スピードブラックジャック D' },
-  { id: '1xwfnktjybsolkn6', name: 'スピードブラックジャック G' },
 
   // 5000: 58 rooms
   { id: 'SpeedBlackjack04', name: 'スピード VIP ブラックジャック D' },
