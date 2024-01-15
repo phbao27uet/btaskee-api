@@ -24,15 +24,15 @@ import { TrueCountModule } from './modules/true-count/true-count.module';
       useFactory: async (config: ConfigService) => ({
         // transport: config.get('MAIL_TRANSPORT'),
         transport: {
-          host: config.get('MAIL_HOST'),
+          host: config.get('ZEN_MAIL_HOST'),
           secure: false,
           auth: {
-            user: config.get('MAIL_USER'),
-            pass: config.get('MAIL_PASSWORD'),
+            user: config.get('ZEN_MAIL_USER'),
+            pass: config.get('ZEN_MAIL_PASSWORD'),
           },
         },
         defaults: {
-          from: `"No Reply" <${config.get('MAIL_FROM')}>`,
+          from: `"No Reply" <${config.get('ZEN_MAIL_FROM')}>`,
         },
         template: {
           dir: join(__dirname, '../..', 'src/templates/email'),
