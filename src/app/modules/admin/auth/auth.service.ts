@@ -32,7 +32,7 @@ export class AdminAuthService {
       throw new NotFoundException('admin not found');
     }
 
-    const isMatch = argon2.verify(admin?.password, password);
+    const isMatch = await argon2.verify(admin?.password, password);
 
     if (!isMatch) {
       throw new BadRequestException('Password is incorrect.');
@@ -132,7 +132,7 @@ export class AdminAuthService {
       throw new BadRequestException('Refresh token is incorrect.');
     }
 
-    const isMatch = argon2.verify(admin?.refresh_token, refreshToken);
+    const isMatch = await argon2.verify(admin?.refresh_token, refreshToken);
 
     if (!isMatch) {
       throw new BadRequestException('Refresh token is incorrect.');

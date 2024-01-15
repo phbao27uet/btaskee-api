@@ -39,7 +39,7 @@ export class AuthService {
       throw new NotFoundException('User not found');
     }
 
-    const isMatch = argon2.verify(user?.password, password);
+    const isMatch = await argon2.verify(user?.password, password);
 
     if (!isMatch) {
       throw new BadRequestException('Password is incorrect.');
@@ -175,7 +175,7 @@ export class AuthService {
       throw new BadRequestException('Refresh token is incorrect.');
     }
 
-    const isMatch = argon2.verify(user?.refresh_token, refreshToken);
+    const isMatch = await argon2.verify(user?.refresh_token, refreshToken);
 
     if (!isMatch) {
       throw new BadRequestException('Refresh token is incorrect.');
