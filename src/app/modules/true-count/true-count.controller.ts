@@ -38,6 +38,11 @@ export class TrueCountController {
     return this.trueCountService.getRooms();
   }
 
+  @Put('/flag-reset/:table_id')
+  async flagResetTrueCount(@Param() params: any) {
+    return this.trueCountService.flagResetTrueCount(params?.table_id);
+  }
+
   @Put('/reset/:table_id')
   async resetTrueCount(@Param() params: any) {
     return this.trueCountService.resetTrueCount(params?.table_id);
