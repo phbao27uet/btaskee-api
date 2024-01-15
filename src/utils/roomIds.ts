@@ -7,10 +7,14 @@ export const ROOM_HAS_NAME = [
   { id: '1xwfnktjybsolkn6', name: 'スピードブラックジャック G' }, // 2500
   { id: 'jhs44mm0v3fi3aux', name: 'ブラックジャック C' }, // 1500
 
-  { id: 'ESpeedBJ00000001', name: 'Evo スピードブラックジャック 1' },
+  { id: 'ESpeedBJ00000001', name: 'Evo スピードブラックジャック 1' }, // 1500
   { id: 'ESpeedBJ00000002', name: 'Evo スピードブラックジャック 2' }, // 1500
-  { id: 'ESpeedBJ00000003', name: 'Evo スピードブラックジャック 3' },
+  { id: 'ESpeedBJ00000003', name: 'Evo スピードブラックジャック 3' }, // 1500
+  { id: 'ESpeedBJ00000004', name: 'Evo スピードブラックジャック 4' }, // 1500
   { id: 'ESpeedBJ00000008', name: 'Evo スピードブラックジャック 8' }, // 2000
+  { id: 'ESpeedBJ00000009', name: 'Evo スピードブラックジャック 9' }, // 2000
+  { id: 'ESpeedBJ00000010', name: 'Evo スピードブラックジャック 10' }, // 2000
+  { id: 'ESpeedBJ00000011', name: 'Evo スピードブラックジャック 11' }, // 2000
 
   { id: 'k4r2hyhw4eqqb6us', name: 'スピードブラックジャック L' },
   { id: 'ylq4gmw8yl22u5dj', name: 'スピードブラックジャック E' },
