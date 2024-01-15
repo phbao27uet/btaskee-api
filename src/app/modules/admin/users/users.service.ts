@@ -113,8 +113,12 @@ export class UsersService {
       data: updateUserDto,
     });
 
-    if (user.status === USER_STATUS['APPROVED']) {
-      await this.mailService.sendMailApproved(user.email, user.name);
+    try {
+      if (user.status === USER_STATUS['APPROVED']) {
+        await this.mailService.sendMailApproved(user.email, user.name);
+      }
+    } catch (e) {
+      console.log('122' + e);
     }
 
     return true;
