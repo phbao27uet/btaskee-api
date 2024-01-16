@@ -16,7 +16,7 @@ export class LicensesService {
     });
 
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException('ユーザーが見つかりません');
     }
 
     const license = await this.prismaService.license.create({
