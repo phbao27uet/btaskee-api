@@ -29,13 +29,13 @@ export class AdminAuthService {
     });
 
     if (!admin) {
-      throw new NotFoundException('admin not found');
+      throw new NotFoundException('管理者が見つかりません');
     }
 
     const isMatch = await argon2.verify(admin?.password, password);
 
     if (!isMatch) {
-      throw new BadRequestException('Password is incorrect.');
+      throw new BadRequestException('パスワードが正しくありません.');
     }
 
     const token = await this.generateToken(admin.id, admin.name);
@@ -129,13 +129,13 @@ export class AdminAuthService {
     }
 
     if (!admin?.refresh_token) {
-      throw new BadRequestException('Refresh token is incorrect.');
+      throw new BadRequestException('リフレッシュトークンが正しくありません.');
     }
 
     const isMatch = await argon2.verify(admin?.refresh_token, refreshToken);
 
     if (!isMatch) {
-      throw new BadRequestException('Refresh token is incorrect.');
+      throw new BadRequestException('リフレッシュトークンが正しくありません.');
     }
 
     const newAccessToken = await this.jwtService.signAsync(

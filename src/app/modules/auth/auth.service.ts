@@ -36,13 +36,13 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException('ユーザーが見つかりません');
     }
 
     const isMatch = await argon2.verify(user?.password, password);
 
     if (!isMatch) {
-      throw new BadRequestException('Password is incorrect.');
+      throw new BadRequestException('パスワードが正しくありません.');
     }
 
     const token = await this.generateToken(user.id, user.name);
@@ -71,30 +71,48 @@ export class AuthService {
 
   async signUp(registerDto: RegisterDto) {
     const user = await this.prisma.user.findUnique({
-      where: { email: registerDto.email },
+      where: {
+        email: registerDto.email,
+      },
     });
 
     const admin = await this.prisma.admin.findUnique({
       where: { email: registerDto.email },
     });
 
-    if (user || admin) {
-      throw new BadRequestException('Email already exists');
+    const existingUser =
+      user?.status === 'APPROVED' || user?.status === 'PENDING';
+
+    if (existingUser || admin) {
+      throw new BadRequestException('メールアドレスはすでに存在しています');
     }
 
     const passwordHashed = await argon2.hash(registerDto.password);
 
-    const newUser = await this.prisma.user.create({
-      data: {
-        name: registerDto.name,
-        furigana: registerDto.furigana,
-        email: registerDto.email,
-        password: passwordHashed,
-      },
-    });
+    if (user) {
+      await this.prisma.user.update({
+        where: { email: registerDto.email },
+        data: {
+          name: registerDto.name,
+          furigana: registerDto.furigana,
+          email: registerDto.email,
+          password: passwordHashed,
+          status: 'PENDING',
+        },
+      });
+    } else {
+      const newUser = await this.prisma.user.create({
+        data: {
+          name: registerDto.name,
+          furigana: registerDto.furigana,
+          email: registerDto.email,
+          password: passwordHashed,
+        },
+      });
 
-    if (!newUser) {
-      throw new BadRequestException('Register failed');
+      if (!newUser) {
+        throw new BadRequestException('登録に失敗しました');
+      }
     }
 
     return true;
@@ -168,17 +186,17 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException('ユーザーが見つかりません');
     }
 
     if (!user?.refresh_token) {
-      throw new BadRequestException('Refresh token is incorrect.');
+      throw new BadRequestException('リフレッシュトークンが正しくありません.');
     }
 
     const isMatch = await argon2.verify(user?.refresh_token, refreshToken);
 
     if (!isMatch) {
-      throw new BadRequestException('Refresh token is incorrect.');
+      throw new BadRequestException('リフレッシュトークンが正しくありません.');
     }
 
     const newAccessToken = await this.jwtService.signAsync(
