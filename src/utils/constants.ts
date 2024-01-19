@@ -164,3 +164,13 @@ export const USER_STATUS = {
   REJECTED: 'REJECTED',
   DELETED: 'DELETED',
 };
+
+export const WEBSITES = {
+  stake: 'stake',
+  ELDOAH: 'ELDOAH',
+  Fortune: 'Fortune',
+  BC_game: 'BC game',
+  Bit_Casino: 'ビットカジノ',
+  Bonds_Casino: 'ボンズカジノ',
+  TED_BET: 'TED_BET',
+};
