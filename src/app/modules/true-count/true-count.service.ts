@@ -22,6 +22,7 @@ export class TrueCountService {
         true_count: {
           gte: trueCountSetting?.true_count,
         },
+        is_reset_true_count: false,
       },
       select: {
         true_count: true,
