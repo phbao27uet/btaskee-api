@@ -715,4 +715,120 @@ export const ELDOAH_ROOMS = [
     id: 'KSSBJ00000000003',
     index: 210,
   },
+  {
+    id: 'o735hfcqauecwjxp',
+    index: 211,
+  },
+  {
+    id: 'o735ggd5iwsswcz7',
+    index: 212,
+  },
+  {
+    id: 'm6mfo66sb7eafnzz',
+    index: 213,
+  },
+  {
+    id: 'qckwjf2o52r9ikeb',
+    index: 214,
+  },
+  {
+    id: 'pdk53n4bjkgepr5u',
+    index: 216,
+  },
+  {
+    id: 'pdk54i3vey6up3dg',
+    index: 217,
+  },
+  {
+    id: '0mvn914lkmo9vaq8',
+    index: 218,
+  },
+  {
+    id: 'cpxl81x0rgi34cmo',
+    index: 219,
+  },
+  {
+    id: 'o3d9tx3u8kd0yawc',
+    index: 220,
+  },
+  {
+    id: 'psm2um7k4da8zwc2',
+    index: 221,
+  },
+  {
+    id: 'm6mfsirtb7eafn5c',
+    index: 222,
+  },
+  {
+    id: 'nbjettfehawanhes',
+    index: 223,
+  },
+  {
+    id: 'oa7fvyaiqfueq5ob',
+    index: 224,
+  },
+  {
+    id: 'bghflgi59db7d7r2',
+    index: 225,
+  },
+  {
+    id: 'qlrc3fq3v7p6awm4',
+    index: 226,
+  },
+  {
+    id: 'gazgtkid9h1b0dn9',
+    index: 227,
+  },
+  {
+    id: 'l5aug44hhzr3qvxs',
+    index: 228,
+  },
+  {
+    id: 'z5pf5pichcsw3d2o',
+    index: 229,
+  },
+  {
+    id: 'h463tlq1rhl1lfr2',
+    index: 230,
+  },
+  {
+    id: 'ejx1a04w4ben0mou',
+    index: 231,
+  },
+  {
+    id: 'lnofoyxv756qaezy',
+    index: 232,
+  },
+  {
+    id: 'lnofpmm3756qae2c',
+    index: 233,
+  },
+  {
+    id: 's63nx2mpdomgjagb',
+    index: 234,
+  },
+  {
+    id: 'lnofn2yl756qaezm',
+    index: 235,
+  },
+  {
+    id: 'nbjetztthawanhey',
+    index: 236,
+  },
+  {
+    id: 'nsxqpyiol2nzcz6t',
+    index: 237,
+  },
+  {
+    id: 'GJSBJ00000000001',
+    index: 238,
+  },
+  {
+    id: 'GKBJ000000000001',
+    index: 239,
+  },
+  {
+    id: 'gfzrqe4hqv24kukc',
+    index: 240,
+  },
 ];
