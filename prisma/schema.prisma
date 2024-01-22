@@ -111,6 +111,8 @@ model Table {
   last_cards    String?
   counted_cards Int?
 
+  is_reset_true_count Boolean?
+
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
