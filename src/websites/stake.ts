@@ -503,4 +503,8 @@ export const STAKE_ROOMS = [
     id: 'p6l4vqinplnwhq7s',
     index: 267,
   },
+  {
+    id: 'mrfykemt5slanyi5',
+    name: 'インフィニット ブラックジャック',
+  },
 ];

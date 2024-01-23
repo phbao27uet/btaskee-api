@@ -831,4 +831,8 @@ export const ELDOAH_ROOMS = [
     id: 'gfzrqe4hqv24kukc',
     index: 240,
   },
+  {
+    id: 'mrfykemt5slanyi5',
+    name: 'インフィニット ブラックジャック',
+  },
 ];

@@ -145,6 +145,10 @@ export const ROOM_5000 = [
   { id: 'rgdzue7v4xaga5s5', name: 'BCGAME VIP ブラックジャック' },
   { id: 'JapBJ00000000002', name: 'スピードブラックジャック (日本語) C' },
   { id: 'JapBJ00000000004', name: 'スピードブラックジャック (日本語) D' },
+  {
+    id: 'mrfykemt5slanyi5',
+    name: 'インフィニット ブラックジャック',
+  },
   { id: 'o7347okwaeasvy2y', name: 'ブラックジャック VIP 1' },
   { id: 'o735fhvsaeaswamh', name: 'ブラックジャック VIP 6' },
   { id: 'pdk5yzyfjkgepoml', name: 'ブラックジャック VIP 11' },

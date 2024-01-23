@@ -963,4 +963,8 @@ export const BC_ROOMS = [
     id: 'rdefcn4sffgo39l7',
     index: 241,
   },
+  {
+    id: 'mrfykemt5slanyi5',
+    name: 'インフィニット ブラックジャック',
+  },
 ];
