@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
 import {
   ApiBody,
   ApiOperation,
@@ -18,6 +18,11 @@ export class TrueCountController {
   // @UseGuards(JwtAuthGuard)
   @Get('rooms')
   // @ApiBearerAuth('JWT-auth')
+  @ApiParam({
+    name: 'website_name',
+    required: false,
+    description: 'website_name',
+  })
   @ApiOperation({
     summary: 'APP',
     description: 'Get the list of rooms that satisfy the true count condition',
@@ -34,8 +39,13 @@ export class TrueCountController {
       ],
     },
   })
-  async getRooms() {
-    return this.trueCountService.getRooms();
+  async getRooms(@Query('website_name') website_name = '') {
+    return this.trueCountService.getRooms(website_name);
+  }
+
+  @Put('/flag-reset/:table_id')
+  async flagResetTrueCount(@Param() params: any) {
+    return this.trueCountService.flagResetTrueCount(params?.table_id);
   }
 
   @Put('/reset/:table_id')

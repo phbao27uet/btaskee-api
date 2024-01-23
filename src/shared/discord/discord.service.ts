@@ -26,4 +26,14 @@ export class DiscordService {
       console.log('sendMessageTest Error', e);
     }
   }
+
+  async sendMessageWithUrl(message: string, url: string) {
+    try {
+      await this.httpService.axiosRef.post(url, {
+        content: message,
+      });
+    } catch (e) {
+      console.log('sendMessageWithUrl Error', e);
+    }
+  }
 }
