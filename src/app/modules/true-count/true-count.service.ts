@@ -293,38 +293,51 @@ export class TrueCountService {
   async sendLogTrueCount(tc: number, message: string) {
     switch (true) {
       case tc < 0:
-        console.log('TC 0-');
         await this.discordService.sendMessageWithUrl(
           message,
           WEBHOOKS_DISCORD['DISCORD_0'] as string,
         );
         break;
       case tc >= 0 && tc < 1:
-        console.log('TC 0-1');
         await this.discordService.sendMessageWithUrl(
           message,
           WEBHOOKS_DISCORD['DISCORD_0_1'] as string,
         );
         break;
       case tc >= 1 && tc < 2:
-        console.log('TC 1-2');
         await this.discordService.sendMessageWithUrl(
           message,
           WEBHOOKS_DISCORD['DISCORD_1_2'] as string,
         );
         break;
       case tc >= 2 && tc < 3:
-        console.log('TC 2-3');
         await this.discordService.sendMessageWithUrl(
           message,
           WEBHOOKS_DISCORD['DISCORD_2_3'] as string,
         );
         break;
-      case tc >= 3:
-        console.log('TC 3-');
+      case tc >= 3 && tc < 4:
         await this.discordService.sendMessageWithUrl(
           message,
-          WEBHOOKS_DISCORD['DISCORD_3'] as string,
+          WEBHOOKS_DISCORD['DISCORD_3_4'] as string,
+        );
+        break;
+      case tc >= 4 && tc < 5:
+        await this.discordService.sendMessageWithUrl(
+          message,
+          WEBHOOKS_DISCORD['DISCORD_4_5'] as string,
+        );
+        break;
+      case tc >= 5 && tc < 6:
+        await this.discordService.sendMessageWithUrl(
+          message,
+          WEBHOOKS_DISCORD['DISCORD_5_6'] as string,
+        );
+        break;
+      case tc >= 6:
+        await this.discordService.sendMessageWithUrl(
+          message,
+          WEBHOOKS_DISCORD['DISCORD_6'] as string,
         );
         break;
     }
