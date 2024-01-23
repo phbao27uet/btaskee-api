@@ -14,11 +14,14 @@ export const JWT_CONSTANTS = {
 };
 
 export const WEBHOOKS_DISCORD = {
+  DISCORD_0: process.env.ZEN_DISCORD_0,
   DISCORD_0_1: process.env.ZEN_DISCORD_0_1,
   DISCORD_1_2: process.env.ZEN_DISCORD_1_2,
   DISCORD_2_3: process.env.ZEN_DISCORD_2_3,
-  DISCORD_0: process.env.ZEN_DISCORD_0,
-  DISCORD_3: process.env.ZEN_DISCORD_3,
+  DISCORD_3_4: process.env.ZEN_DISCORD_3_4,
+  DISCORD_4_5: process.env.ZEN_DISCORD_4_5,
+  DISCORD_5_6: process.env.ZEN_DISCORD_5_6,
+  DISCORD_6: process.env.ZEN_DISCORD_6,
 };
 
 export const API_URL = process.env.ZEN_API_URL;
