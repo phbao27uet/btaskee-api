@@ -1,7 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { MWebsite } from '@prisma/client';
 import { DiscordService } from 'src/shared/discord/discord.service';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
-import { RUNNING_COUNT } from 'src/utils/constants';
+import { RUNNING_COUNT, WEBHOOKS_DISCORD } from 'src/utils/constants';
 
 @Injectable()
 export class TrueCountService {
@@ -10,12 +11,28 @@ export class TrueCountService {
     private discordService: DiscordService,
   ) {}
 
-  async getRooms() {
+  async getRooms(website_name: string) {
     const trueCountSetting = await this.prisma.trueCountSetting.findFirst({});
 
     if (!trueCountSetting) {
       throw new NotFoundException('True Count Setting not found');
     }
+
+    let website: MWebsite | null = null;
+
+    if (website_name) {
+      website = await this.prisma.mWebsite.findFirst({
+        where: {
+          name: website_name,
+        },
+      });
+
+      if (!website) {
+        throw new NotFoundException('Website not found');
+      }
+    }
+
+    console.log(website);
 
     const tables = await this.prisma.table.findMany({
       where: {
@@ -23,6 +40,11 @@ export class TrueCountService {
           gte: trueCountSetting?.true_count,
         },
         is_reset_true_count: false,
+        WebsiteTable: {
+          some: {
+            website_id: website?.id || undefined,
+          },
+        },
       },
       select: {
         true_count: true,
@@ -81,10 +103,15 @@ export class TrueCountService {
     }
 
     if (game_id != gameId) {
-      await this.discordService.sendMessage(
-        `--------\n【お知らせ】\n【${table?.name}】\n【TC ${table?.true_count.toFixed(
-          2,
-        )}】\n【出したカード数 ${table?.counted_cards}】\n--------`,
+      const tcFixed = table?.true_count.toFixed(2);
+
+      // await this.discordService.sendMessage(
+      //   `--------\n【お知らせ】\n【${table?.name}】\n【TC ${tcFixed}】\n【出したカード数 ${table?.counted_cards}】\n--------`,
+      // );
+
+      await this.sendLogTrueCount(
+        Number(table?.true_count),
+        `--------\n【お知らせ】\n【${table?.name}】\n【TC ${tcFixed}】\n【出したカード数 ${table?.counted_cards}】\n--------`,
       );
     }
 
@@ -261,5 +288,45 @@ export class TrueCountService {
     }
 
     return difference;
+  }
+
+  async sendLogTrueCount(tc: number, message: string) {
+    switch (true) {
+      case tc < 0:
+        console.log('TC 0-');
+        await this.discordService.sendMessageWithUrl(
+          message,
+          WEBHOOKS_DISCORD['DISCORD_0'] as string,
+        );
+        break;
+      case tc >= 0 && tc < 1:
+        console.log('TC 0-1');
+        await this.discordService.sendMessageWithUrl(
+          message,
+          WEBHOOKS_DISCORD['DISCORD_0_1'] as string,
+        );
+        break;
+      case tc >= 1 && tc < 2:
+        console.log('TC 1-2');
+        await this.discordService.sendMessageWithUrl(
+          message,
+          WEBHOOKS_DISCORD['DISCORD_1_2'] as string,
+        );
+        break;
+      case tc >= 2 && tc < 3:
+        console.log('TC 2-3');
+        await this.discordService.sendMessageWithUrl(
+          message,
+          WEBHOOKS_DISCORD['DISCORD_2_3'] as string,
+        );
+        break;
+      case tc >= 3:
+        console.log('TC 3-');
+        await this.discordService.sendMessageWithUrl(
+          message,
+          WEBHOOKS_DISCORD['DISCORD_3'] as string,
+        );
+        break;
+    }
   }
 }

@@ -13,6 +13,14 @@ export const JWT_CONSTANTS = {
     process.env.ZEN_ADMIN_REFRESH_TOKEN_EXPIRES_IN,
 };
 
+export const WEBHOOKS_DISCORD = {
+  DISCORD_0_1: process.env.ZEN_DISCORD_0_1,
+  DISCORD_1_2: process.env.ZEN_DISCORD_1_2,
+  DISCORD_2_3: process.env.ZEN_DISCORD_2_3,
+  DISCORD_0: process.env.ZEN_DISCORD_0,
+  DISCORD_3: process.env.ZEN_DISCORD_3,
+};
+
 export const API_URL = process.env.ZEN_API_URL;
 
 export const RUNNING_COUNT = {

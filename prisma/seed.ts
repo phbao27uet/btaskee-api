@@ -53,12 +53,13 @@ const rooms = TOTAL_ROOM.map((room) => {
 const generateTables = () => {
   // console.log('rooms', rooms);
 
-  return rooms.map((room, index) => {
+  return rooms.map((room) => {
     return {
-      name: room.name + ' ' + (index + 1),
+      name: room.name,
       true_count: 0,
       running_count: 0,
       evolution_table_id: room.id,
+      is_reset_true_count: false,
       created_at: new Date(),
       updated_at: new Date(),
     };
