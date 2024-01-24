@@ -84,7 +84,22 @@ export class TrueCountService {
       where: {
         evolution_table_id: table_id,
       },
+      include: {
+        WebsiteTable: {
+          select: {
+            website: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+      },
     });
+
+    const websitesName = table?.WebsiteTable.map((wt) => wt?.website?.name)
+      .filter((w) => !!w)
+      .join(', ');
 
     if (!table) {
       throw new NotFoundException('Table not found');
@@ -99,6 +114,17 @@ export class TrueCountService {
         where: {
           evolution_table_id: table_id,
         },
+        include: {
+          WebsiteTable: {
+            select: {
+              website: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
+        },
       });
     }
 
@@ -111,7 +137,7 @@ export class TrueCountService {
 
       await this.sendLogTrueCount(
         Number(table?.true_count),
-        `--------\n【お知らせ】\n【${table?.name}】\n【TC ${tcFixed}】\n【出したカード数 ${table?.counted_cards}】\n--------`,
+        `--------\n【お知らせ】\n【${table?.name}】\n【TC ${tcFixed}】\n【出したカード数 ${table?.counted_cards}】\n【Webサイト：${websitesName}】\n--------`,
       );
     }
 
@@ -158,12 +184,12 @@ export class TrueCountService {
     // });
     // console.log('\n');
 
-    if (table_id === 'pdk5yzyfjkgepoml') {
-      // ブラックジャック VIP 11
-      this.discordService.sendMessageTest(
-        `--------\nTrue Count table: ${table_id}\ntableName: ${table?.name}\ngame_id_db: ${gameId}\ngame_id: ${game_id}\ncards: ${cards}\ndifference: ${difference}\ncountedCards: ${countedCards}\nrunningCount: ${runningCount}\ntrueCount: ${trueCount}\n`,
-      );
-    }
+    // if (table_id === 'pdk5yzyfjkgepoml') {
+    //   // ブラックジャック VIP 11
+    //   this.discordService.sendMessageTest(
+    //     `--------\nTrue Count table: ${table_id}\ntableName: ${table?.name}\ngame_id_db: ${gameId}\ngame_id: ${game_id}\ncards: ${cards}\ndifference: ${difference}\ncountedCards: ${countedCards}\nrunningCount: ${runningCount}\ntrueCount: ${trueCount}\n`,
+    //   );
+    // }
 
     return await this.prisma.table.update({
       where: {
@@ -193,8 +219,6 @@ export class TrueCountService {
     this.discordService.sendMessage(
       `Flag Reset True Count table ${table.name}`,
     );
-
-    // console.log('Flag Reset True Count table: ', table_id);
 
     return await this.prisma.table.update({
       where: {

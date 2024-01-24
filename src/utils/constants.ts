@@ -35,11 +35,13 @@ export const RUNNING_COUNT = {
   7: 1,
   8: 0,
   9: 0,
+  10: -2,
   T: -2,
   J: -2,
   Q: -2,
   K: -2,
   A: -2,
+  1: -2,
 };
 
 export const DECKS = [

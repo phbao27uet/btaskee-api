@@ -109,7 +109,7 @@ model Table {
 
   game_id       String?
   last_cards    String?
-  counted_cards Int?
+  counted_cards Int? @default(0)
 
   is_reset_true_count Boolean @default(false)
 
