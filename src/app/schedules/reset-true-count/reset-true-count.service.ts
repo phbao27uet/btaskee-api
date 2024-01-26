@@ -16,7 +16,7 @@ export class SchedulerResetTrueCountService {
         where: {
           is_reset_true_count: false,
           updated_at: {
-            lte: new Date(new Date().getTime() - 10 * 60000),
+            lte: new Date(new Date().getTime() - 5 * 60000),
           },
         },
       });
