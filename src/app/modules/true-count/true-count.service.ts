@@ -137,7 +137,7 @@ export class TrueCountService {
 
       await this.sendLogTrueCount(
         Number(table?.true_count),
-        `--------\n【お知らせ】\n【${table?.name}】\n【TC ${tcFixed}】\n【出したカード数 ${table?.counted_cards}】\n【Webサイト：${websitesName}】\n--------`,
+        `========\n【${table?.name}】\n【TC ${tcFixed}】\n【出したカード数 ${table?.counted_cards}】\n【Webサイト：${websitesName}】\n------------`,
       );
     }
 
