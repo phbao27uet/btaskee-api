@@ -60,7 +60,7 @@ export class TrueCountController {
     required: true,
   })
   async resetTrueCount(@Param() params: any) {
-    return this.trueCountService.resetTrueCount(params?.table_id);
+    return this.trueCountService.resetTrueCount({ table_id: params?.table_id });
   }
 
   @Put('/:table_id')
