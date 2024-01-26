@@ -241,8 +241,8 @@ export class TrueCountService {
       throw new NotFoundException('Table not found');
     }
 
-    console.log('Reset True Count table: ', table_id);
-    console.log('\n');
+    // console.log('Reset True Count table: ', table_id);
+    // console.log('\n');
 
     if (isSendDiscord) {
       this.discordService.sendMessage(`Reset True Count ${table.name}`);
