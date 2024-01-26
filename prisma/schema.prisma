@@ -109,9 +109,11 @@ model Table {
 
   game_id       String?
   last_cards    String?
-  counted_cards Int? @default(0)
+  counted_cards Int?    @default(0)
 
-  is_reset_true_count Boolean @default(false)
+  is_reset_true_count   Boolean   @default(false)
+  last_reset_true_count DateTime?
+  is_reset_by_max_card  Boolean   @default(false)
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt

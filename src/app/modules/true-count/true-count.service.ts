@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { MWebsite } from '@prisma/client';
 import { DiscordService } from 'src/shared/discord/discord.service';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
@@ -40,6 +44,7 @@ export class TrueCountService {
           gte: trueCountSetting?.true_count,
         },
         is_reset_true_count: false,
+        is_reset_by_max_card: false,
         WebsiteTable: {
           some: {
             website_id: website?.id || undefined,
@@ -108,7 +113,7 @@ export class TrueCountService {
     const gameId = table?.game_id;
 
     if (table?.is_reset_true_count && game_id != gameId) {
-      await this.resetTrueCount(table_id);
+      await this.resetTrueCount({ table_id });
 
       table = await this.prisma.table.findFirst({
         where: {
@@ -157,7 +162,7 @@ export class TrueCountService {
         `Counted > 250: ${table?.name} ${table_id}`,
       );
 
-      return await this.resetTrueCount(table_id);
+      return await this.resetTrueCount({ table_id, isMaxCard: true });
     }
 
     const runningCount = difference.reduce(
@@ -216,6 +221,18 @@ export class TrueCountService {
       throw new NotFoundException('Table not found');
     }
 
+    // last_reset_true_count < now() - 8 minutes
+    if (
+      table.last_reset_true_count &&
+      table.last_reset_true_count > new Date(new Date().getTime() - 8 * 60000)
+    ) {
+      console.log(
+        `Reset True Count too fast ${table?.name}, counted cards: ${table?.counted_cards}`,
+      );
+
+      throw new BadRequestException('Reset True Count too fast');
+    }
+
     this.discordService.sendMessage(
       `Flag Reset True Count table ${table?.name}, counted cards: ${table?.counted_cards}`,
     );
@@ -230,7 +247,15 @@ export class TrueCountService {
     });
   }
 
-  async resetTrueCount(table_id: string, isSendDiscord = true) {
+  async resetTrueCount({
+    table_id,
+    isSendDiscord = true,
+    isMaxCard = false,
+  }: {
+    table_id: string;
+    isSendDiscord?: boolean;
+    isMaxCard?: boolean;
+  }) {
     const table = await this.prisma.table.findFirst({
       where: {
         evolution_table_id: table_id,
@@ -262,6 +287,8 @@ export class TrueCountService {
         true_count: 0,
         counted_cards: 0,
         is_reset_true_count: false,
+        last_reset_true_count: new Date(),
+        is_reset_by_max_card: isMaxCard,
       },
     });
   }
@@ -280,6 +307,9 @@ export class TrueCountService {
           counted_cards: 0,
           game_id: null,
           last_cards: null,
+          is_reset_true_count: false,
+          last_reset_true_count: null,
+          is_reset_by_max_card: false,
         },
       });
     }
