@@ -217,7 +217,7 @@ export class TrueCountService {
     }
 
     this.discordService.sendMessage(
-      `Flag Reset True Count table ${table.name}`,
+      `Flag Reset True Count table ${table?.name}, counted cards: ${table?.counted_cards}`,
     );
 
     return await this.prisma.table.update({
@@ -230,7 +230,7 @@ export class TrueCountService {
     });
   }
 
-  async resetTrueCount(table_id: string) {
+  async resetTrueCount(table_id: string, isSendDiscord = true) {
     const table = await this.prisma.table.findFirst({
       where: {
         evolution_table_id: table_id,
@@ -244,7 +244,9 @@ export class TrueCountService {
     console.log('Reset True Count table: ', table_id);
     console.log('\n');
 
-    this.discordService.sendMessage(`Reset True Count ${table.name}`);
+    if (isSendDiscord) {
+      this.discordService.sendMessage(`Reset True Count ${table.name}`);
+    }
 
     if (table_id === 'pdk5yzyfjkgepoml') {
       // ブラックジャック VIP 11

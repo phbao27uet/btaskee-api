@@ -44,11 +44,21 @@ export class TrueCountController {
   }
 
   @Put('/flag-reset/:table_id')
+  @ApiParam({
+    name: 'table_id',
+    type: 'string',
+    required: true,
+  })
   async flagResetTrueCount(@Param() params: any) {
     return this.trueCountService.flagResetTrueCount(params?.table_id);
   }
 
   @Put('/reset/:table_id')
+  @ApiParam({
+    name: 'table_id',
+    type: 'string',
+    required: true,
+  })
   async resetTrueCount(@Param() params: any) {
     return this.trueCountService.resetTrueCount(params?.table_id);
   }
