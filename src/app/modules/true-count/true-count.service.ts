@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { MWebsite } from '@prisma/client';
@@ -14,6 +15,8 @@ export class TrueCountService {
     private prisma: PrismaService,
     private discordService: DiscordService,
   ) {}
+
+  private readonly logger = new Logger(TrueCountService.name);
 
   async getRooms(website_name: string) {
     const trueCountSetting = await this.prisma.trueCountSetting.findFirst({});
@@ -35,8 +38,6 @@ export class TrueCountService {
         throw new NotFoundException('Website not found');
       }
     }
-
-    console.log(website);
 
     const tables = await this.prisma.table.findMany({
       where: {
@@ -162,6 +163,8 @@ export class TrueCountService {
         `Counted > 250: ${table?.name} ${table_id}`,
       );
 
+      this.logger.error(`Counted > 250: ${table?.name} ${table_id}`);
+
       return await this.resetTrueCount({ table_id, isMaxCard: true });
     }
 
@@ -226,7 +229,7 @@ export class TrueCountService {
       table.last_reset_true_count &&
       table.last_reset_true_count > new Date(new Date().getTime() - 8 * 60000)
     ) {
-      console.log(
+      this.logger.error(
         `Reset True Count too fast ${table?.name}, counted cards: ${table?.counted_cards}`,
       );
 
