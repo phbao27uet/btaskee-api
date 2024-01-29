@@ -133,7 +133,7 @@ export class TrueCountService {
       });
     }
 
-    if (game_id != gameId) {
+    if (game_id != gameId && !table?.is_reset_by_max_card) {
       const tcFixed = table?.true_count.toFixed(2);
 
       // await this.discordService.sendMessage(
