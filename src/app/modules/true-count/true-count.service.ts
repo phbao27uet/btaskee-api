@@ -197,12 +197,13 @@ export class TrueCountService {
     // });
     // console.log('\n');
 
-    // if (table_id === 'pdk5yzyfjkgepoml') {
-    //   // ブラックジャック VIP 11
-    //   this.discordService.sendMessageTest(
-    //     `--------\nTrue Count table: ${table_id}\ntableName: ${table?.name}\ngame_id_db: ${gameId}\ngame_id: ${game_id}\ncards: ${cards}\ndifference: ${difference}\ncountedCards: ${countedCards}\nrunningCount: ${runningCount}\ntrueCount: ${trueCount}\n`,
-    //   );
-    // }
+    if (table_id === 'qrtudgalsq5e6jaq') {
+      // Stake エクスクルーシブ ブラックジャック 13
+      this.discordService.sendMessageTest(
+        // `--------\nTrue Count table: ${table_id}\ntableName: ${table?.name}\ngame_id_db: ${gameId}\ngame_id: ${game_id}\ncards: ${cards}\ndifference: ${difference}\ncountedCards: ${countedCards}\nrunningCount: ${runningCount}\ntrueCount: ${trueCount}\n`,
+        `table name: ${table?.name}\ncards: ${cards}\ndifference: ${difference}\ncounted cards: ${countedCards}\nrunning count: ${runningCount}\nTC: ${trueCount}\n------------`,
+      );
+    }
 
     return await this.prisma.table.update({
       where: {
@@ -281,8 +282,8 @@ export class TrueCountService {
       this.discordService.sendMessage(`Reset True Count ${table.name}`);
     }
 
-    if (table_id === 'pdk5yzyfjkgepoml') {
-      // ブラックジャック VIP 11
+    if (table_id === 'qrtudgalsq5e6jaq') {
+      // Stake エクスクルーシブ ブラックジャック 13
       this.discordService.sendMessageTest(`Reset True Count ${table.name}`);
     }
 

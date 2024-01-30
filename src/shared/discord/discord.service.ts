@@ -18,7 +18,7 @@ export class DiscordService {
 
   async sendMessageTest(message: string) {
     try {
-      const url = `https://discord.com/api/webhooks/1193869092269072406/sYrMu9icY4I-tnI1sWOPWBn41Lzu5iZmPrKQ5rw0DK7Lhw3D75zWC0_qBBJfFZbJ5yc-`;
+      const url = `https://discord.com/api/webhooks/1201813884416303115/P2f1gJdq2nyWX8HQrMcqLAAFfubSBNioWx1YUAHn08F9exVykR9mukoLVO5XW5nTwnNF`;
       await this.httpService.axiosRef.post(url, {
         content: message,
       });
