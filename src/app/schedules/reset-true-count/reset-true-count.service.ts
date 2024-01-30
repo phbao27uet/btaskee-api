@@ -38,6 +38,7 @@ export class SchedulerResetTrueCountService {
             true_count: 0,
             counted_cards: 0,
             is_reset_true_count: false,
+            is_reset_by_inactivity: true,
           },
         }),
       ]);
