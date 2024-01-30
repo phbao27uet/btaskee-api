@@ -46,6 +46,7 @@ export class TrueCountService {
         },
         is_reset_true_count: false,
         is_reset_by_max_card: false,
+        is_reset_by_inactivity: false,
         WebsiteTable: {
           some: {
             website_id: website?.id || undefined,
@@ -134,7 +135,11 @@ export class TrueCountService {
       });
     }
 
-    if (game_id != gameId && !table?.is_reset_by_max_card) {
+    if (
+      game_id != gameId &&
+      !table?.is_reset_by_max_card &&
+      !table?.is_reset_by_inactivity
+    ) {
       const tcFixed = table?.true_count.toFixed(2);
 
       // await this.discordService.sendMessage(
@@ -292,6 +297,7 @@ export class TrueCountService {
         is_reset_true_count: false,
         last_reset_true_count: new Date(),
         is_reset_by_max_card: isMaxCard,
+        is_reset_by_inactivity: false,
       },
     });
   }
@@ -313,6 +319,7 @@ export class TrueCountService {
           is_reset_true_count: false,
           last_reset_true_count: null,
           is_reset_by_max_card: false,
+          is_reset_by_inactivity: true,
         },
       });
     }

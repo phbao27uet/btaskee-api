@@ -39,7 +39,7 @@ export class TrueCountController {
       ],
     },
   })
-  async getRooms(@Query('website_name') website_name = '') {
+  async getRooms(@Query('website_name') website_name = 'Fortune') {
     return this.trueCountService.getRooms(website_name);
   }
 
