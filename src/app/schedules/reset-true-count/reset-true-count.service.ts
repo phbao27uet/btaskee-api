@@ -7,7 +7,7 @@ export class SchedulerResetTrueCountService {
   private readonly logger = new Logger(SchedulerResetTrueCountService.name);
   constructor(private prismaService: PrismaService) {}
 
-  @Interval(60000 * 15)
+  @Interval(60000 * 5)
   async handleCron() {
     try {
       this.logger.debug('CRON JOB CHECK RESET TRUE COUNT');
@@ -16,7 +16,7 @@ export class SchedulerResetTrueCountService {
         where: {
           is_reset_true_count: false,
           updated_at: {
-            lte: new Date(new Date().getTime() - 15 * 60000),
+            lte: new Date(new Date().getTime() - 30 * 60000),
           },
         },
       });
@@ -30,7 +30,7 @@ export class SchedulerResetTrueCountService {
           where: {
             is_reset_true_count: false,
             updated_at: {
-              lte: new Date(new Date().getTime() - 15 * 60000),
+              lte: new Date(new Date().getTime() - 30 * 60000),
             },
           },
           data: {
