@@ -7,6 +7,8 @@ services:
     image: '${DOCKER_IMAGE}:latest'
     container_name: zen-system-api
     restart: always
+    volumes:
+      - /home/ubuntu/zen-system-api/uploads:/app/uploads
     ports:
       - '${ZEN_PORT}:${ZEN_PORT}'
     env_file:
