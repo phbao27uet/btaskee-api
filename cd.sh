@@ -18,7 +18,7 @@ docker pull $CI_REGISTRY_IMAGE:latest
 # docker run --rm --name $APP_NAME -d -p $PORT:$PORT $CI_REGISTRY_IMAGE:latest
 
 docker run --rm --name "${APP_NAME}_prisma" $CI_REGISTRY_IMAGE yarn prisma migrate deploy
-# docker run --rm --name $APP_NAME -d  -v "/root/zen-system-data:/app/uploads" -p $PORT:$PORT $CI_REGISTRY_IMAGE:latest
+docker run --rm --name $APP_NAME -d  -v "/root/zen-system-data:/app/uploads" -p $PORT:$PORT $CI_REGISTRY_IMAGE:latest
 
 # check if EXECUTE_ENV is development or production
 if [ "$EXECUTE_ENV" = "development" ]; then
