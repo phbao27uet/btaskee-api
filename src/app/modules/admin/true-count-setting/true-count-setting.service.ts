@@ -26,4 +26,51 @@ export class TrueCountSettingService {
       },
     });
   }
+
+  async getAllTrueCount({ page, perPage }: { page: number; perPage: number }) {
+    const [total, tables] = await Promise.all([
+      this.prisma.table.count({}),
+      await this.prisma.table.findMany({
+        include: {
+          WebsiteTable: {
+            select: {
+              website: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
+        },
+        skip: page && perPage ? (page - 1) * perPage : undefined,
+        take: page && perPage ? perPage : undefined,
+        orderBy: {
+          updated_at: 'desc',
+        },
+      }),
+    ]);
+
+    const tablesResult = tables.map((table) => {
+      const websites = table.WebsiteTable.map((websiteTable) => {
+        return websiteTable?.website?.name;
+      }).join(', ');
+
+      const { WebsiteTable: _, ...rest } = table; // This is a nested object, and it's not clear what the intention is here
+
+      return {
+        ...rest,
+        websites,
+      };
+    });
+
+    return {
+      data: tablesResult,
+      meta: {
+        currentPage: page,
+        perPage: perPage,
+        total: total ?? 0,
+        totalPages: Math.ceil((total ?? 0) / perPage),
+      },
+    };
+  }
 }
