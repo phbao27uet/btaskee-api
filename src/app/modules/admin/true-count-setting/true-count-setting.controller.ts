@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAdminAuthGuard } from '../auth/guards/admin-auth.guard';
@@ -26,5 +26,18 @@ export class TrueCountSettingController {
     return this.trueCountSettingService.updateTrueCountSetting(
       updateTrueCountSettingDto,
     );
+  }
+
+  // @UseGuards(JwtAdminAuthGuard)
+  // @ApiBearerAuth('admin-access-token')
+  @Get('get-all-true-count')
+  async getAllTrueCount(
+    @Query('page') page = 1,
+    @Query('perPage') perPage = 20,
+  ) {
+    return this.trueCountSettingService.getAllTrueCount({
+      page: +page,
+      perPage: +perPage,
+    });
   }
 }
