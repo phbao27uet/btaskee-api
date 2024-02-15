@@ -242,6 +242,18 @@ export class TrueCountService {
       throw new BadRequestException('Reset True Count too fast');
     }
 
+    if (
+      Number(table?.counted_cards) <= 180 &&
+      !table.is_reset_by_inactivity &&
+      !table.is_reset_by_max_card
+    ) {
+      this.logger.error(
+        `Reset True Count too fast < 180 ${table?.name}, counted cards: ${table?.counted_cards}, is_reset_by_inactivity: ${table?.is_reset_by_inactivity}, is_reset_by_max_card: ${table?.is_reset_by_max_card}`,
+      );
+
+      throw new BadRequestException('Reset True Count too fast');
+    }
+
     this.discordService.sendMessage(
       `Flag Reset True Count table ${table?.name}, counted cards: ${table?.counted_cards}`,
     );
