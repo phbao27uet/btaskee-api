@@ -255,7 +255,7 @@ export class TrueCountService {
     }
 
     this.discordService.sendMessage(
-      `Flag Reset True Count table ${table?.name}, counted cards: ${table?.counted_cards}`,
+      `Flag Reset True Count table ${table?.name}, counted cards: ${table?.counted_cards}, is_reset_by_inactivity: ${table?.is_reset_by_inactivity}, is_reset_by_max_card: ${table?.is_reset_by_max_card}`,
     );
 
     return await this.prisma.table.update({
