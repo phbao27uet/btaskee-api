@@ -98,6 +98,24 @@ const generateAdmins = async () => {
       created_at: new Date(),
       updated_at: new Date(),
     },
+    {
+      id: 2,
+      name: 'Zen Admin 2',
+      email: 'zen_admin_2@gmail.com',
+      password: password,
+      refresh_token: null,
+      created_at: new Date(),
+      updated_at: new Date(),
+    },
+    {
+      id: 3,
+      name: 'Zen Admin 3',
+      email: 'zen_admin_3@gmail.com',
+      password: password,
+      refresh_token: null,
+      created_at: new Date(),
+      updated_at: new Date(),
+    },
   ];
 };
 
