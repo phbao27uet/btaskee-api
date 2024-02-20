@@ -120,35 +120,47 @@ export class AdminAuthService {
   }
 
   async refreshToken(adminId: number, refreshToken: string) {
-    const admin = await this.prisma.admin.findUnique({
-      where: { id: adminId },
-    });
+    try {
+      const admin = await this.prisma.admin.findUnique({
+        where: { id: adminId },
+      });
 
-    if (!admin) {
-      throw new NotFoundException('admin not found');
+      if (!admin) {
+        throw new NotFoundException('admin not found');
+      }
+
+      if (!admin?.refresh_token) {
+        console.log('!admin?.refresh_token', !admin?.refresh_token);
+
+        throw new BadRequestException(
+          'リフレッシュトークンが正しくありません.',
+        );
+      }
+
+      const isMatch = await argon2.verify(admin?.refresh_token, refreshToken);
+
+      if (!isMatch) {
+        console.log('!isMatch', !isMatch);
+
+        throw new BadRequestException(
+          'リフレッシュトークンが正しくありません.',
+        );
+      }
+
+      const newAccessToken = await this.jwtService.signAsync(
+        {
+          sub: admin.id,
+          username: admin.name,
+        },
+        {
+          secret: JWT_CONSTANTS.ADMIN_ACCESS_TOKEN_SECRET,
+          expiresIn: JWT_CONSTANTS.ACCESS_TOKEN_EXPIRES_IN,
+        },
+      );
+
+      return { accessToken: newAccessToken };
+    } catch (error) {
+      throw new BadRequestException(error);
     }
-
-    if (!admin?.refresh_token) {
-      throw new BadRequestException('リフレッシュトークンが正しくありません.');
-    }
-
-    const isMatch = await argon2.verify(admin?.refresh_token, refreshToken);
-
-    if (!isMatch) {
-      throw new BadRequestException('リフレッシュトークンが正しくありません.');
-    }
-
-    const newAccessToken = await this.jwtService.signAsync(
-      {
-        sub: admin.id,
-        username: admin.name,
-      },
-      {
-        secret: JWT_CONSTANTS.ADMIN_ACCESS_TOKEN_SECRET,
-        expiresIn: JWT_CONSTANTS.ACCESS_TOKEN_EXPIRES_IN,
-      },
-    );
-
-    return { accessToken: newAccessToken };
   }
 }
