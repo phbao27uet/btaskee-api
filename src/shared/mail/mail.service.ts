@@ -28,7 +28,7 @@ export class MailService {
   }
 
   async sendMailForgotPassword(email: string, username: string, token: string) {
-    const forgot_password_url = `http://localhost:3000/reset-password?token=${token}`;
+    const forgot_password_url = `http://54.95.189.16/:3000/reset-password?token=${token}`;
 
     await this.mailerService.sendMail({
       to: email,
