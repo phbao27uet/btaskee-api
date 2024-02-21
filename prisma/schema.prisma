@@ -36,6 +36,14 @@ model User {
   user_tables   UserTable[]
 }
 
+model ResetPassword {
+  id         Int      @id @default(autoincrement())
+  email      String
+  token      String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
 model License {
   id              Int           @id @default(autoincrement())
   generated_code  String        @unique
