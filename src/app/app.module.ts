@@ -8,6 +8,7 @@ import { join } from 'path';
 import { AdminModule } from './modules/admin/admin.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { FilesModule } from './modules/files/file.module';
+import { ForgotPasswordModule } from './modules/forgot-password/forgot-password.module';
 import { GameLogsModule } from './modules/game-logs/game-logs.module';
 import { LicensesModule } from './modules/licenses/licenses.module';
 import { PlayerLogsModule } from './modules/player-logs/player-logs.module';
@@ -23,6 +24,7 @@ import { SchedulerResetTrueCountModule } from './schedules/reset-true-count/rese
     PlayerLogsModule,
     LicensesModule,
     FilesModule,
+    ForgotPasswordModule,
     MailerModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (config: ConfigService) => ({
