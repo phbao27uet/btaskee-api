@@ -146,10 +146,10 @@ export class TrueCountService {
       //   `--------\n【お知らせ】\n【${table?.name}】\n【TC ${tcFixed}】\n【出したカード数 ${table?.counted_cards}】\n--------`,
       // );
 
-      // await this.sendLogTrueCount(
-      //   Number(table?.true_count),
-      //   `【${table?.name}】\n【TC ${tcFixed}】\n【出したカード数 ${table?.counted_cards}】\n【Webサイト：${websitesName}】\n------------`,
-      // );
+      await this.sendLogTrueCount(
+        Number(table?.true_count),
+        `【${table?.name}】\n【TC ${tcFixed}】\n【出したカード数 ${table?.counted_cards}】\n【Webサイト：${websitesName}】\n------------`,
+      );
     }
 
     // TODO: If new game id is different from the previous one, reset the last cards
