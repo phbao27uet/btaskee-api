@@ -18,11 +18,15 @@ export class TrueCountService {
 
   private readonly logger = new Logger(TrueCountService.name);
 
-  async getRooms(website_name: string) {
-    const trueCountSetting = await this.prisma.trueCountSetting.findFirst({});
+  async getRooms(website_name: string, tc: number | null) {
+    if (tc === null) {
+      const trueCountSetting = await this.prisma.trueCountSetting.findFirst({});
 
-    if (!trueCountSetting) {
-      throw new NotFoundException('True Count Setting not found');
+      if (!trueCountSetting) {
+        throw new NotFoundException('True Count Setting not found');
+      }
+
+      tc = trueCountSetting.true_count;
     }
 
     let website: MWebsite | null = null;
@@ -42,7 +46,7 @@ export class TrueCountService {
     const tables = await this.prisma.table.findMany({
       where: {
         true_count: {
-          gte: trueCountSetting?.true_count,
+          gte: +tc,
         },
         is_reset_true_count: false,
         is_reset_by_max_card: false,
