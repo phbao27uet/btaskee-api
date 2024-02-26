@@ -50,7 +50,7 @@ export class TrueCountService {
         },
         is_reset_true_count: false,
         is_reset_by_max_card: false,
-        // is_reset_by_inactivity: false,
+        is_reset_by_inactivity: false,
         WebsiteTable: {
           some: {
             website_id: website?.id || undefined,
