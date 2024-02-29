@@ -119,7 +119,10 @@ export class TrueCountService {
     const gameId = table?.game_id;
 
     if (table?.is_reset_true_count && game_id != gameId) {
-      await this.resetTrueCount({ table_id });
+      await this.resetTrueCount({
+        table_id,
+        isMaxCard: Number(table?.counted_cards) < 170,
+      });
 
       table = await this.prisma.table.findFirst({
         where: {
