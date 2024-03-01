@@ -7,7 +7,14 @@ import {
 import { MWebsite } from '@prisma/client';
 import { DiscordService } from 'src/shared/discord/discord.service';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
-import { RUNNING_COUNT, WEBHOOKS_DISCORD } from 'src/utils/constants';
+import {
+  RUNNING_COUNT,
+  WEBHOOKS_DISCORD,
+  WEBHOOKS_DISCORDS,
+  WEBHOOKS_DISCORD_1,
+  WEBHOOKS_DISCORD_2,
+  WEBHOOKS_DISCORD_3,
+} from 'src/utils/constants';
 
 @Injectable()
 export class TrueCountService {
@@ -152,6 +159,13 @@ export class TrueCountService {
       // await this.discordService.sendMessage(
       //   `--------\n【お知らせ】\n【${table?.name}】\n【TC ${tcFixed}】\n【出したカード数 ${table?.counted_cards}】\n--------`,
       // );
+
+      // const index = Math.floor((Number(table?.id) - 1) / 70);
+
+      // console.log('index: ', index);
+      // console.log('WEBHOOKS_DISCORDS: ', WEBHOOKS_DISCORDS[index]);
+
+      // const webhooksURL = WEBHOOKS_DISCORDS[0];
 
       await this.sendLogTrueCount(
         Number(table?.true_count),
@@ -376,55 +390,126 @@ export class TrueCountService {
     return difference;
   }
 
+  renderWebhookUrl(table_id: string) {
+    switch (table_id) {
+      case 'ptapzv62p6tekfs4':
+      case 'ptaqgzf5p6tek5ai':
+      case 'ptaqlecc2xweluwn':
+      case 'ptap6zenp6tekovf':
+      case 'p6l4vqinplnwhq7s':
+
+      case 'ptaqex6invsulpjo':
+      case 'p6l5ih3woizwjwol':
+      case 'qrtudgalsq5e6jaq':
+      case 'qrtuegzsbmze573z':
+      case 'ptaprmkn2xwekgpx':
+        return WEBHOOKS_DISCORD;
+
+      case 'mwplwfiltheqikui':
+      case 'mqi5d7vvfqcatumk':
+      case 'mqi5dhhhfqcatul4':
+      case 'ndefqa2tofgqoa3e':
+      case 'ndeftrg3ofgqoa6g':
+
+      case 'nep224c3xecqyyl4':
+      case 'ngx7r4osoqhqyen2':
+      case 'nhrk6zuazggqejda':
+      case 'o4k5p7hqpwqq7n5v':
+      case 'nxh356xegcllxgmt':
+        return WEBHOOKS_DISCORD_1;
+
+      case 'nhrld2edzggqejgp':
+      case 'njmogybuwxuad46n':
+      case 'njmozz5iwxuad5mn':
+      case 'njmoz6m3wxuad5mv':
+      case 'nl7mhvp3y4xar4kn':
+
+      case 'nl7mgk3hy4xar3ji':
+      case 'nohedgkjiypk7zja':
+      case 'nohegqjsiypk73ov':
+      case 'nohej3hriypk75yk':
+      case 'nrgrpgppsbsdh2s6':
+        return WEBHOOKS_DISCORD_2;
+
+      case 'nrgrpmxusbsdh2wt':
+      case 'nu4sg4ofmn6jgv46':
+      case 'nvzbk5oh6teux5kg':
+      case 'nvzbpog76teuybs7':
+      case 'nvzbs4f46teuyeu6':
+        return WEBHOOKS_DISCORD_3;
+    }
+  }
+
   async sendLogTrueCount(tc: number, message: string) {
     switch (true) {
       case tc < 0:
-        await this.discordService.sendMessageWithUrl(
-          message,
-          WEBHOOKS_DISCORD['DISCORD_0'] as string,
-        );
+        // WEBHOOKS_DISCORDS.forEach(async (webhook) => {
+        //   await this.discordService.sendMessageWithUrl(
+        //     message,
+        //     webhook['DISCORD_0'] as string,
+        //   );
+        // });
         break;
       case tc >= 0 && tc < 1:
-        await this.discordService.sendMessageWithUrl(
-          message,
-          WEBHOOKS_DISCORD['DISCORD_0_1'] as string,
-        );
+        // WEBHOOKS_DISCORDS.forEach(async (webhook) => {
+        //   await this.discordService.sendMessageWithUrl(
+        //     message,
+        //     webhook['DISCORD_0_1'] as string,
+        //   );
+        // });
         break;
       case tc >= 1 && tc < 2:
-        await this.discordService.sendMessageWithUrl(
-          message,
-          WEBHOOKS_DISCORD['DISCORD_1_2'] as string,
-        );
+        // WEBHOOKS_DISCORDS.forEach(async (webhook) => {
+        //   await this.discordService.sendMessageWithUrl(
+        //     message,
+        //     webhook['DISCORD_1_2'] as string,
+        //   );
+        // });
         break;
       case tc >= 2 && tc < 3:
-        await this.discordService.sendMessageWithUrl(
-          message,
-          WEBHOOKS_DISCORD['DISCORD_2_3'] as string,
-        );
+        WEBHOOKS_DISCORDS.forEach(async (webhook) => {
+          await this.discordService.sendMessageWithUrl(
+            message,
+            webhook['DISCORD_2_3'] as string,
+          );
+        });
+
         break;
       case tc >= 3 && tc < 4:
-        await this.discordService.sendMessageWithUrl(
-          message,
-          WEBHOOKS_DISCORD['DISCORD_3_4'] as string,
-        );
+        WEBHOOKS_DISCORDS.forEach(async (webhook) => {
+          await this.discordService.sendMessageWithUrl(
+            message,
+            webhook['DISCORD_3_4'] as string,
+          );
+        });
+
         break;
       case tc >= 4 && tc < 5:
-        await this.discordService.sendMessageWithUrl(
-          message,
-          WEBHOOKS_DISCORD['DISCORD_4_5'] as string,
-        );
+        WEBHOOKS_DISCORDS.forEach(async (webhook) => {
+          await this.discordService.sendMessageWithUrl(
+            message,
+            webhook['DISCORD_4_5'] as string,
+          );
+        });
+
         break;
       case tc >= 5 && tc < 6:
-        await this.discordService.sendMessageWithUrl(
-          message,
-          WEBHOOKS_DISCORD['DISCORD_5_6'] as string,
-        );
+        WEBHOOKS_DISCORDS.forEach(async (webhook) => {
+          await this.discordService.sendMessageWithUrl(
+            message,
+            webhook['DISCORD_5_6'] as string,
+          );
+        });
+
         break;
       case tc >= 6:
-        await this.discordService.sendMessageWithUrl(
-          message,
-          WEBHOOKS_DISCORD['DISCORD_6'] as string,
-        );
+        WEBHOOKS_DISCORDS.forEach(async (webhook) => {
+          await this.discordService.sendMessageWithUrl(
+            message,
+            webhook['DISCORD_6'] as string,
+          );
+        });
+
         break;
     }
   }
