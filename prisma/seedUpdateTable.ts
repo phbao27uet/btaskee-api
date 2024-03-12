@@ -69,33 +69,16 @@ const generateTables = () => {
 };
 
 async function main() {
-  await prisma.table.createMany({
-    data: generateTables(),
-    skipDuplicates: true,
-  });
+  generateTables().forEach(async (table, index) => {
+    console.log('table', table);
 
-  rooms.forEach(async (room, index) => {
-    if (!room.platforms.length) {
-      return;
-    }
-
-    console.log('room', room);
-
-    room.platforms.forEach(async (platform) => {
-      const website = await prisma.mWebsite.findFirst({
-        where: {
-          name: platform,
-        },
-      });
-
-      await prisma.websiteTable.create({
-        data: {
-          table_id: index + 1,
-          website_id: Number(website?.id),
-          created_at: new Date(),
-          updated_at: new Date(),
-        },
-      });
+    await prisma.table.update({
+      where: {
+        id: index + 1,
+      },
+      data: {
+        table_limit: table.table_limit,
+      },
     });
   });
 
