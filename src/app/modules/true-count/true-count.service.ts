@@ -25,7 +25,11 @@ export class TrueCountService {
 
   private readonly logger = new Logger(TrueCountService.name);
 
-  async getRooms(website_name: string, tc: number | null) {
+  async getRooms(
+    website_name: string,
+    tc: number | null,
+    min_money: number | null,
+  ) {
     if (tc === null) {
       const trueCountSetting = await this.prisma.trueCountSetting.findFirst({});
 
@@ -55,6 +59,9 @@ export class TrueCountService {
         true_count: {
           gte: +tc,
         },
+        table_limit: {
+          lte: Number(min_money) || 999999,
+        },
         is_reset_true_count: false,
         is_reset_by_max_card: false,
         is_reset_by_inactivity: false,
@@ -68,6 +75,7 @@ export class TrueCountService {
         true_count: true,
         evolution_table_id: true,
         name: true,
+        table_limit: true,
       },
       orderBy: {
         true_count: 'desc',

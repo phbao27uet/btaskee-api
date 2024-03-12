@@ -23,6 +23,16 @@ export class TrueCountController {
     required: false,
     description: 'website_name',
   })
+  @ApiParam({
+    name: 'true_count',
+    required: false,
+    description: 'true_count',
+  })
+  @ApiParam({
+    name: 'min_money',
+    required: false,
+    description: 'min_money',
+  })
   @ApiOperation({
     summary: 'APP',
     description: 'Get the list of rooms that satisfy the true count condition',
@@ -42,8 +52,9 @@ export class TrueCountController {
   async getRooms(
     @Query('website_name') website_name = '',
     @Query('true_count') tc = null,
+    @Query('min_money') min_money = null,
   ) {
-    return this.trueCountService.getRooms(website_name, tc);
+    return this.trueCountService.getRooms(website_name, tc, min_money);
   }
 
   @Put('/flag-reset/:table_id')

@@ -58,6 +58,7 @@ const generateTables = () => {
       name: room.name,
       true_count: 0,
       running_count: 0,
+      table_limit: room.table_limit,
       evolution_table_id: room.id,
       is_reset_true_count: false,
       created_at: new Date(),
