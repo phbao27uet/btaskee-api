@@ -1,4 +1,0 @@
-.generate-env:
-  - echo "Generate .env"
-  - cat "$ENV_STG" > .env
-  - cat .env

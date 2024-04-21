@@ -1,1 +1,0 @@
-scp -r dist BJ:/var/www/html/admin

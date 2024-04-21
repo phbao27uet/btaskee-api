@@ -1,7 +1,0 @@
-dist
-node_modules
-docker*
-Dockerfile
-README.md
-.dockerignore
-.git
