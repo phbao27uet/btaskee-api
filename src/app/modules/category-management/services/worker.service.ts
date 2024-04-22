@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { PrismaService } from "src/shared/prisma/prisma.service";
 
 @Injectable()
@@ -15,6 +15,9 @@ export class WorkerService {
       this.prismaService.user.findMany({
         where: {
           role: "WORKER",
+        },
+        include: {
+          Department: true,
         },
         skip: page && perPage ? (page - 1) * perPage : undefined,
         take: page && perPage ? perPage : undefined,
@@ -38,6 +41,9 @@ export class WorkerService {
         id,
         role: "WORKER",
       },
+      include: {
+        Department: true,
+      },
     });
 
     return res;
@@ -51,7 +57,7 @@ export class WorkerService {
     });
 
     if (user) {
-      throw new Error("Email already exists");
+      throw new BadRequestException("Email đã tồn tại");
     }
 
     const res = await this.prismaService.user.create({

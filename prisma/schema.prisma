@@ -45,6 +45,7 @@ model Asset {
   name          String
   // description   String
   asset_code    String
+  depreciation_rate Float   @default(0)
   entry_time    DateTime
   entry_price   Int
   supplier_id   Int

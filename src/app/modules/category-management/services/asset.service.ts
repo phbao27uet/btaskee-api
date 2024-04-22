@@ -33,6 +33,9 @@ export class AssetService {
       where: {
         id,
       },
+      include: {
+        Department: true,
+      },
     });
 
     return data;
@@ -47,11 +50,23 @@ export class AssetService {
   }
 
   async update(id: number, updateUserDto: any) {
+    const updateDto = {
+      ...updateUserDto,
+      depreciation_rate: +updateUserDto.depreciation_rate,
+      entry_price: +updateUserDto.entry_price,
+      supplier_id: +updateUserDto.supplier_id,
+      department_id: updateUserDto.department_id
+        ? +updateUserDto.department_id
+        : null,
+    };
+
+    console.log(updateDto);
+
     const data = await this.prismaService.asset.update({
       where: {
         id,
       },
-      data: updateUserDto,
+      data: updateDto,
     });
 
     return data;
@@ -61,6 +76,28 @@ export class AssetService {
     return this.prismaService.asset.delete({
       where: {
         id,
+      },
+    });
+  }
+
+  recall(id: number) {
+    return this.prismaService.asset.update({
+      where: {
+        id,
+      },
+      data: {
+        department_id: null,
+      },
+    });
+  }
+
+  assign(id: number, department_id: number) {
+    return this.prismaService.asset.update({
+      where: {
+        id,
+      },
+      data: {
+        department_id,
       },
     });
   }

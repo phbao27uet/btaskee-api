@@ -12,6 +12,10 @@ export class DepartmentService {
       }),
       this.prismaService.department.findMany({
         where: {},
+        include: {
+          User: true,
+          Asset: true,
+        },
         skip: page && perPage ? (page - 1) * perPage : undefined,
         take: page && perPage ? perPage : undefined,
       }),
@@ -32,6 +36,10 @@ export class DepartmentService {
     const department = await this.prismaService.department.findUnique({
       where: {
         id,
+      },
+      include: {
+        User: true,
+        Asset: true,
       },
     });
 

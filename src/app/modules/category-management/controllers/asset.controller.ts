@@ -31,23 +31,30 @@ export class AssetController {
 
   @Post("assets")
   async createAsset(@Body() createDto: any) {
-    console.log("createDto", createDto);
-
     return this.assetService.create(createDto);
+  }
+
+  @Post("assets/recall/:id")
+  async recallAsset(@Param("id") id: number) {
+    console.log(id);
+
+    return this.assetService.recall(+id);
+  }
+
+  @Post("assets/assign/:id")
+  async assignAsset(@Param("id") id: number, @Body() assignDto: any) {
+    console.log(assignDto);
+
+    return this.assetService.assign(+id, assignDto.department_id);
   }
 
   @Patch("assets/:id")
   async updateAsset(@Body() updateDto: any, @Param("id") id: number) {
-    console.log("id", id);
-    console.log("updateDto", updateDto);
-
     return this.assetService.update(+id, updateDto);
   }
 
   @Delete("assets/:id")
   async removeAsset(@Param("id") id: number) {
-    console.log("id", id);
-
     return this.assetService.remove(+id);
   }
 }
