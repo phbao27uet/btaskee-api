@@ -12,8 +12,10 @@ export class WorkerService {
           role: "WORKER",
         },
       }),
-      this.prismaService.department.findMany({
-        where: {},
+      this.prismaService.user.findMany({
+        where: {
+          role: "WORKER",
+        },
         skip: page && perPage ? (page - 1) * perPage : undefined,
         take: page && perPage ? perPage : undefined,
       }),
@@ -42,6 +44,16 @@ export class WorkerService {
   }
 
   async create(createDto: any) {
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        email: createDto.email,
+      },
+    });
+
+    if (user) {
+      throw new Error("Email already exists");
+    }
+
     const res = await this.prismaService.user.create({
       data: {
         ...createDto,

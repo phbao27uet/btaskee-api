@@ -12,8 +12,10 @@ export class ManagerService {
           role: "MANAGER",
         },
       }),
-      this.prismaService.department.findMany({
-        where: {},
+      this.prismaService.user.findMany({
+        where: {
+          role: "MANAGER",
+        },
         skip: page && perPage ? (page - 1) * perPage : undefined,
         take: page && perPage ? perPage : undefined,
       }),
@@ -42,6 +44,16 @@ export class ManagerService {
   }
 
   async create(createDto: any) {
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        email: createDto.email,
+      },
+    });
+
+    if (user) {
+      throw new Error("Email already exists");
+    }
+
     const res = await this.prismaService.user.create({
       data: {
         ...createDto,
@@ -53,11 +65,23 @@ export class ManagerService {
   }
 
   async update(id: number, updateDto: any) {
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        email: updateDto.email,
+      },
+    });
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
     const res = await this.prismaService.user.update({
       where: {
         id,
       },
-      data: updateDto,
+      data: {
+        ...updateDto,
+      },
     });
 
     return res;

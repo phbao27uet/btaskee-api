@@ -11,25 +11,29 @@ datasource db {
 }
 
 model User {
-  id            Int      @id @default(autoincrement())
-  email         String   @unique
+  id            Int     @id @default(autoincrement())
+  email         String  @unique
   name          String
-  password      String
   phone_number  String
+  address       String
   refresh_token String?
-  role          Role     @default(WORKER)
+  role          Role    @default(WORKER)
   department_id Int
-  created_at    DateTime @default(now())
-  updated_at    DateTime @updatedAt
 
-  Department Department @relation(fields: [department_id], references: [id])
+  username String? @unique
+  password String?
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  Department Department @relation(fields: [department_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model Supplier {
   id           Int      @id @default(autoincrement())
   name         String
   phone_number String
-  email        String
+  email        String   @unique
   address      String
   created_at   DateTime @default(now())
   updated_at   DateTime @updatedAt
@@ -37,20 +41,22 @@ model Supplier {
 }
 
 model Asset {
-  id          Int      @id @default(autoincrement())
-  name        String
-  description String
-  asset_code  String
-  entry_time  DateTime
-  entry_price Int
-  supplier_id Int
-  status      StatusAsset
-  condition   ConditionAsset
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
+  id            Int            @id @default(autoincrement())
+  name          String
+  // description   String
+  asset_code    String
+  entry_time    DateTime
+  entry_price   Int
+  supplier_id   Int
+  department_id Int?
+  status        StatusAsset
+  condition     ConditionAsset
+  created_at    DateTime       @default(now())
+  updated_at    DateTime       @updatedAt
 
-  Supplier        Supplier          @relation(fields: [supplier_id], references: [id])
-  AssetDepartment AssetDepartment[]
+  Supplier   Supplier    @relation(fields: [supplier_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  Department Department? @relation(fields: [department_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  // AssetDepartment AssetDepartment[]
 }
 
 model Department {
@@ -58,22 +64,23 @@ model Department {
   name    String
   address String
 
-  created_at      DateTime          @default(now())
-  updated_at      DateTime          @updatedAt
-  User            User[]
-  AssetDepartment AssetDepartment[]
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  User       User[]
+  Asset      Asset[] 
+  // AssetDepartment AssetDepartment[]
 }
 
-model AssetDepartment {
-  id            Int      @id @default(autoincrement())
-  asset_id      Int
-  department_id Int
-  created_at    DateTime @default(now())
-  updated_at    DateTime @updatedAt
+// model AssetDepartment {
+//   id            Int      @id @default(autoincrement())
+//   asset_id      Int
+//   department_id Int
+//   created_at    DateTime @default(now())
+//   updated_at    DateTime @updatedAt
 
-  Asset      Asset      @relation(fields: [asset_id], references: [id])
-  Department Department @relation(fields: [department_id], references: [id])
-}
+//   Asset      Asset      @relation(fields: [asset_id], references: [id])
+//   Department Department @relation(fields: [department_id], references: [id])
+// }
 
 enum Role {
   ADMIN
