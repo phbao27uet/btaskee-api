@@ -5,13 +5,49 @@ import { PrismaService } from "src/shared/prisma/prisma.service";
 export class AssetService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async findAll({ page, perPage }: { page: number; perPage: number }) {
+  async findAll({
+    page,
+    perPage,
+    filter,
+  }: {
+    page: number;
+    perPage: number;
+
+    filter: { id?: number; name?: string; status?: string; condition?: string };
+  }) {
+    const newFilter = Object.entries(filter).reduce((acc, [key, value]) => {
+      if (value) {
+        switch (key) {
+          case "id":
+            acc[key as any] = Number(value);
+            break;
+          case "status":
+          case "condition":
+            acc[key as any] = value;
+            break;
+
+          default:
+            acc[key as any] = {
+              contains: value,
+              mode: "insensitive",
+            };
+            break;
+        }
+      }
+
+      return acc;
+    }, {} as any);
+
     const [total, assets] = await Promise.all([
       this.prismaService.asset.count({
-        where: {},
+        where: {
+          ...newFilter,
+        },
       }),
       this.prismaService.asset.findMany({
-        where: {},
+        where: {
+          ...newFilter,
+        },
         skip: page && perPage ? (page - 1) * perPage : undefined,
         take: page && perPage ? perPage : undefined,
       }),

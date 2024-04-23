@@ -17,10 +17,16 @@ export class ManagerController {
   // ---------------------------- MANAGER ----------------------------
   // @UseGuards(JwtAuthGuard)
   @Get("managers")
-  async findAll(@Query("page") page = 1, @Query("perPage") perPage = 20) {
+  async findAll(
+    @Query("page") page = 1,
+    @Query("perPage") perPage = 20,
+    @Query("id") id?: number,
+    @Query("name") name?: string
+  ) {
     return this.managerService.findAll({
       page: +page,
       perPage: +perPage,
+      filter: { id: Number(id), name },
     });
   }
 

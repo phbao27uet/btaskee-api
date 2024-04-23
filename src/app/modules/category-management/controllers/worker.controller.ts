@@ -17,10 +17,17 @@ export class WorkerController {
   // ---------------------------- WORKERS ----------------------------
   // @UseGuards(JwtAuthGuard)
   @Get("workers")
-  async findAlls(@Query("page") page = 1, @Query("perPage") perPage = 20) {
+  async findAll(
+    @Query("page") page = 1,
+    @Query("perPage") perPage = 20,
+
+    @Query("id") id?: number,
+    @Query("name") name?: string
+  ) {
     return this.workerService.findAll({
       page: +page,
       perPage: +perPage,
+      filter: { id: Number(id), name },
     });
   }
 

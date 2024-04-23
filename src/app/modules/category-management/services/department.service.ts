@@ -5,13 +5,37 @@ import { PrismaService } from "src/shared/prisma/prisma.service";
 export class DepartmentService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async findAll({ page, perPage }: { page: number; perPage: number }) {
+  async findAll({
+    page,
+    perPage,
+    filter,
+  }: {
+    page: number;
+    perPage: number;
+    filter: { id?: number; name?: string };
+  }) {
+    const newFilter = Object.entries(filter).reduce((acc, [key, value]) => {
+      if (value) {
+        if (key == "id") {
+          acc[key as any] = Number(value);
+          return acc;
+        }
+
+        acc[key as any] = {
+          contains: value,
+          mode: "insensitive",
+        };
+      }
+
+      return acc;
+    }, {} as any);
+
     const [total, res] = await Promise.all([
       this.prismaService.department.count({
-        where: {},
+        where: { ...newFilter },
       }),
       this.prismaService.department.findMany({
-        where: {},
+        where: { ...newFilter },
         include: {
           User: true,
           Asset: true,

@@ -19,11 +19,14 @@ export class SupplierController {
   @Get("suppliers")
   async findAllSuppliers(
     @Query("page") page = 1,
-    @Query("perPage") perPage = 20
+    @Query("perPage") perPage = 20,
+    @Query("id") id?: number,
+    @Query("name") name?: string
   ) {
     return this.supplierService.findAll({
       page: +page,
       perPage: +perPage,
+      filter: { id: Number(id), name },
     });
   }
 
