@@ -40,6 +40,9 @@ export class SupplierService {
         where: {
           ...newFilter,
         },
+        include: {
+          Asset: true,
+        },
         skip: page && perPage ? (page - 1) * perPage : undefined,
         take: page && perPage ? perPage : undefined,
       }),

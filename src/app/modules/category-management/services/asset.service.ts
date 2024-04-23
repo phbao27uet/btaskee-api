@@ -48,6 +48,10 @@ export class AssetService {
         where: {
           ...newFilter,
         },
+        include: {
+          Department: true,
+          Supplier: true,
+        },
         skip: page && perPage ? (page - 1) * perPage : undefined,
         take: page && perPage ? perPage : undefined,
       }),
