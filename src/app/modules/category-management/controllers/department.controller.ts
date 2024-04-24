@@ -21,12 +21,13 @@ export class DepartmentController {
     @Query("page") page = 1,
     @Query("perPage") perPage = 20,
     @Query("id") id?: number,
-    @Query("name") name?: string
+    @Query("name") name?: string,
+    @Query("status") status?: string
   ) {
     return this.departmentService.findAll({
       page: +page,
       perPage: +perPage,
-      filter: { id: Number(id), name },
+      filter: { id: Number(id), name, status },
     });
   }
 

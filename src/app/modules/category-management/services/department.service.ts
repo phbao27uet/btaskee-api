@@ -12,19 +12,25 @@ export class DepartmentService {
   }: {
     page: number;
     perPage: number;
-    filter: { id?: number; name?: string };
+    filter: { id?: number; name?: string; status?: string };
   }) {
     const newFilter = Object.entries(filter).reduce((acc, [key, value]) => {
       if (value) {
-        if (key == "id") {
-          acc[key as any] = Number(value);
-          return acc;
-        }
+        switch (key) {
+          case "id":
+            acc[key as any] = Number(value);
+            break;
+          case "status":
+            acc[key as any] = value;
+            break;
 
-        acc[key as any] = {
-          contains: value,
-          mode: "insensitive",
-        };
+          default:
+            acc[key as any] = {
+              contains: value,
+              mode: "insensitive",
+            };
+            break;
+        }
       }
 
       return acc;

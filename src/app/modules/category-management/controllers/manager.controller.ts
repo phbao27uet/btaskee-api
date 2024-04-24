@@ -30,6 +30,17 @@ export class ManagerController {
     });
   }
 
+  @Get("managers-workers")
+  async findAllManagersWorkers(
+    @Query("page") page = 1,
+    @Query("perPage") perPage = 20
+  ) {
+    return this.managerService.findAllManagersWorkers({
+      page: +page,
+      perPage: +perPage,
+    });
+  }
+
   @Get("managers/:id")
   async findOn(@Param("id") id: number) {
     return this.managerService.findOne(+id);

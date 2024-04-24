@@ -30,8 +30,6 @@ export class WorkerService {
       return acc;
     }, {} as any);
 
-    console.log(newFilter);
-
     const [total, res] = await Promise.all([
       this.prismaService.user.count({
         where: {
@@ -46,6 +44,7 @@ export class WorkerService {
         },
         include: {
           Department: true,
+          Asset: true,
         },
         skip: page && perPage ? (page - 1) * perPage : undefined,
         take: page && perPage ? perPage : undefined,
