@@ -27,6 +27,11 @@ model User {
   updated_at DateTime @updatedAt
 
   Department Department @relation(fields: [department_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  Plans            Plans[]
+  RecommendPlan    RecommendPlan[]
+  SpecialAsset     SpecialAsset[]
+  LiquidationAsset LiquidationAsset[]
 }
 
 model Supplier {
@@ -41,23 +46,23 @@ model Supplier {
 }
 
 model Asset {
-  id            Int            @id @default(autoincrement())
-  name          String
+  id                Int            @id @default(autoincrement())
+  name              String
   // description   String
-  asset_code    String
-  depreciation_rate Float   @default(0)
-  entry_time    DateTime
-  entry_price   Int
-  supplier_id   Int
-  department_id Int?
-  status        StatusAsset
-  condition     ConditionAsset
-  created_at    DateTime       @default(now())
-  updated_at    DateTime       @updatedAt
+  asset_code        String
+  depreciation_rate Float          @default(0)
+  entry_time        DateTime
+  entry_price       Int
+  supplier_id       Int
+  department_id     Int?
+  status            StatusAsset
+  condition         ConditionAsset
+  created_at        DateTime       @default(now())
+  updated_at        DateTime       @updatedAt
 
-  Supplier   Supplier    @relation(fields: [supplier_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  Department Department? @relation(fields: [department_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  // AssetDepartment AssetDepartment[]
+  Supplier         Supplier           @relation(fields: [supplier_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  Department       Department?        @relation(fields: [department_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  LiquidationAsset LiquidationAsset[]
 }
 
 model Department {
@@ -68,20 +73,128 @@ model Department {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   User       User[]
-  Asset      Asset[] 
+  Asset      Asset[]
+
   // AssetDepartment AssetDepartment[]
+  Plans Plans[]
 }
 
-// model AssetDepartment {
-//   id            Int      @id @default(autoincrement())
-//   asset_id      Int
-//   department_id Int
-//   created_at    DateTime @default(now())
-//   updated_at    DateTime @updatedAt
+model Plans {
+  id                Int        @id @default(autoincrement())
+  implemention_date DateTime
+  petition_date     DateTime
+  description_plan  String
+  type              TypePlan
+  status            StatusPlan
+  evaluation        String
 
-//   Asset      Asset      @relation(fields: [asset_id], references: [id])
-//   Department Department @relation(fields: [department_id], references: [id])
-// }
+  department_id Int?
+  user_id       Int?
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  Department Department? @relation(fields: [department_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  User       User?       @relation(fields: [user_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  PlanAsset  PlanAsset[]
+}
+
+model PlanAsset {
+  id            Int         @id @default(autoincrement())
+  plan_id       Int
+  asset_name    String
+  supplier_name String
+  status        StatusAsset
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  Plans Plans @relation(fields: [plan_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+}
+
+model RecommendPlan {
+  id                Int        @id @default(autoincrement())
+  implemention_date DateTime
+  petition_date     DateTime
+  description_plan  String
+  type              TypePlan
+  status            StatusPlan
+  evaluation        String
+  user_id           Int
+  quantity          Int
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  User               User                 @relation(fields: [user_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  RecommendPlanAsset RecommendPlanAsset[]
+}
+
+model RecommendPlanAsset {
+  id               Int         @id @default(autoincrement())
+  recommed_plan_id Int
+  asset_name       String
+  supplier_name    String
+  status           StatusAsset
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  RecommendPlan RecommendPlan @relation(fields: [recommed_plan_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+}
+
+model SpecialAsset {
+  id                  Int        @id @default(autoincrement())
+  name                String
+  quantity            Int
+  type_of_vehicle     String
+  purpose_use         String
+  status              StatusPlan
+  car_manufacturer    String
+  manufacture_country String
+  user_id             Int
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  User User @relation(fields: [user_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+}
+
+model LiquidationAsset {
+  id                    Int        @id @default(autoincrement())
+  implemention_date     DateTime
+  petition_date         DateTime
+  description_plan      String
+  type                  TypePlan
+  status                StatusPlan
+  evaluation            String
+  quantity              Int
+  original_price        Int
+  liquidation_price     Int
+  asset_purchasing_unit String
+  user_id               Int
+  asset_id              Int
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  User  User  @relation(fields: [user_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  Asset Asset @relation(fields: [asset_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+}
+
+model BuidingRental {
+  id                 Int      @id @default(autoincrement())
+  name               String
+  location_room      String
+  size_room          Float
+  renter_information String?
+  rental_date_start  DateTime
+  rental_date_end    DateTime
+  rental_price       Int
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
 
 enum Role {
   ADMIN
@@ -95,8 +208,19 @@ enum StatusAsset {
   MAINTENANCE
 }
 
+enum StatusPlan {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 enum ConditionAsset {
   GOOD
   BAD
   BROKEN
+}
+
+enum TypePlan {
+  MAINTENANCE
+  SHOPPING
 }
