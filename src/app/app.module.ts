@@ -1,12 +1,18 @@
-import { Module } from "@nestjs/common";
+import { Module } from '@nestjs/common';
 // import { APP_GUARD } from '@nestjs/core';
-import { ScheduleModule } from "@nestjs/schedule";
-import { FilesModule } from "./modules/files/file.module";
+import { ScheduleModule } from '@nestjs/schedule';
+import { FilesModule } from './modules/files/file.module';
 
-import { CategoryManagementModule } from "./modules/category-management/category-management.module";
+import { AdminAuthModule } from './modules/auth/auth.module';
+import { CategoryManagementModule } from './modules/category-management/category-management.module';
 
 @Module({
-  imports: [CategoryManagementModule, FilesModule, ScheduleModule.forRoot()],
+  imports: [
+    AdminAuthModule,
+    CategoryManagementModule,
+    FilesModule,
+    ScheduleModule.forRoot(),
+  ],
   // providers: [
   //   {
   //     provide: APP_GUARD,
