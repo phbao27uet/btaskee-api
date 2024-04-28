@@ -35,14 +35,16 @@ model User {
 }
 
 model Supplier {
-  id           Int      @id @default(autoincrement())
-  name         String
-  phone_number String
-  email        String   @unique
-  address      String
-  created_at   DateTime @default(now())
-  updated_at   DateTime @updatedAt
-  Asset        Asset[]
+  id                 Int                  @id @default(autoincrement())
+  name               String
+  phone_number       String
+  email              String               @unique
+  address            String
+  created_at         DateTime             @default(now())
+  updated_at         DateTime             @updatedAt
+  Asset              Asset[]
+  PlanAsset          PlanAsset[]
+  RecommendPlanAsset RecommendPlanAsset[]
 }
 
 model Asset {
@@ -76,71 +78,76 @@ model Department {
   Asset      Asset[]
 
   // AssetDepartment AssetDepartment[]
-  Plans Plans[]
+  Plans         Plans[]
+  RecommendPlan RecommendPlan[]
 }
 
 model Plans {
-  id                Int        @id @default(autoincrement())
+  id                Int         @id @default(autoincrement())
   implemention_date DateTime
   petition_date     DateTime
   description_plan  String
   type              TypePlan
-  status            StatusPlan
-  evaluation        String
+  status            StatusPlan?
+  evaluation        String?
+  quantity          Int
 
-  department_id Int?
+  department_id Int
   user_id       Int?
+  plan_asset_id Int
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
   Department Department? @relation(fields: [department_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
   User       User?       @relation(fields: [user_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  PlanAsset  PlanAsset[]
+  PlanAsset  PlanAsset   @relation(fields: [plan_asset_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model PlanAsset {
-  id            Int         @id @default(autoincrement())
-  plan_id       Int
-  asset_name    String
-  supplier_name String
-  status        StatusAsset
+  id          Int         @id @default(autoincrement())
+  asset_name  String
+  supplier_id Int
+  status      StatusAsset
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  Plans Plans @relation(fields: [plan_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  Supplier Supplier @relation(fields: [supplier_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  Plans    Plans[]
 }
 
 model RecommendPlan {
-  id                Int        @id @default(autoincrement())
-  implemention_date DateTime
-  petition_date     DateTime
-  description_plan  String
-  type              TypePlan
-  status            StatusPlan
-  evaluation        String
-  user_id           Int
-  quantity          Int
+  id                      Int         @id @default(autoincrement())
+  implemention_date       DateTime
+  petition_date           DateTime
+  description_plan        String
+  type                    TypePlan
+  status                  StatusPlan?
+  evaluation              String?
+  user_id                 Int?
+  department_id           Int
+  recommend_plan_asset_id Int
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  User               User                 @relation(fields: [user_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  RecommendPlanAsset RecommendPlanAsset[]
+  User               User?              @relation(fields: [user_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  RecommendPlanAsset RecommendPlanAsset @relation(fields: [recommend_plan_asset_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  Department         Department         @relation(fields: [department_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model RecommendPlanAsset {
-  id               Int         @id @default(autoincrement())
-  recommed_plan_id Int
-  asset_name       String
-  supplier_name    String
-  status           StatusAsset
+  id          Int         @id @default(autoincrement())
+  asset_name  String
+  supplier_id Int
+  status      StatusAsset
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  RecommendPlan RecommendPlan @relation(fields: [recommed_plan_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  Supplier      Supplier        @relation(fields: [supplier_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  RecommendPlan RecommendPlan[]
 }
 
 model SpecialAsset {

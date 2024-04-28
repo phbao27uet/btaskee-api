@@ -5,12 +5,14 @@ import { FilesModule } from './modules/files/file.module';
 
 import { AdminAuthModule } from './modules/auth/auth.module';
 import { CategoryManagementModule } from './modules/category-management/category-management.module';
+import { PlanModule } from './modules/plan/plan.module';
 
 @Module({
   imports: [
     AdminAuthModule,
     CategoryManagementModule,
     FilesModule,
+    PlanModule,
     ScheduleModule.forRoot(),
   ],
   // providers: [
