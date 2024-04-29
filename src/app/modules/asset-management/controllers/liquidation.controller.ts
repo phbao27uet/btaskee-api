@@ -8,15 +8,15 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { ShoppingService } from '../services/shopping.service';
+import { LiquidationService } from '../services/liquidation.service';
 
-@Controller('plan')
-export class ShoppingController {
-  constructor(private service: ShoppingService) {}
+@Controller('asset-management')
+export class LiquidationController {
+  constructor(private service: LiquidationService) {}
 
   // ---------------------------- ASSETS ----------------------------
   // @UseGuards(JwtAuthGuard)
-  @Get('shopping')
+  @Get('liquidation')
   async findAll(
     @Query('page') page = 1,
     @Query('perPage') perPage = 20,
@@ -28,30 +28,26 @@ export class ShoppingController {
     return this.service.findAll({
       page: +page,
       perPage: +perPage,
-      filter: {
-        id: Number(id),
-        implemention_date,
-        petition_date,
-      },
+      filter: { id: Number(id), implemention_date, petition_date },
     });
   }
 
-  @Get('shopping/:id')
+  @Get('liquidation/:id')
   async findOne(@Param('id') id: number) {
     return this.service.findOne(+id);
   }
 
-  @Post('shopping')
+  @Post('liquidation')
   async create(@Body() createDto: any) {
     return this.service.create(createDto);
   }
 
-  @Patch('shopping/:id')
+  @Patch('liquidation/:id')
   async update(@Body() updateDto: any, @Param('id') id: number) {
     return this.service.update(+id, updateDto);
   }
 
-  @Delete('shopping/:id')
+  @Delete('liquidation/:id')
   async remove(@Param('id') id: number) {
     return this.service.remove(+id);
   }

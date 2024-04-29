@@ -13,19 +13,33 @@ export class MaintenanceService {
     page: number;
     perPage: number;
 
-    filter: { id?: number; name?: string; status?: string; condition?: string };
+    filter: {
+      id?: number;
+      implemention_date?: string;
+      petition_date?: string;
+    };
   }) {
     const newFilter = Object.entries(filter).reduce((acc, [key, value]) => {
       if (value) {
         switch (key) {
           case 'id':
+          case 'department_id':
             acc[key as any] = Number(value);
             break;
           case 'status':
           case 'condition':
             acc[key as any] = value;
             break;
-
+          case 'implemention_date':
+          case 'petition_date':
+            acc[key as any] = {
+              // Add 1 day to the date to include the whole day
+              gte: new Date(value),
+              lt: new Date(
+                new Date(value).setDate(new Date(value).getDate() + 1),
+              ),
+            };
+            break;
           default:
             acc[key as any] = {
               contains: value,
@@ -48,11 +62,16 @@ export class MaintenanceService {
       this.prismaService.plans.findMany({
         where: {
           ...newFilter,
+          type: 'MAINTENANCE',
         },
         include: {
           Department: true,
           User: true,
-          PlanAsset: true,
+          PlanAsset: {
+            include: {
+              Supplier: true,
+            },
+          },
         },
         skip: page && perPage ? (page - 1) * perPage : undefined,
         take: page && perPage ? perPage : undefined,
@@ -79,7 +98,11 @@ export class MaintenanceService {
       include: {
         Department: true,
         User: true,
-        PlanAsset: true,
+        PlanAsset: {
+          include: {
+            Supplier: true,
+          },
+        },
       },
     });
 
@@ -87,33 +110,53 @@ export class MaintenanceService {
   }
 
   async create(createDto: any) {
-    const data = await this.prismaService.plans.create({
-      data: createDto,
+    const asset = await this.prismaService.planAsset.create({
+      data: {
+        asset_name: createDto.asset_name,
+        status: 'READY_TO_USE',
+        supplier_id: +createDto.supplier_id,
+      },
     });
 
+    const data = await this.prismaService.plans.create({
+      data: {
+        implemention_date: createDto.implemention_date,
+        petition_date: createDto.petition_date,
+        description_plan: createDto.description_plan,
+        type: 'MAINTENANCE',
+        status: 'PENDING',
+        user_id: +createDto.user_id,
+        plan_asset_id: asset.id,
+        quantity: +createDto.quantity,
+      },
+    });
     return data;
   }
 
-  async update(id: number, updateUserDto: any) {
-    const updateDto = {
-      ...updateUserDto,
-      depreciation_rate: +updateUserDto.depreciation_rate,
-      entry_price: +updateUserDto.entry_price,
-      supplier_id: +updateUserDto.supplier_id,
-      department_id: updateUserDto.department_id
-        ? +updateUserDto.department_id
-        : null,
-    };
-
-    console.log(updateDto);
-
+  async update(id: number, updateDto: any) {
     const data = await this.prismaService.plans.update({
       where: {
         id,
       },
-      data: updateDto,
+      data: {
+        implemention_date: updateDto.implemention_date,
+        petition_date: updateDto.petition_date,
+        description_plan: updateDto.description_plan,
+        quantity: +updateDto.quantity,
+        user_id: +updateDto.user_id,
+      },
     });
 
+    await this.prismaService.recommendPlanAsset.update({
+      where: {
+        id: data.plan_asset_id,
+      },
+      data: {
+        asset_name: updateDto.asset_name,
+        status: 'READY_TO_USE',
+        supplier_id: +updateDto.supplier_id,
+      },
+    });
     return data;
   }
 

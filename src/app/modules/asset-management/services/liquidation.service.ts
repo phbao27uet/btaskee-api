@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 
 @Injectable()
-export class ShoppingService {
+export class LiquidationService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async findAll({
@@ -53,26 +53,20 @@ export class ShoppingService {
     }, {} as any);
 
     const [total, res] = await Promise.all([
-      this.prismaService.plans.count({
+      this.prismaService.liquidationAsset.count({
         where: {
           ...newFilter,
-          type: 'SHOPPING',
         },
       }),
-      this.prismaService.plans.findMany({
+      this.prismaService.liquidationAsset.findMany({
         where: {
           ...newFilter,
         },
         include: {
-          PlanAsset: {
+          User: true,
+          Asset: {
             include: {
               Supplier: true,
-            },
-          },
-          User: true,
-          Department: {
-            include: {
-              User: true,
             },
           },
         },
@@ -93,21 +87,15 @@ export class ShoppingService {
   }
 
   async findOne(id: number) {
-    const data = await this.prismaService.plans.findUnique({
+    const data = await this.prismaService.liquidationAsset.findUnique({
       where: {
         id,
-        type: 'SHOPPING',
       },
       include: {
-        PlanAsset: {
+        User: true,
+        Asset: {
           include: {
             Supplier: true,
-          },
-        },
-        User: true,
-        Department: {
-          include: {
-            User: true,
           },
         },
       },
@@ -117,32 +105,39 @@ export class ShoppingService {
   }
 
   async create(createDto: any) {
-    const asset = await this.prismaService.planAsset.create({
-      data: {
-        asset_name: createDto.asset_name,
-        status: 'READY_TO_USE',
-        supplier_id: +createDto.supplier_id,
+    const asset = await this.prismaService.asset.findUnique({
+      where: {
+        id: +createDto.asset_id,
       },
     });
 
-    const data = await this.prismaService.plans.create({
+    const data = await this.prismaService.liquidationAsset.create({
       data: {
         implemention_date: createDto.implemention_date,
         petition_date: createDto.petition_date,
         description_plan: createDto.description_plan,
-        type: 'SHOPPING',
         status: 'PENDING',
-        user_id: +createDto.user_id,
-        plan_asset_id: asset.id,
+        type: 'SHOPPING',
         quantity: +createDto.quantity,
+        asset_purchasing_unit: createDto.asset_purchasing_unit,
+        liquidation_price: +createDto.liquidation_price,
+        asset_id: +createDto.asset_id,
+        evaluation: 'xxx',
+        user_id: +createDto.user_id,
+        original_price: Number(asset?.entry_price) ?? 0,
       },
     });
-
     return data;
   }
 
   async update(id: number, updateDto: any) {
-    const data = await this.prismaService.plans.update({
+    const asset = await this.prismaService.asset.findUnique({
+      where: {
+        id: +updateDto.asset_id,
+      },
+    });
+
+    const data = await this.prismaService.liquidationAsset.update({
       where: {
         id,
       },
@@ -151,18 +146,11 @@ export class ShoppingService {
         petition_date: updateDto.petition_date,
         description_plan: updateDto.description_plan,
         quantity: +updateDto.quantity,
+        asset_purchasing_unit: updateDto.asset_purchasing_unit,
+        liquidation_price: +updateDto.liquidation_price,
+        asset_id: +updateDto.asset_id,
         user_id: +updateDto.user_id,
-      },
-    });
-
-    await this.prismaService.recommendPlanAsset.update({
-      where: {
-        id: data.plan_asset_id,
-      },
-      data: {
-        asset_name: updateDto.asset_name,
-        status: 'READY_TO_USE',
-        supplier_id: +updateDto.supplier_id,
+        original_price: Number(asset?.entry_price) ?? 0,
       },
     });
 
@@ -170,7 +158,7 @@ export class ShoppingService {
   }
 
   remove(id: number) {
-    return this.prismaService.plans.delete({
+    return this.prismaService.liquidationAsset.delete({
       where: {
         id,
       },

@@ -8,11 +8,11 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { ShoppingService } from '../services/shopping.service';
+import { MaintenanceService } from '../services/maintenance.service';
 
 @Controller('plan')
 export class MaintenanceController {
-  constructor(private service: ShoppingService) {}
+  constructor(private service: MaintenanceService) {}
 
   // ---------------------------- ASSETS ----------------------------
   // @UseGuards(JwtAuthGuard)
@@ -22,14 +22,13 @@ export class MaintenanceController {
     @Query('perPage') perPage = 20,
 
     @Query('id') id?: number,
-    @Query('name') name?: string,
-    @Query('status') status?: string,
-    @Query('condition') condition?: string,
+    @Query('implemention_date') implemention_date?: string,
+    @Query('petition_date') petition_date?: string,
   ) {
     return this.service.findAll({
       page: +page,
       perPage: +perPage,
-      filter: { id: Number(id), name, status, condition },
+      filter: { id: Number(id), implemention_date, petition_date },
     });
   }
 

@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
 import { FilesModule } from './modules/files/file.module';
 
+import { AssetManagementModule } from './modules/asset-management/asset-management.module';
 import { AdminAuthModule } from './modules/auth/auth.module';
 import { CategoryManagementModule } from './modules/category-management/category-management.module';
 import { PlanModule } from './modules/plan/plan.module';
@@ -13,6 +14,7 @@ import { PlanModule } from './modules/plan/plan.module';
     CategoryManagementModule,
     FilesModule,
     PlanModule,
+    AssetManagementModule,
     ScheduleModule.forRoot(),
   ],
   // providers: [

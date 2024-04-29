@@ -92,7 +92,7 @@ model Plans {
   evaluation        String?
   quantity          Int
 
-  department_id Int
+  department_id Int?
   user_id       Int?
   plan_asset_id Int
 
@@ -159,12 +159,12 @@ model SpecialAsset {
   status              StatusPlan
   car_manufacturer    String
   manufacture_country String
-  user_id             Int
+  user_id             Int?
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  User User @relation(fields: [user_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  User User? @relation(fields: [user_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model LiquidationAsset {
@@ -179,14 +179,14 @@ model LiquidationAsset {
   original_price        Int
   liquidation_price     Int
   asset_purchasing_unit String
-  user_id               Int
-  asset_id              Int
+  user_id               Int?
+  asset_id              Int?
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  User  User  @relation(fields: [user_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  Asset Asset @relation(fields: [asset_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  User  User?   @relation(fields: [user_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  Asset Asset?  @relation(fields: [asset_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model BuidingRental {
