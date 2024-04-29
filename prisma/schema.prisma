@@ -156,7 +156,7 @@ model SpecialAsset {
   quantity            Int
   type_of_vehicle     String
   purpose_use         String
-  status              StatusPlan
+  status              StatusAsset
   car_manufacturer    String
   manufacture_country String
   user_id             Int?

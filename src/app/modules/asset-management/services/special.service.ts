@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 
 @Injectable()
-export class AssetService {
+export class SpecialService {
   constructor(private readonly prismaService: PrismaService) {}
 
   async findAll({
@@ -13,19 +13,32 @@ export class AssetService {
     page: number;
     perPage: number;
 
-    filter: { id?: number; name?: string; status?: string; condition?: string };
+    filter: {
+      id?: number;
+      name?: string;
+    };
   }) {
     const newFilter = Object.entries(filter).reduce((acc, [key, value]) => {
       if (value) {
         switch (key) {
           case 'id':
+          case 'department_id':
             acc[key as any] = Number(value);
             break;
           case 'status':
           case 'condition':
             acc[key as any] = value;
             break;
-
+          case 'implemention_date':
+          case 'petition_date':
+            acc[key as any] = {
+              // Add 1 day to the date to include the whole day
+              gte: new Date(value),
+              lt: new Date(
+                new Date(value).setDate(new Date(value).getDate() + 1),
+              ),
+            };
+            break;
           default:
             acc[key as any] = {
               contains: value,
@@ -38,19 +51,18 @@ export class AssetService {
       return acc;
     }, {} as any);
 
-    const [total, assets] = await Promise.all([
-      this.prismaService.asset.count({
+    const [total, res] = await Promise.all([
+      this.prismaService.specialAsset.count({
         where: {
           ...newFilter,
         },
       }),
-      this.prismaService.asset.findMany({
+      this.prismaService.specialAsset.findMany({
         where: {
           ...newFilter,
         },
         include: {
-          Department: true,
-          Supplier: true,
+          User: true,
         },
         skip: page && perPage ? (page - 1) * perPage : undefined,
         take: page && perPage ? perPage : undefined,
@@ -58,7 +70,7 @@ export class AssetService {
     ]);
 
     return {
-      data: assets,
+      data: res,
       meta: {
         currentPage: page,
         perPage,
@@ -69,12 +81,12 @@ export class AssetService {
   }
 
   async findOne(id: number) {
-    const data = await this.prismaService.asset.findUnique({
+    const data = await this.prismaService.specialAsset.findUnique({
       where: {
         id,
       },
       include: {
-        Department: true,
+        User: true,
       },
     });
 
@@ -82,70 +94,57 @@ export class AssetService {
   }
 
   async create(createDto: any) {
-    const data = await this.prismaService.asset.create({
+    const data = await this.prismaService.specialAsset.create({
       data: {
         ...createDto,
-        depreciation_rate: +createDto.depreciation_rate,
-        entry_price: +createDto.entry_price,
-        supplier_id: +createDto.supplier_id,
-        department_id: createDto.department_id
-          ? +createDto.department_id
-          : null,
+        quantity: +createDto.quantity,
+        user_id: +createDto.user_id,
       },
     });
-
     return data;
   }
 
-  async update(id: number, updateUserDto: any) {
-    const updateDto = {
-      ...updateUserDto,
-      depreciation_rate: +updateUserDto.depreciation_rate,
-      entry_price: +updateUserDto.entry_price,
-      supplier_id: +updateUserDto.supplier_id,
-      department_id: updateUserDto.department_id
-        ? +updateUserDto.department_id
-        : null,
-    };
-
-    console.log(updateDto);
-
-    const data = await this.prismaService.asset.update({
+  async update(id: number, updateDto: any) {
+    const data = await this.prismaService.specialAsset.update({
       where: {
         id,
       },
-      data: updateDto,
+      data: {
+        ...updateDto,
+        quantity: +updateDto.quantity,
+        user_id: +updateDto.user_id,
+      },
     });
 
     return data;
   }
 
   remove(id: number) {
-    return this.prismaService.asset.delete({
+    return this.prismaService.specialAsset.delete({
       where: {
         id,
       },
     });
   }
 
-  recall(id: number) {
-    return this.prismaService.asset.update({
+  getUsers() {
+    return this.prismaService.user.findMany({
       where: {
-        id,
-      },
-      data: {
-        department_id: null,
+        role: {
+          not: 'ADMIN',
+        },
       },
     });
   }
 
-  assign(id: number, department_id: number) {
-    return this.prismaService.asset.update({
+  revoke(id: number) {
+    return this.prismaService.specialAsset.update({
       where: {
         id,
       },
       data: {
-        department_id,
+        status: 'READY_TO_USE',
+        user_id: null,
       },
     });
   }
