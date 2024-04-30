@@ -92,6 +92,7 @@ export class AssetService {
         department_id: createDto.department_id
           ? +createDto.department_id
           : null,
+        user_id: createDto.user_id ? +createDto.user_id : null,
       },
     });
 
