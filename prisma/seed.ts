@@ -9,6 +9,7 @@ async function main() {
     create: {
       name: "IT",
       address: "Tầng 4 Toà nhà Sông Đà, 17 Duy Tân, Cầu Giấy, Hà Nội",
+      status: "USED",
     },
   });
   await prisma.department.upsert({
@@ -17,6 +18,7 @@ async function main() {
     create: {
       name: "Kế toán",
       address: "Tầng 4 Toà nhà Sông Đà, 17 Duy Tân, Cầu Giấy, Hà Nội",
+      status: "USED",
     },
   });
   await prisma.department.upsert({
@@ -25,6 +27,16 @@ async function main() {
     create: {
       name: "Hành chính nhân sự",
       address: "Tầng 4 Toà nhà Sông Đà, 17 Duy Tân, Cầu Giấy, Hà Nội",
+      status: "MAINTENANCE",
+    },
+  });
+  await prisma.department.upsert({
+    where: { id: 4 },
+    update: {},
+    create: {
+      name: "Marketing",
+      address: "Tầng 4 Toà nhà Sông Đà, 17 Duy Tân, Cầu Giấy, Hà Nội",
+      status: "MAINTENANCE",
     },
   });
 

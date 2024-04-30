@@ -32,6 +32,7 @@ model User {
   RecommendPlan    RecommendPlan[]
   SpecialAsset     SpecialAsset[]
   LiquidationAsset LiquidationAsset[]
+  Asset      Asset[]
 }
 
 model Supplier {
@@ -57,26 +58,30 @@ model Asset {
   entry_price       Int
   supplier_id       Int
   department_id     Int?
-  status            StatusAsset
-  condition         ConditionAsset
+
   created_at        DateTime       @default(now())
   updated_at        DateTime       @updatedAt
 
   Supplier         Supplier           @relation(fields: [supplier_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
   Department       Department?        @relation(fields: [department_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
   LiquidationAsset LiquidationAsset[]
+  user_id           Int?
+  status            StatusAsset
+  condition         String
+
+
+  User       User?       @relation(fields: [user_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
 }
 
 model Department {
-  id      Int    @id @default(autoincrement())
-  name    String
-  address String
-
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  id         Int              @id @default(autoincrement())
+  name       String
+  address    String
+  status     StatusDepartment
+  created_at DateTime         @default(now())
+  updated_at DateTime         @updatedAt
   User       User[]
   Asset      Asset[]
-
   // AssetDepartment AssetDepartment[]
   Plans         Plans[]
   RecommendPlan RecommendPlan[]
@@ -219,6 +224,12 @@ enum StatusPlan {
   PENDING
   APPROVED
   REJECTED
+}
+
+enum StatusDepartment {
+  USED
+  READY_TO_USE
+  MAINTENANCE
 }
 
 enum ConditionAsset {

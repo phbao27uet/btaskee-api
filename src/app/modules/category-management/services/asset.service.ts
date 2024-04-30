@@ -22,7 +22,6 @@ export class AssetService {
             acc[key as any] = Number(value);
             break;
           case 'status':
-          case 'condition':
             acc[key as any] = value;
             break;
 
@@ -51,6 +50,7 @@ export class AssetService {
         include: {
           Department: true,
           Supplier: true,
+          User: true,
         },
         skip: page && perPage ? (page - 1) * perPage : undefined,
         take: page && perPage ? perPage : undefined,
@@ -75,6 +75,7 @@ export class AssetService {
       },
       include: {
         Department: true,
+        User: true,
       },
     });
 
@@ -106,9 +107,8 @@ export class AssetService {
       department_id: updateUserDto.department_id
         ? +updateUserDto.department_id
         : null,
+      user_id: updateUserDto.user_id ? +updateUserDto.user_id : null,
     };
-
-    console.log(updateDto);
 
     const data = await this.prismaService.asset.update({
       where: {

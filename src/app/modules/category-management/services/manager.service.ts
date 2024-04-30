@@ -45,6 +45,58 @@ export class ManagerService {
         },
         include: {
           Department: true,
+          Asset: true,
+        },
+        skip: page && perPage ? (page - 1) * perPage : undefined,
+        take: page && perPage ? perPage : undefined,
+      }),
+    ]);
+
+    return {
+      data: res,
+      meta: {
+        currentPage: page,
+        perPage,
+        total: total ?? 0,
+        totalPages: Math.ceil((total ?? 0) / perPage),
+      },
+    };
+  }
+
+  async findAllManagersWorkers({
+    page,
+    perPage,
+  }: {
+    page: number;
+    perPage: number;
+  }) {
+    const [total, res] = await Promise.all([
+      this.prismaService.user.count({
+        where: {
+          OR: [
+            {
+              role: "MANAGER",
+            },
+            {
+              role: "WORKER",
+            },
+          ],
+        },
+      }),
+      this.prismaService.user.findMany({
+        where: {
+          OR: [
+            {
+              role: "MANAGER",
+            },
+            {
+              role: "WORKER",
+            },
+          ],
+        },
+        include: {
+          Department: true,
+          Asset: true,
         },
         skip: page && perPage ? (page - 1) * perPage : undefined,
         take: page && perPage ? perPage : undefined,
