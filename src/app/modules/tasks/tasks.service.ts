@@ -1,9 +1,20 @@
-import { Injectable } from "@nestjs/common";
-import { PrismaService } from "src/shared/prisma/prisma.service";
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/shared/prisma/prisma.service';
 
 @Injectable()
-export class DepartmentService {
+export class TasksService {
   constructor(private readonly prismaService: PrismaService) {}
+
+  async create(userId: number, createDto: any) {
+    const data = await this.prismaService.task.create({
+      data: {
+        job_poster_id: userId,
+        ...createDto,
+      },
+    });
+
+    return data;
+  }
 
   async findAll({
     page,
@@ -12,22 +23,23 @@ export class DepartmentService {
   }: {
     page: number;
     perPage: number;
-    filter: { id?: number; name?: string; status?: string };
+
+    filter: { id?: number; name?: string; status?: string; condition?: string };
   }) {
     const newFilter = Object.entries(filter).reduce((acc, [key, value]) => {
       if (value) {
         switch (key) {
-          case "id":
+          case 'id':
             acc[key as any] = Number(value);
             break;
-          case "status":
+          case 'status':
             acc[key as any] = value;
             break;
 
           default:
             acc[key as any] = {
               contains: value,
-              mode: "insensitive",
+              mode: 'insensitive',
             };
             break;
         }
@@ -36,15 +48,15 @@ export class DepartmentService {
       return acc;
     }, {} as any);
 
-    const [total, res] = await Promise.all([
-      this.prismaService.department.count({
-        where: { ...newFilter },
+    const [total, data] = await Promise.all([
+      this.prismaService.task.count({
+        where: {
+          ...newFilter,
+        },
       }),
-      this.prismaService.department.findMany({
-        where: { ...newFilter },
-        include: {
-          User: true,
-          Asset: true,
+      this.prismaService.task.findMany({
+        where: {
+          ...newFilter,
         },
         skip: page && perPage ? (page - 1) * perPage : undefined,
         take: page && perPage ? perPage : undefined,
@@ -52,7 +64,7 @@ export class DepartmentService {
     ]);
 
     return {
-      data: res,
+      data: data,
       meta: {
         currentPage: page,
         perPage,
@@ -63,40 +75,28 @@ export class DepartmentService {
   }
 
   async findOne(id: number) {
-    const department = await this.prismaService.department.findUnique({
+    const data = await this.prismaService.task.findUnique({
       where: {
         id,
       },
-      include: {
-        User: true,
-        Asset: true,
-      },
     });
 
-    return department;
-  }
-
-  async create(createDto: any) {
-    const department = await this.prismaService.department.create({
-      data: createDto,
-    });
-
-    return department;
+    return data;
   }
 
   async update(id: number, updateDto: any) {
-    const department = await this.prismaService.department.update({
+    const data = await this.prismaService.task.update({
       where: {
         id,
       },
       data: updateDto,
     });
 
-    return department;
+    return data;
   }
 
   remove(id: number) {
-    return this.prismaService.department.delete({
+    return this.prismaService.task.delete({
       where: {
         id,
       },

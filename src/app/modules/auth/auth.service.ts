@@ -17,8 +17,6 @@ export class AdminAuthService {
   ) {}
 
   async login(loginDto: LoginDto, role?: Role) {
-    console.log(role);
-
     const { email, password } = loginDto;
     const user = await this.prisma.user.findUnique({
       where: { email, role },
@@ -27,6 +25,8 @@ export class AdminAuthService {
         name: true,
         email: true,
         password: true,
+        address: true,
+        phone_number: true,
       },
     });
 
@@ -54,6 +54,8 @@ export class AdminAuthService {
         id: user.id,
         name: user.name,
         email: user.email,
+        address: user.address,
+        phone_number: user.phone_number,
       },
       ...token,
     };
@@ -80,6 +82,8 @@ export class AdminAuthService {
           id: true,
           name: true,
           email: true,
+          address: true,
+          phone_number: true,
         },
       });
 
@@ -130,16 +134,12 @@ export class AdminAuthService {
       }
 
       if (!user?.refresh_token) {
-        console.log('!user?.refresh_token', !user?.refresh_token);
-
         throw new BadRequestException('Refresh token fail!.');
       }
 
       const isMatch = user?.refresh_token == refreshToken;
 
       if (!isMatch) {
-        console.log('!isMatch', !isMatch);
-
         throw new BadRequestException('Token invalid.');
       }
 
