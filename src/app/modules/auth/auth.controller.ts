@@ -18,11 +18,6 @@ export class AdminAuthController {
     return this.adminAuthService.login(loginDto);
   }
 
-  @Post('admin-login')
-  async adminLogin(@Body() loginDto: LoginDto) {
-    return this.adminAuthService.login(loginDto, 'ADMIN');
-  }
-
   @UseGuards(JwtAdminAuthGuard)
   @ApiBearerAuth('admin-access-token')
   @Post('logout')

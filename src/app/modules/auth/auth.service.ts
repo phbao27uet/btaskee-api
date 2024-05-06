@@ -4,7 +4,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Role } from '@prisma/client';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { JWT_CONSTANTS } from 'src/utils/constants';
 import { LoginDto } from './dtos/auth.dto';
@@ -16,10 +15,10 @@ export class AdminAuthService {
     private jwtService: JwtService,
   ) {}
 
-  async login(loginDto: LoginDto, role?: Role) {
+  async login(loginDto: LoginDto) {
     const { email, password } = loginDto;
     const user = await this.prisma.user.findUnique({
-      where: { email, role },
+      where: { email },
       select: {
         id: true,
         name: true,
@@ -27,6 +26,7 @@ export class AdminAuthService {
         password: true,
         address: true,
         phone_number: true,
+        role: true,
       },
     });
 
@@ -56,6 +56,7 @@ export class AdminAuthService {
         email: user.email,
         address: user.address,
         phone_number: user.phone_number,
+        role: user.role,
       },
       ...token,
     };
@@ -84,6 +85,7 @@ export class AdminAuthService {
           email: true,
           address: true,
           phone_number: true,
+          role: true,
         },
       });
 
