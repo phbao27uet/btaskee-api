@@ -102,6 +102,7 @@ enum TypeTask {
   CHILDCARE
   WASHING_MACHINE_CLEANING
   IRONING
+  HEATER_CLEANING
 }
 
 enum PaymentMethod {

@@ -1,0 +1,2 @@
+-- AlterEnum
+ALTER TYPE "TypeTask" ADD VALUE 'HEATER_CLEANING';
