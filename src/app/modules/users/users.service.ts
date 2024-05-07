@@ -50,11 +50,17 @@ export class UsersService {
     const [total, data] = await Promise.all([
       this.prismaService.user.count({
         where: {
+          role: {
+            in: ['JOB_POSTER', 'JOB_SEEKER'],
+          },
           ...newFilter,
         },
       }),
       this.prismaService.user.findMany({
         where: {
+          role: {
+            in: ['JOB_POSTER', 'JOB_SEEKER'],
+          },
           ...newFilter,
         },
         skip: page && perPage ? (page - 1) * perPage : undefined,
