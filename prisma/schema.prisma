@@ -52,11 +52,15 @@ model Task {
 }
 
 model Order {
-  id          Int      @id @default(autoincrement())
-  order_date  DateTime
-  total_price Int
-  task_id     Int
-  user_id     Int
+  id               Int               @id @default(autoincrement())
+  order_date       DateTime
+  total_price      Int
+  task_id          Int
+  user_id          Int
+  order_link       String
+  order_payment_id String
+  status           PaypalOrderStatus @default(CREATED)
+  intent           Intent            @default(CAPTURE)
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -109,4 +113,18 @@ enum PaymentMethod {
   CASH
   BANK_TRANSFER
   PAYPAL
+}
+
+enum PaypalOrderStatus {
+  CREATED
+  SAVED
+  APPROVED
+  VOIDED
+  COMPLETED
+  PAYER_ACTION_REQUIRED
+}
+
+enum Intent {
+  CAPTURE
+  AUTHORIZE
 }
