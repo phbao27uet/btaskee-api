@@ -68,6 +68,9 @@ export class PaypalPaymentService {
     const apiUrl = this.paypalUtilsService.getApiUrl(
       process.env.PAYPAL_MODE as 'live' | 'sandbox',
     );
+
+    console.log(JSON.stringify(orderPayload, null, 2));
+
     return this.axiosInstance
       .post<PaypalOrderDto>(
         `${apiUrl}/v2/checkout/orders`,
@@ -81,40 +84,46 @@ export class PaypalPaymentService {
         {
           headers: {
             ..._headers,
-            'PayPal-Request-Id': taskPayload.task_id.toString(),
+            'PayPal-Request-Id': taskPayload.task_id.toString(), // Unique request id for each order
             Prefer: 'return=representation',
           },
         },
       )
       .then(async (r) => {
-        console.log(r.data);
+        // console.log(r.data);
 
         const linkApprove = r.data.links.find((link) => link.rel === 'approve');
 
-        console.log('linkApprove', linkApprove);
-        console.log({
-          order_payment_id: r.data.id,
-          order_date: new Date(),
-          total_price: 1000,
-          order_link: linkApprove?.href as string,
-          intent: orderPayload.intent,
-          status: r.data.status,
-          task_id: taskPayload.task_id,
-          user_id: taskPayload.user_id,
-        });
+        // console.log('linkApprove', linkApprove);
+        // console.log({
+        //   order_payment_id: r.data.id,
+        //   order_date: new Date(),
+        //   total_price: r.data.purchase_units[0].amount?.value
+        //     ? +r.data.purchase_units[0].amount?.value
+        //     : 0,
+        //   order_link: linkApprove?.href as string,
+        //   intent: orderPayload.intent,
+        //   status: r.data.status,
+        //   task_id: taskPayload.task_id,
+        //   user_id: taskPayload.user_id,
+        // });
 
-        await this.prismaService.order.create({
-          data: {
-            order_payment_id: r.data.id,
-            order_date: new Date(),
-            total_price: 1000,
-            order_link: linkApprove?.href as string,
-            intent: orderPayload.intent,
-            status: r.data.status,
-            task_id: taskPayload.task_id,
-            user_id: taskPayload.user_id,
-          },
-        });
+        if (linkApprove) {
+          await this.prismaService.order.create({
+            data: {
+              order_payment_id: r.data.id,
+              order_date: new Date(),
+              total_price: r.data.purchase_units[0].amount?.value
+                ? +r.data.purchase_units[0].amount?.value
+                : 0,
+              order_link: linkApprove?.href as string,
+              intent: orderPayload.intent,
+              status: r.data.status,
+              task_id: taskPayload.task_id,
+              user_id: taskPayload.user_id,
+            },
+          });
+        }
 
         return r.data;
       })
@@ -217,19 +226,45 @@ export class PaypalPaymentService {
         },
       )
       .then(async (r) => {
+        const order = await this.prismaService.order.findFirst({
+          where: {
+            order_payment_id: orderId,
+          },
+        });
+
         await this.prismaService.payment.create({
           data: {
             payment_date: new Date(),
             amount: r.data.purchase_units[0].amount?.value
               ? +r.data.purchase_units[0].amount?.value
               : 0,
-            order_id: +orderId,
+            order_id: order?.id,
+          },
+        });
+
+        await this.prismaService.order.update({
+          where: {
+            id: order?.id,
+          },
+          data: {
+            status: r.data.status,
+          },
+        });
+
+        await this.prismaService.task.update({
+          where: {
+            id: order?.task_id,
+          },
+          data: {
+            status: 'PENDING',
           },
         });
 
         return r.data;
       })
       .catch((e) => {
+        console.log(e);
+
         throw {
           ...PaypalErrorsConstants.CAPTURE_ORDER_FAILED,
           nativeError: e?.response?.data || e,

@@ -1,4 +1,11 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { Request } from 'express';
 import { JwtAdminAuthGuard } from '../auth/guards/admin-auth.guard';
 import { IUserJWT } from '../auth/interfaces/auth-payload.interface';
@@ -27,5 +34,15 @@ export class PayPalPaymentController {
   @Post('/capture-order')
   captureOrder(@Body() captureDto: any) {
     return this.service.capturePaymentForOrder(captureDto.orderId, captureDto);
+  }
+
+  @Post('/webhook')
+  @HttpCode(200)
+  async webhookEvent(@Body() eventData: any): Promise<any> {
+    console.log('Paypal webhook event data: ', eventData);
+
+    console.log(eventData.resource.purchase_units);
+
+    return { success: true };
   }
 }
