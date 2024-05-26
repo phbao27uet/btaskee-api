@@ -1,21 +1,26 @@
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth } from '@nestjs/swagger';
 import { Request } from 'express';
 
 import { AdminAuthService } from './auth.service';
 import { LoginDto } from './dtos/auth.dto';
+import { RegisterDto } from './dtos/register.dto';
 import { JwtAdminAuthGuard } from './guards/admin-auth.guard';
 import { JwtAdminAuthRefreshGuard } from './guards/admin-refresh-token.guard';
 import { IRefreshJWT, IUserJWT } from './interfaces/auth-payload.interface';
 
 @Controller('auth')
-@ApiTags('admin auth')
 export class AdminAuthController {
   constructor(private adminAuthService: AdminAuthService) {}
 
   @Post('login')
   async login(@Body() loginDto: LoginDto) {
     return this.adminAuthService.login(loginDto);
+  }
+
+  @Post('register')
+  async register(@Body() registerDto: RegisterDto) {
+    return this.adminAuthService.register(registerDto);
   }
 
   @UseGuards(JwtAdminAuthGuard)

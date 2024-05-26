@@ -7,6 +7,7 @@ import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { JWT_CONSTANTS } from 'src/utils/constants';
 import { LoginDto } from './dtos/auth.dto';
+import { RegisterDto } from './dtos/register.dto';
 
 @Injectable()
 export class AdminAuthService {
@@ -93,6 +94,25 @@ export class AdminAuthService {
     } catch (error) {
       throw new BadRequestException(error);
     }
+  }
+
+  async register(registerDto: RegisterDto) {
+    const { email } = registerDto;
+    const user = await this.prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (user) {
+      throw new BadRequestException('Tài khoản đã tồn tại.');
+    }
+
+    const newUser = await this.prisma.user.create({
+      data: {
+        ...registerDto,
+      },
+    });
+
+    return newUser;
   }
 
   async generateToken(adminId: number, username: string) {
