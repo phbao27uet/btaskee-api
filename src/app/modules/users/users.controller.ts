@@ -7,7 +7,10 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
+import { GetCurrentUserId } from 'src/shared/decorators/get-current-user-id.decorator';
+import { JwtAdminAuthGuard } from '../auth/guards/admin-auth.guard';
 import { UsersService } from './users.service';
 
 @Controller('users')
@@ -17,6 +20,25 @@ export class UsersController {
   @Post()
   create(@Body() createDto: any) {
     return this.usersService.create(createDto);
+  }
+
+  @UseGuards(JwtAdminAuthGuard)
+  @Post('apply-seeker')
+  applySeeker(@GetCurrentUserId() userId: number) {
+    return this.usersService.applySeeker(userId);
+  }
+
+  @Post('handle-apply-seeker')
+  handleApplySeeker(@Body() dto: any) {
+    return this.usersService.handleApplySeeker(dto);
+  }
+
+  @Get('apply-seeker')
+  findAllApplySeeker(@Query('page') page = 1, @Query('perPage') perPage = 20) {
+    return this.usersService.findAllApplySeeker({
+      page: +page,
+      perPage: +perPage,
+    });
   }
 
   @Get()

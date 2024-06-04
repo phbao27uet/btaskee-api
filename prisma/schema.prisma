@@ -27,6 +27,15 @@ model User {
   tasks        Task[]  @relation("TaskAssignee")
   posted_tasks Task[]  @relation("TaskPoster")
   order        Order[]
+
+  UserApplySeeker UserApplySeeker[]
+}
+
+model UserApplySeeker {
+  id     Int  @id @default(autoincrement())
+  userId Int
+  status ApplyStatus @default(PENDING) 
+  user   User @relation(fields: [userId], references: [id])
 }
 
 model Task {
@@ -127,4 +136,10 @@ enum PaypalOrderStatus {
 enum Intent {
   CAPTURE
   AUTHORIZE
+}
+
+enum ApplyStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
 }
