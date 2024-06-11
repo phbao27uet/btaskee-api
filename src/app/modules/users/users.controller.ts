@@ -23,6 +23,12 @@ export class UsersController {
   }
 
   @UseGuards(JwtAdminAuthGuard)
+  @Get('analysis')
+  analysis(@GetCurrentUserId() userId: number) {
+    return this.usersService.applySeeker(userId);
+  }
+
+  @UseGuards(JwtAdminAuthGuard)
   @Post('apply-seeker')
   applySeeker(@GetCurrentUserId() userId: number) {
     return this.usersService.applySeeker(userId);

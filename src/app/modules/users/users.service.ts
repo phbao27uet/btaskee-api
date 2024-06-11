@@ -190,4 +190,36 @@ export class UsersService {
       },
     });
   }
+
+  async analysis(userId: number) {
+    console.log(userId);
+
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
+
+    if (user.role === 'JOB_POSTER') {
+      // Get total job and and group by month
+      const result = await this.prismaService.$queryRaw`
+        SELECT 
+          DATE_FORMAT(order_date, '%Y-%m') AS month,
+          SUM(total_price) AS total_price
+        FROM 
+          Order
+        WHERE 
+          user_id = ${userId}
+        GROUP BY 
+          month
+        ORDER BY
+          month;
+      `;
+      return result;
+    }
+  }
 }
