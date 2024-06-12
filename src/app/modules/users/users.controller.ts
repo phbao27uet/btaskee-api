@@ -25,7 +25,16 @@ export class UsersController {
   @UseGuards(JwtAdminAuthGuard)
   @Get('analysis')
   analysis(@GetCurrentUserId() userId: number) {
-    return this.usersService.applySeeker(userId);
+    return this.usersService.analysis(userId);
+  }
+
+  @UseGuards(JwtAdminAuthGuard)
+  @Get('analysis/admin')
+  analysisAdmin(
+    @Query('month') month = '1-2024',
+    @Query('role') role: 'JOB_POSTER' | 'JOB_SEEKER' = 'JOB_SEEKER',
+  ) {
+    return this.usersService.analysisAdmin(month, role);
   }
 
   @UseGuards(JwtAdminAuthGuard)

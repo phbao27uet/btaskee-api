@@ -204,22 +204,175 @@ export class UsersService {
       throw new BadRequestException('User not found');
     }
 
+    // const order = await this.prismaService.order.findMany({
+    //   where: {
+    //     user_id: userId,
+    //   },
+    // });
+
+    // console.log(order);
+
     if (user.role === 'JOB_POSTER') {
-      // Get total job and and group by month
-      const result = await this.prismaService.$queryRaw`
-        SELECT 
-          DATE_FORMAT(order_date, '%Y-%m') AS month,
-          SUM(total_price) AS total_price
-        FROM 
-          Order
-        WHERE 
-          user_id = ${userId}
-        GROUP BY 
-          month
-        ORDER BY
-          month;
-      `;
-      return result;
+      const tasks = await this.prismaService.task.findMany({
+        where: {
+          job_poster_id: userId,
+          OR: [
+            {
+              payment_method: 'PAYPAL',
+              order: {
+                some: {
+                  status: 'COMPLETED',
+                },
+              },
+            },
+            {
+              payment_method: 'CASH',
+              status: 'COMPLETED',
+            },
+          ],
+        },
+        include: {
+          order: true,
+        },
+      });
+
+      const res = tasks.reduce(
+        (acc, task) => {
+          const month = new Date(task.created_at).getMonth() + 1;
+          const year = new Date(task.created_at).getFullYear();
+
+          const key = `${month}-${year}`;
+
+          if (acc[key]) {
+            acc[key] += task.price;
+          } else {
+            acc[key] = task.price;
+          }
+
+          console.log(acc);
+
+          return acc;
+        },
+        {} as {
+          [key: string]: number;
+        },
+      );
+
+      return res;
+    } else if (user.role == 'JOB_SEEKER') {
+      const tasks = await this.prismaService.task.findMany({
+        where: {
+          job_seeker_id: userId,
+          status: 'COMPLETED',
+        },
+      });
+
+      console.log(tasks);
+
+      return tasks.reduce(
+        (acc, task) => {
+          const month = new Date(task.created_at).getMonth() + 1;
+          const year = new Date(task.created_at).getFullYear();
+
+          const key = `${month}-${year}`;
+
+          if (acc[key]) {
+            acc[key] += task.price;
+          } else {
+            acc[key] = task.price;
+          }
+
+          return acc;
+        },
+        {} as {
+          [key: string]: number;
+        },
+      );
+    }
+  }
+
+  async analysisAdmin(month: string, role: 'JOB_POSTER' | 'JOB_SEEKER') {
+    console.log(month, role);
+
+    const [monthValue, yearValue] = month.split('-');
+
+    if (role == 'JOB_POSTER') {
+      const users = await this.prismaService.user.findMany({
+        where: {
+          role: 'JOB_POSTER',
+        },
+
+        include: {
+          posted_tasks: {
+            where: {
+              OR: [
+                {
+                  payment_method: 'PAYPAL',
+                  order: {
+                    some: {
+                      status: 'COMPLETED',
+                    },
+                  },
+                },
+                {
+                  payment_method: 'CASH',
+                  status: 'COMPLETED',
+                },
+              ],
+
+              created_at: {
+                gte: new Date(`${yearValue}-${monthValue}-01`),
+                lte: new Date(`${yearValue}-${monthValue}-31`),
+              },
+            },
+          },
+        },
+      });
+
+      const res = users.map((user) => {
+        const total = user.posted_tasks.reduce((acc, task) => {
+          return acc + task.price;
+        }, 0);
+
+        return {
+          ...user,
+          total,
+        };
+      });
+
+      return res;
+    } else {
+      const users = await this.prismaService.user.findMany({
+        where: {
+          role: 'JOB_SEEKER',
+        },
+
+        include: {
+          tasks: {
+            where: {
+              status: 'COMPLETED',
+
+              created_at: {
+                gte: new Date(`${yearValue}-${monthValue}-01`),
+                lte: new Date(`${yearValue}-${monthValue}-31`),
+              },
+            },
+          },
+        },
+      });
+
+      const res = users.map((user) => {
+        const total = user.tasks.reduce((acc, task) => {
+          return acc + task.price;
+        }, 0);
+
+        return {
+          ...user,
+          total,
+        };
+      });
+
+      return res;
     }
   }
 }
